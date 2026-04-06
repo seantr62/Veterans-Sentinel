@@ -1,19 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VAHGMA 2026 — SENTINEL Command Center</title>
+<title>VFCAA 2026 — SENTINEL Command Center</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-
-/* ════════════════════════════════════════════════════════════════════════════
-   SENTINEL COMMAND CENTER — VAHGMA 2026
-   Design: Military intelligence meets federal authority
-   Palette: Deep navy / tactical gold / signal red / clearance green
-   Type: Barlow Condensed (impact) + Crimson Pro (authority) + DM Mono (data)
-════════════════════════════════════════════════════════════════════════════ */
-
 :root {
   --ink:       #0A0E18;
   --navy:      #0F1E3D;
@@ -39,10 +32,8 @@
   --border-2:  rgba(201,168,76,0.08);
   --shadow:    rgba(0,0,0,0.5);
 }
-
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
-
 body {
   font-family: 'Crimson Pro', Georgia, serif;
   background: var(--ink);
@@ -51,8 +42,6 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-
-/* ── BACKGROUND TEXTURE ── */
 body::before {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -61,412 +50,183 @@ body::before {
     radial-gradient(ellipse 80% 80% at 90% 100%, rgba(201,168,76,0.06) 0%, transparent 60%),
     linear-gradient(160deg, #0A0E18 0%, #0F1624 40%, #0C1830 100%);
 }
-
-/* Subtle scan-line texture */
 body::after {
   content: '';
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.08) 2px,
-    rgba(0,0,0,0.08) 4px
-  );
+  background-image: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
   opacity: 0.4;
 }
-
 .wrap { position: relative; z-index: 1; max-width: 1560px; margin: 0 auto; padding: 0 28px 100px; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   HEADER
-════════════════════════════════════════════════════════════════════════════ */
-
+/* HEADER */
 .hdr {
-  padding: 36px 0 28px;
-  margin-bottom: 48px;
+  padding: 36px 0 28px; margin-bottom: 48px;
   border-bottom: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 32px;
+  display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 32px;
 }
 .hdr-kicker {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: 5px;
-  color: var(--gold); text-transform: uppercase;
-  margin-bottom: 10px;
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 5px;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
   display: flex; align-items: center; gap: 12px;
 }
-.hdr-kicker::before {
-  content: ''; display: block; width: 32px; height: 1px; background: var(--gold);
-}
+.hdr-kicker::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
 .hdr-h1 {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(52px,7vw,96px);
-  font-weight: 900; letter-spacing: -1px;
-  line-height: 0.92; color: var(--cream-2);
-  text-transform: uppercase;
+  font-size: clamp(52px,7vw,96px); font-weight: 900; letter-spacing: -1px;
+  line-height: 0.92; color: var(--cream-2); text-transform: uppercase;
 }
 .hdr-h1 em { color: var(--gold-2); font-style: normal; }
-.hdr-sub {
-  margin-top: 10px;
-  font-size: 16px; font-weight: 300; font-style: italic;
-  color: var(--muted); letter-spacing: 0.3px;
-}
-.hdr-meta {
-  text-align: right;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px; color: var(--gold-dim);
-  line-height: 2;
-}
+.hdr-sub { margin-top: 10px; font-size: 16px; font-weight: 300; font-style: italic; color: var(--muted); letter-spacing: 0.3px; }
+.hdr-meta { text-align: right; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold-dim); line-height: 2; }
 .hdr-badge {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 5px 14px;
-  background: rgba(39,174,96,0.12);
-  border: 1px solid rgba(39,174,96,0.35);
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 3px;
+  display: inline-block; margin-top: 8px; padding: 5px 14px;
+  background: rgba(39,174,96,0.12); border: 1px solid rgba(39,174,96,0.35);
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px;
   color: var(--green-2); text-transform: uppercase;
 }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   SECTION LABELS
-════════════════════════════════════════════════════════════════════════════ */
-
+/* SECTION LABELS */
 .label {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 5px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 20px;
-  display: flex; align-items: center; gap: 14px;
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 14px;
 }
-.label::after {
-  content: ''; flex: 1; height: 1px;
-  background: linear-gradient(90deg, var(--border), transparent);
-}
-
+.label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
 .mb48 { margin-bottom: 48px; }
 .mb32 { margin-bottom: 32px; }
 .mb20 { margin-bottom: 20px; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   STAT CARDS — TOP ROW
-════════════════════════════════════════════════════════════════════════════ */
-
+/* STAT CARDS */
 .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
 .stat {
-  background: var(--navy);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--gold-dim);
-  padding: 22px 24px 20px;
-  position: relative; overflow: hidden;
+  background: var(--navy); border: 1px solid var(--border); border-top: 3px solid var(--gold-dim);
+  padding: 22px 24px 20px; position: relative; overflow: hidden;
 }
 .stat::after {
-  content: attr(data-n);
-  position: absolute; right: 12px; bottom: -8px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 90px; font-weight: 900;
-  color: rgba(201,168,76,0.04);
-  line-height: 1; pointer-events: none;
+  content: attr(data-n); position: absolute; right: 12px; bottom: -8px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 90px; font-weight: 900;
+  color: rgba(201,168,76,0.04); line-height: 1; pointer-events: none;
 }
-.stat-lbl {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 3px;
-  color: var(--gold-dim); text-transform: uppercase; margin-bottom: 8px;
-}
-.stat-val {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 56px; font-weight: 800;
-  line-height: 1; color: var(--cream-2);
-}
+.stat-lbl { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 8px; }
+.stat-val { font-family: 'Barlow Condensed', sans-serif; font-size: 56px; font-weight: 800; line-height: 1; color: var(--cream-2); }
 .stat-val.gold  { color: var(--gold-2); }
 .stat-val.green { color: var(--green-2); }
 .stat-val.red   { color: var(--red-2); }
 .stat-desc { margin-top: 8px; font-size: 12px; color: var(--muted); font-style: italic; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   ATTACK STREAMS
-════════════════════════════════════════════════════════════════════════════ */
-
+/* STREAMS */
 .streams { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-.stream {
-  border: 1px solid;
-  padding: 24px;
-  position: relative; overflow: hidden;
-}
+.stream { border: 1px solid; padding: 24px; position: relative; overflow: hidden; }
 .stream.ip    { border-color: rgba(100,149,237,0.25); background: rgba(15,30,80,0.6); }
 .stream.fund  { border-color: rgba(201,168,76,0.25);  background: rgba(40,28,0,0.6); }
 .stream.legis { border-color: rgba(160,100,220,0.25); background: rgba(30,10,60,0.6); }
-.stream-hd {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; margin-bottom: 4px;
-}
+.stream-hd { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
 .stream.ip    .stream-hd { color: #88AAFF; }
 .stream.fund  .stream-hd { color: var(--gold-2); }
 .stream.legis .stream-hd { color: #CC99FF; }
-.stream-sub {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 2px; margin-bottom: 16px; opacity: 0.4;
-}
-.stream-item {
-  font-size: 12px; color: var(--muted);
-  padding: 5px 0 5px 18px; border-bottom: 1px solid rgba(255,255,255,0.04);
-  line-height: 1.4; position: relative;
-}
+.stream-sub { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; margin-bottom: 16px; opacity: 0.4; }
+.stream-item { font-size: 12px; color: var(--muted); padding: 5px 0 5px 18px; border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.4; position: relative; }
 .stream-item::before { content: '›'; position: absolute; left: 4px; opacity: 0.4; }
 .stream-item.done { color: rgba(46,204,113,0.75); }
 .stream-item.done::before { content: '✓'; color: var(--green-2); opacity: 1; }
-.stream-verdict {
-  margin-top: 14px; padding: 10px 12px;
-  background: rgba(0,0,0,0.25); border-left: 2px solid;
-  font-size: 11px; font-style: italic; color: var(--muted); line-height: 1.6;
-}
+.stream-verdict { margin-top: 14px; padding: 10px 12px; background: rgba(0,0,0,0.25); border-left: 2px solid; font-size: 11px; font-style: italic; color: var(--muted); line-height: 1.6; }
 .stream.ip    .stream-verdict { border-color: #88AAFF; }
 .stream.fund  .stream-verdict { border-color: var(--gold); }
 .stream.legis .stream-verdict { border-color: #CC99FF; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   AMENDMENTS TABLE
-════════════════════════════════════════════════════════════════════════════ */
-
+/* AMENDMENTS TABLE */
 .amend-wrap { overflow-x: auto; }
 .amend-tbl { width: 100%; border-collapse: collapse; }
-.amend-tbl th {
-  font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--gold-dim); padding: 8px 12px;
-  border-bottom: 1px solid var(--border); text-align: left;
-}
-.amend-tbl td {
-  padding: 7px 12px; font-size: 12px; color: var(--muted);
-  border-bottom: 1px solid var(--border-2); vertical-align: top;
-}
+.amend-tbl th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold-dim); padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+.amend-tbl td { padding: 7px 12px; font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--border-2); vertical-align: top; }
 .amend-tbl tr:hover td { background: rgba(201,168,76,0.03); }
 .amend-num { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold-dim); }
-.badge {
-  display: inline-block; font-family: 'DM Mono', monospace;
-  font-size: 9px; letter-spacing: 1px; padding: 2px 8px;
-  text-transform: uppercase;
-}
+.badge { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; padding: 2px 8px; text-transform: uppercase; }
 .badge.ip    { color: #88AAFF; border: 1px solid rgba(100,149,237,0.3); background: rgba(20,40,100,0.4); }
 .badge.fund  { color: var(--gold-2); border: 1px solid rgba(201,168,76,0.3); background: rgba(60,42,0,0.4); }
 .badge.legis { color: #CC99FF; border: 1px solid rgba(160,100,220,0.3); background: rgba(50,15,80,0.4); }
 .badge.done  { color: var(--green-2); border: 1px solid rgba(39,174,96,0.3); background: rgba(15,60,30,0.4); }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   AUDIT LAYERS
-════════════════════════════════════════════════════════════════════════════ */
-
+/* AUDIT */
 .audit { display: grid; grid-template-columns: 1fr 340px; gap: 14px; }
 .layer { display: grid; grid-template-columns: 72px 1fr auto; gap: 0; margin-bottom: 3px; }
-.layer-num {
-  background: var(--navy-2); border: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-}
-.layer-n {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 38px; font-weight: 800; color: var(--gold-2); line-height: 1;
-}
-.layer-type {
-  font-family: 'DM Mono', monospace; font-size: 8px;
-  letter-spacing: 2px; color: var(--gold-dim);
-}
-.layer-body {
-  background: rgba(15,30,61,0.5);
-  border: 1px solid var(--border-2); border-left: none;
-  padding: 12px 16px;
-}
-.layer-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px; font-weight: 600; letter-spacing: 1px;
-  color: var(--cream); margin-bottom: 4px; text-transform: uppercase;
-}
+.layer-num { background: var(--navy-2); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.layer-n { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 800; color: var(--gold-2); line-height: 1; }
+.layer-type { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; color: var(--gold-dim); }
+.layer-body { background: rgba(15,30,61,0.5); border: 1px solid var(--border-2); border-left: none; padding: 12px 16px; }
+.layer-title { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 1px; color: var(--cream); margin-bottom: 4px; text-transform: uppercase; }
 .layer-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
-.layer-meta {
-  background: rgba(0,0,0,0.25);
-  border: 1px solid var(--border-2); border-left: none;
-  padding: 10px 14px; min-width: 160px;
-  display: flex; flex-direction: column; justify-content: center; gap: 5px;
-}
-.layer-kv {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  display: flex; justify-content: space-between; gap: 8px;
-}
+.layer-meta { background: rgba(0,0,0,0.25); border: 1px solid var(--border-2); border-left: none; padding: 10px 14px; min-width: 160px; display: flex; flex-direction: column; justify-content: center; gap: 5px; }
+.layer-kv { font-family: 'DM Mono', monospace; font-size: 10px; display: flex; justify-content: space-between; gap: 8px; }
 .layer-k { color: var(--gold-dim); }
 .layer-v { color: var(--cream-2); font-weight: 500; }
 .tag-machine { display: inline-block; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; padding: 2px 6px; color: #88AAFF; border: 1px solid rgba(100,149,237,0.3); background: rgba(20,40,100,0.3); }
 .tag-human   { display: inline-block; font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 2px; padding: 2px 6px; color: #FF8080; border: 1px solid rgba(200,80,80,0.3); background: rgba(100,20,20,0.3); }
-
-.audit-trail {
-  background: var(--navy);
-  border: 1px solid var(--border);
-  border-top: 2px solid var(--gold-dim);
-  padding: 20px;
-}
-.audit-trail-hd {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
-}
-.trail-item {
-  font-size: 11px; color: var(--muted);
-  padding: 6px 0 6px 14px; border-bottom: 1px solid var(--border-2);
-  position: relative; line-height: 1.5;
-}
+.audit-trail { background: var(--navy); border: 1px solid var(--border); border-top: 2px solid var(--gold-dim); padding: 20px; }
+.audit-trail-hd { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+.trail-item { font-size: 11px; color: var(--muted); padding: 6px 0 6px 14px; border-bottom: 1px solid var(--border-2); position: relative; line-height: 1.5; }
 .trail-item::before { content: '›'; position: absolute; left: 2px; color: var(--gold-dim); }
-.inaction-flag {
-  margin-top: 14px; padding: 10px 12px;
-  background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3);
-  border-left: 3px solid var(--red-2);
-  font-size: 11px; color: #FF8080; font-style: italic; line-height: 1.6;
-}
+.inaction-flag { margin-top: 14px; padding: 10px 12px; background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3); border-left: 3px solid var(--red-2); font-size: 11px; color: #FF8080; font-style: italic; line-height: 1.6; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   INACTION VULNERABILITIES
-════════════════════════════════════════════════════════════════════════════ */
-
+/* VULN */
 .vuln-item { display: grid; grid-template-columns: 200px 1fr; gap: 0; margin-bottom: 4px; }
-.vuln-label {
-  background: rgba(100,20,20,0.4); border: 1px solid rgba(192,57,43,0.25);
-  padding: 10px 14px; font-size: 11px; color: #FF8080;
-  font-family: 'DM Mono', monospace; display: flex; align-items: center; line-height: 1.4;
-}
-.vuln-fix {
-  background: rgba(15,30,61,0.5);
-  border: 1px solid var(--border-2); border-left: none;
-  padding: 10px 14px; font-size: 11px; color: var(--muted); line-height: 1.6;
-}
+.vuln-label { background: rgba(100,20,20,0.4); border: 1px solid rgba(192,57,43,0.25); padding: 10px 14px; font-size: 11px; color: #FF8080; font-family: 'DM Mono', monospace; display: flex; align-items: center; line-height: 1.4; }
+.vuln-fix { background: rgba(15,30,61,0.5); border: 1px solid var(--border-2); border-left: none; padding: 10px 14px; font-size: 11px; color: var(--muted); line-height: 1.6; }
 .vuln-fix strong { color: var(--green-2); font-style: normal; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   ALGORITHMS
-════════════════════════════════════════════════════════════════════════════ */
-
+/* ALGOS */
 .algos { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-.algo {
-  background: var(--navy); border: 1px solid var(--border-2);
-  border-top: 2px solid var(--gold-dim);
-  padding: 18px 16px; position: relative; overflow: hidden;
-}
-.algo-bg {
-  position: absolute; right: 8px; bottom: -6px;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 72px; font-weight: 900;
-  color: rgba(201,168,76,0.06); line-height: 1; pointer-events: none;
-}
-.algo-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 17px; font-weight: 700; letter-spacing: 0.5px;
-  text-transform: uppercase; color: var(--gold-2); margin-bottom: 8px; line-height: 1.2;
-}
+.algo { background: var(--navy); border: 1px solid var(--border-2); border-top: 2px solid var(--gold-dim); padding: 18px 16px; position: relative; overflow: hidden; }
+.algo-bg { position: absolute; right: 8px; bottom: -6px; font-family: 'Barlow Condensed', sans-serif; font-size: 72px; font-weight: 900; color: rgba(201,168,76,0.06); line-height: 1; pointer-events: none; }
+.algo-name { font-family: 'Barlow Condensed', sans-serif; font-size: 17px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gold-2); margin-bottom: 8px; line-height: 1.2; }
 .algo-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
-.algo-pop {
-  margin-top: 10px; font-family: 'DM Mono', monospace;
-  font-size: 9px; color: var(--gold-dim); letter-spacing: 1px;
-}
+.algo-pop { margin-top: 10px; font-family: 'DM Mono', monospace; font-size: 9px; color: var(--gold-dim); letter-spacing: 1px; }
 .algo-status { margin-top: 8px; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   SELF-DEFENSE TABLE
-════════════════════════════════════════════════════════════════════════════ */
-
+/* SELF-DEFENSE */
 .def-tbl { width: 100%; border-collapse: collapse; }
-.def-tbl th {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 2px; color: var(--gold-dim);
-  padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left;
-}
-.def-tbl td {
-  padding: 8px 12px; font-size: 11px; color: var(--muted);
-  border-bottom: 1px solid var(--border-2); vertical-align: top; line-height: 1.6;
-}
+.def-tbl th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold-dim); padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+.def-tbl td { padding: 8px 12px; font-size: 11px; color: var(--muted); border-bottom: 1px solid var(--border-2); vertical-align: top; line-height: 1.6; }
 .def-tbl tr:hover td { background: rgba(201,168,76,0.02); }
 .threat  { color: #FF8888; font-style: italic; }
 .response { color: rgba(46,204,113,0.8); }
 .loc-done { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--green-2); }
 .loc-pend { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold-2); }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   CHESS / MOVES
-════════════════════════════════════════════════════════════════════════════ */
-
+/* CHESS */
 .chess { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-.move {
-  border: 1px solid; padding: 18px;
-}
+.move { border: 1px solid; padding: 18px; }
 .move.done   { border-color: rgba(39,174,96,0.25);   background: rgba(8,35,18,0.6); }
 .move.active { border-color: rgba(201,168,76,0.35);   background: rgba(35,25,0,0.6); }
 .move.next   { border-color: rgba(100,149,237,0.2);  background: rgba(10,20,55,0.5); }
 .move.future { border-color: var(--border-2); background: rgba(15,30,61,0.25); }
-.move-lbl {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px;
-}
+.move-lbl { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
 .move.done   .move-lbl { color: var(--green-2); }
 .move.active .move-lbl { color: var(--gold-2); }
 .move.next   .move-lbl { color: #88AAFF; }
 .move.future .move-lbl { color: var(--muted-2); }
-.move-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 16px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
-  margin-bottom: 10px;
-}
+.move-title { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px; }
 .move.done   .move-title { color: var(--cream); }
 .move.active .move-title { color: var(--cream-2); }
 .move.next   .move-title { color: rgba(237,232,220,0.65); }
 .move.future .move-title { color: var(--muted-2); }
 .move ul { list-style: none; }
-.move li {
-  font-size: 10px; padding: 3px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.4;
-}
+.move li { font-size: 10px; padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.4; }
 .move.done   li { color: rgba(46,204,113,0.65); }
 .move.active li { color: var(--muted); }
 .move.next   li { color: rgba(136,170,255,0.45); }
 .move.future li { color: var(--muted-3); }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   ORACLE SECTION
-════════════════════════════════════════════════════════════════════════════ */
-
-.oracle-banner {
-  background: linear-gradient(120deg, rgba(192,57,43,0.12) 0%, rgba(15,30,61,0.9) 50%);
-  border: 1px solid rgba(192,57,43,0.3);
-  border-left: 4px solid var(--red-2);
-  padding: 28px 32px;
-  position: relative; overflow: hidden;
-}
-.oracle-banner::after {
-  content: 'ORACLE'; position: absolute; right: -12px; bottom: -16px;
-  font-family: 'Barlow Condensed', sans-serif; font-size: 110px; font-weight: 900;
-  color: rgba(192,57,43,0.05); pointer-events: none;
-}
-.oracle-kicker {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 4px; color: #FF8080; margin-bottom: 10px;
-}
-.oracle-headline {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 32px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--cream-2); margin-bottom: 16px;
-}
-.oracle-narrative {
-  font-size: 14px; color: var(--muted); line-height: 1.85; max-width: 900px;
-}
+/* ORACLE */
+.oracle-banner { background: linear-gradient(120deg, rgba(192,57,43,0.12) 0%, rgba(15,30,61,0.9) 50%); border: 1px solid rgba(192,57,43,0.3); border-left: 4px solid var(--red-2); padding: 28px 32px; position: relative; overflow: hidden; }
+.oracle-banner::after { content: 'ORACLE'; position: absolute; right: -12px; bottom: -16px; font-family: 'Barlow Condensed', sans-serif; font-size: 110px; font-weight: 900; color: rgba(192,57,43,0.05); pointer-events: none; }
+.oracle-kicker { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; color: #FF8080; margin-bottom: 10px; }
+.oracle-headline { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--cream-2); margin-bottom: 16px; }
+.oracle-narrative { font-size: 14px; color: var(--muted); line-height: 1.85; max-width: 900px; }
 .oracle-narrative strong { color: var(--gold-2); font-weight: 600; }
 .oracle-narrative + .oracle-narrative { margin-top: 12px; }
-
 .oracle-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
-.oracle-stat {
-  background: var(--navy-2); border: 1px solid var(--border);
-  padding: 20px; position: relative;
-}
-.oracle-stat::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: var(--red-2);
-}
+.oracle-stat { background: var(--navy-2); border: 1px solid var(--border); padding: 20px; position: relative; }
+.oracle-stat::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--red-2); }
 .oracle-stat.gold::before { background: var(--gold); }
 .oracle-stat.green::before { background: var(--green); }
 .os-lbl { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 8px; }
@@ -474,93 +234,38 @@ body::after {
 .oracle-stat.gold  .os-val { color: var(--gold-2); }
 .oracle-stat.green .os-val { color: var(--green-2); }
 .os-desc { font-size: 11px; color: var(--muted); line-height: 1.6; font-style: italic; }
-
-/* ignition */
 .ignition { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.ignition-item {
-  background: var(--navy); border: 1px solid var(--border-2);
-  padding: 20px; display: flex; gap: 16px;
-}
-.ig-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 52px; font-weight: 900;
-  color: rgba(201,168,76,0.12); line-height: 1; flex-shrink: 0;
-}
-.ig-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 16px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--gold-2); margin-bottom: 8px;
-}
+.ignition-item { background: var(--navy); border: 1px solid var(--border-2); padding: 20px; display: flex; gap: 16px; }
+.ig-num { font-family: 'Barlow Condensed', sans-serif; font-size: 52px; font-weight: 900; color: rgba(201,168,76,0.12); line-height: 1; flex-shrink: 0; }
+.ig-title { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--gold-2); margin-bottom: 8px; }
 .ig-text { font-size: 12px; color: var(--muted); line-height: 1.75; }
-
-/* comparison table */
 .cmp-tbl { width: 100%; border-collapse: collapse; }
-.cmp-tbl th {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 16px; font-weight: 700; letter-spacing: 2px;
-  padding: 12px 16px; text-transform: uppercase; text-align: left;
-}
+.cmp-tbl th { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 2px; padding: 12px 16px; text-transform: uppercase; text-align: left; }
 .cmp-tbl th:first-child { color: var(--gold-dim); }
 .cmp-tbl th.oracle-col { color: var(--red-2); background: rgba(192,57,43,0.08); }
 .cmp-tbl th.sentinel-col { color: var(--green-2); background: rgba(39,174,96,0.08); }
-.cmp-tbl td {
-  padding: 10px 16px; font-size: 12px;
-  border-top: 1px solid var(--border-2); vertical-align: top; line-height: 1.6;
-}
+.cmp-tbl td { padding: 10px 16px; font-size: 12px; border-top: 1px solid var(--border-2); vertical-align: top; line-height: 1.6; }
 .cmp-tbl tr:hover td { background: rgba(201,168,76,0.02); }
 .metric-col { color: var(--muted); font-style: italic; }
 .oracle-col { color: rgba(255,150,140,0.8); background: rgba(192,57,43,0.06); }
 .sentinel-col { color: rgba(100,220,140,0.85); background: rgba(39,174,96,0.05); }
 .bad  { color: var(--red-2) !important; }
 .good { color: var(--green-2) !important; }
-
-/* savings */
-.savings-note {
-  background: rgba(40,28,0,0.6); border: 1px solid rgba(201,168,76,0.25);
-  border-left: 3px solid var(--gold);
-  padding: 14px 18px; margin-bottom: 20px;
-  font-size: 12px; color: var(--muted); line-height: 1.7;
-}
+.savings-note { background: rgba(40,28,0,0.6); border: 1px solid rgba(201,168,76,0.25); border-left: 3px solid var(--gold); padding: 14px 18px; margin-bottom: 20px; font-size: 12px; color: var(--muted); line-height: 1.7; }
 .savings-note strong { color: var(--gold-2); }
 .savings { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
-.saving {
-  background: var(--navy-2); border: 1px solid var(--border);
-  border-top: 2px solid var(--green-dim);
-  padding: 18px 20px; position: relative;
-}
+.saving { background: var(--navy-2); border: 1px solid var(--border); border-top: 2px solid var(--green-dim); padding: 18px 20px; position: relative; }
 .saving:last-child { border-top-color: var(--gold); }
-.saving-cat {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 2px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 8px;
-}
-.saving-amt {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 38px; font-weight: 800; color: var(--green-2); line-height: 1; margin-bottom: 4px;
-}
+.saving-cat { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 8px; }
+.saving-amt { font-family: 'Barlow Condensed', sans-serif; font-size: 38px; font-weight: 800; color: var(--green-2); line-height: 1; margin-bottom: 4px; }
 .saving:last-child .saving-amt { color: var(--gold-2); font-size: 44px; }
-.saving-period {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  color: var(--green-dim); letter-spacing: 1px; margin-bottom: 12px;
-}
+.saving-period { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--green-dim); letter-spacing: 1px; margin-bottom: 12px; }
 .saving:last-child .saving-period { color: var(--gold-dim); }
-.saving-basis {
-  font-size: 10px; color: var(--muted-2); line-height: 1.7;
-  border-top: 1px solid var(--border-2); padding-top: 10px;
-}
+.saving-basis { font-size: 10px; color: var(--muted-2); line-height: 1.7; border-top: 1px solid var(--border-2); padding-top: 10px; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   CRITICAL PATH
-════════════════════════════════════════════════════════════════════════════ */
-
-.crit-item {
-  display: grid; grid-template-columns: 40px 1fr auto;
-  align-items: start; gap: 14px; padding: 12px 0;
-  border-bottom: 1px solid var(--border-2);
-}
-.crit-n {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 32px; font-weight: 800; color: rgba(201,168,76,0.2); line-height: 1;
-}
+/* CRITICAL PATH */
+.crit-item { display: grid; grid-template-columns: 40px 1fr auto; align-items: start; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border-2); }
+.crit-n { font-family: 'Barlow Condensed', sans-serif; font-size: 32px; font-weight: 800; color: rgba(201,168,76,0.2); line-height: 1; }
 .crit-title { font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--cream); margin-bottom: 4px; }
 .crit-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
 .crit-tag { font-family: 'DM Mono', monospace; font-size: 10px; white-space: nowrap; }
@@ -568,15 +273,8 @@ body::after {
 .p2 { color: var(--gold-2); }
 .p3 { color: #88AAFF; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   CONTACTS
-════════════════════════════════════════════════════════════════════════════ */
-
-.contact-row {
-  display: grid; grid-template-columns: 36px 150px 80px 80px 1fr;
-  align-items: center; gap: 14px; padding: 8px 0;
-  border-bottom: 1px solid var(--border-2); font-size: 12px;
-}
+/* CONTACTS */
+.contact-row { display: grid; grid-template-columns: 36px 150px 80px 80px 1fr; align-items: center; gap: 14px; padding: 8px 0; border-bottom: 1px solid var(--border-2); font-size: 12px; }
 .contact-rank { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold-dim); }
 .contact-co { color: var(--cream); font-weight: 600; font-family: 'Barlow Condensed', sans-serif; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase; }
 .risk-val { font-family: 'DM Mono', monospace; font-size: 10px; text-align: center; }
@@ -585,61 +283,24 @@ body::after {
 .high   { color: var(--red-2); }
 .vet-tag { font-size: 10px; color: rgba(201,168,76,0.65); font-style: italic; }
 .contact-person { font-size: 11px; color: var(--muted); }
-.ipoa-warn {
-  margin-top: 12px; padding: 10px 14px;
-  background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3);
-  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red-2);
-  letter-spacing: 1px;
-}
+.ipoa-warn { margin-top: 12px; padding: 10px 14px; background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3); font-family: 'DM Mono', monospace; font-size: 10px; color: var(--red-2); letter-spacing: 1px; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   PROPOSAL BANNER
-════════════════════════════════════════════════════════════════════════════ */
-
-.proposal {
-  background: linear-gradient(120deg, rgba(15,30,61,0.95) 0%, rgba(30,64,128,0.4) 100%);
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--gold-2);
-  padding: 36px 40px; text-align: center; position: relative; overflow: hidden;
-}
-.proposal::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-2), transparent);
-}
-.proposal-kicker {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
-}
-.proposal-text {
-  font-family: 'Crimson Pro', serif; font-size: 26px; font-weight: 600;
-  color: var(--cream-2); line-height: 1.4; max-width: 720px; margin: 0 auto 14px;
-}
+/* PROPOSAL */
+.proposal { background: linear-gradient(120deg, rgba(15,30,61,0.95) 0%, rgba(30,64,128,0.4) 100%); border: 1px solid var(--border); border-left: 5px solid var(--gold-2); padding: 36px 40px; text-align: center; position: relative; overflow: hidden; }
+.proposal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-2), transparent); }
+.proposal-kicker { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 14px; }
+.proposal-text { font-family: 'Crimson Pro', serif; font-size: 26px; font-weight: 600; color: var(--cream-2); line-height: 1.4; max-width: 720px; margin: 0 auto 14px; }
 .proposal-sub { font-size: 13px; color: var(--muted); font-style: italic; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   VISITOR NOTICE
-════════════════════════════════════════════════════════════════════════════ */
-
-.visitor-notice {
-  display: flex; align-items: center; gap: 14px;
-  background: rgba(30,64,128,0.25); border: 1px solid var(--border);
-  border-left: 3px solid var(--gold); padding: 14px 20px; margin-bottom: 20px;
-}
+/* VISITOR NOTICE */
+.visitor-notice { display: flex; align-items: center; gap: 14px; background: rgba(30,64,128,0.25); border: 1px solid var(--border); border-left: 3px solid var(--gold); padding: 14px 20px; margin-bottom: 20px; }
 .visitor-notice-icon { font-size: 22px; flex-shrink: 0; }
 .visitor-notice-text { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .visitor-notice-text strong { color: var(--gold-2); }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   ADMIN PANEL
-════════════════════════════════════════════════════════════════════════════ */
-
+/* ADMIN */
 #adminPanel { display: none; margin-bottom: 20px; }
-.admin-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px;
-  background: rgba(100,20,20,0.35); border: 1px solid rgba(192,57,43,0.4);
-  border-left: 4px solid var(--red-2);
-}
+.admin-bar { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: rgba(100,20,20,0.35); border: 1px solid rgba(192,57,43,0.4); border-left: 4px solid var(--red-2); }
 .admin-lbl { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; color: #FF8080; text-transform: uppercase; margin-bottom: 3px; }
 .admin-note { font-size: 11px; color: var(--muted); font-style: italic; }
 .toggle-sw { display: flex; align-items: center; gap: 14px; cursor: pointer; flex-shrink: 0; }
@@ -650,16 +311,9 @@ body::after {
 .toggle-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--red-2); position: absolute; top: 2px; left: 3px; transition: all 0.3s; }
 .toggle-track.on .toggle-thumb { left: 32px; background: var(--green-2); }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   FILE GRID
-════════════════════════════════════════════════════════════════════════════ */
-
+/* FILES */
 .files { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
-.file-item {
-  background: rgba(15,30,61,0.5); border: 1px solid var(--border-2);
-  padding: 12px 14px; display: flex; align-items: center; gap: 10px;
-  text-decoration: none; transition: border-color 0.2s, background 0.2s; cursor: default;
-}
+.file-item { background: rgba(15,30,61,0.5); border: 1px solid var(--border-2); padding: 12px 14px; display: flex; align-items: center; gap: 10px; text-decoration: none; transition: border-color 0.2s, background 0.2s; cursor: default; }
 .file-item:hover { border-color: var(--border); background: rgba(30,50,100,0.4); }
 .file-icon { font-size: 20px; flex-shrink: 0; }
 .file-info { flex: 1; min-width: 0; }
@@ -672,31 +326,78 @@ body.downloads-on .dl-on  { display: flex; }
 body.downloads-on .dl-off { display: none; }
 body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   FOOTER
-════════════════════════════════════════════════════════════════════════════ */
+/* ORACLE DOWNLOAD TILES */
+.oracle-dl-row { display: flex; justify-content: center; align-items: stretch; gap: 32px; margin-bottom: 40px; padding: 0 40px; }
+.oracle-dl-tile { background: rgba(201,168,76,0.10); border: 1px solid rgba(201,168,76,0.32); border-top: 3px solid var(--gold); padding: 24px 28px; display: flex; align-items: center; gap: 18px; text-decoration: none; transition: background 0.25s, border-color 0.25s, transform 0.15s; flex: 0 1 500px; cursor: pointer; }
+.oracle-dl-tile:hover { background: rgba(201,168,76,0.17); border-color: rgba(201,168,76,0.55); transform: translateY(-2px); }
+.oracle-dl-icon { font-size: 38px; flex-shrink: 0; }
+.oracle-dl-info { flex: 1; min-width: 0; }
+.oracle-dl-kicker { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; color: var(--gold-dim); text-transform: uppercase; margin-bottom: 6px; }
+.oracle-dl-title { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gold-2); margin-bottom: 4px; line-height: 1.2; }
+.oracle-dl-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+.oracle-dl-badge { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; padding: 5px 12px; border: 1px solid rgba(201,168,76,0.35); color: var(--gold-2); background: rgba(201,168,76,0.08); flex-shrink: 0; white-space: nowrap; align-self: center; }
 
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 0;
-  margin-top: 60px;
-  display: flex; justify-content: space-between; align-items: center;
+/* SENATE MILESTONE BANNER */
+.milestone-banner {
+  background: linear-gradient(120deg, rgba(39,174,96,0.15) 0%, rgba(15,30,61,0.9) 60%);
+  border: 1px solid rgba(39,174,96,0.4);
+  border-left: 5px solid var(--green-2);
+  padding: 24px 32px; margin-bottom: 48px; position: relative; overflow: hidden;
 }
-.footer-left {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 20px; font-weight: 700; letter-spacing: 4px;
-  color: var(--gold-dim); text-transform: uppercase;
-  cursor: default; user-select: none;
+.milestone-banner::after {
+  content: '✓'; position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
+  font-size: 120px; color: rgba(46,204,113,0.06); pointer-events: none; line-height: 1;
 }
-.footer-right {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  color: var(--muted-2); text-align: right; line-height: 2;
-}
+.milestone-kicker { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 4px; color: var(--green-2); margin-bottom: 8px; }
+.milestone-headline { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--cream-2); margin-bottom: 10px; }
+.milestone-text { font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 860px; }
+.milestone-text strong { color: var(--gold-2); }
 
-/* ════════════════════════════════════════════════════════════════════════════
-   RESPONSIVE
-════════════════════════════════════════════════════════════════════════════ */
+/* CHAT */
+.sentinel-chat-section { margin-bottom: 48px; }
+.chat-container { background: var(--navy); border: 1px solid var(--border); border-top: 3px solid var(--gold); position: relative; overflow: hidden; }
+.chat-container::before { content: "ADVOCATE"; position: absolute; right: -8px; bottom: -20px; font-family: "Barlow Condensed", sans-serif; font-size: 110px; font-weight: 900; color: rgba(201,168,76,0.04); pointer-events: none; line-height: 1; }
+.chat-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 14px; }
+.chat-header-indicator { width: 8px; height: 8px; border-radius: 50%; background: var(--green-2); box-shadow: 0 0 8px var(--green-2); animation: pulse-dot 2s infinite; flex-shrink: 0; }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+.chat-header-title { font-family: "Barlow Condensed", sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--cream-2); }
+.chat-header-sub { font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: 2px; color: var(--gold-dim); text-transform: uppercase; margin-left: auto; }
+.chat-messages { height: 380px; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 14px; scroll-behavior: smooth; }
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+.chat-msg { display: flex; flex-direction: column; gap: 4px; max-width: 85%; }
+.chat-msg.user { align-self: flex-end; align-items: flex-end; }
+.chat-msg.assistant { align-self: flex-start; align-items: flex-start; }
+.chat-msg-label { font-family: "DM Mono", monospace; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; }
+.chat-msg.user .chat-msg-label { color: var(--gold-dim); }
+.chat-msg.assistant .chat-msg-label { color: var(--green-dim); }
+.chat-msg-bubble { padding: 10px 14px; font-size: 13px; line-height: 1.7; }
+.chat-msg.user .chat-msg-bubble { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); color: var(--cream-2); }
+.chat-msg.assistant .chat-msg-bubble { background: rgba(15,30,61,0.8); border: 1px solid var(--border-2); border-left: 2px solid var(--green-2); color: var(--cream); }
+.chat-typing { display: none; margin: 0 24px; padding: 10px 14px; background: rgba(15,30,61,0.8); border: 1px solid var(--border-2); border-left: 2px solid var(--green-2); align-self: flex-start; }
+.chat-typing.visible { display: flex; gap: 5px; align-items: center; }
+.typing-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green-2); opacity: 0.4; animation: typing-bounce 1.2s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
+.chat-input-row { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: stretch; }
+.chat-input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: var(--cream); font-family: "Crimson Pro", serif; font-size: 14px; padding: 10px 14px; outline: none; resize: none; transition: border-color 0.2s; }
+.chat-input:focus { border-color: var(--gold-dim); }
+.chat-input::placeholder { color: var(--muted-2); font-style: italic; }
+.chat-send { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35); color: var(--gold-2); font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 10px 20px; cursor: pointer; transition: background 0.2s, border-color 0.2s; white-space: nowrap; }
+.chat-send:hover:not(:disabled) { background: rgba(201,168,76,0.25); border-color: rgba(201,168,76,0.6); }
+.chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+.chat-suggested { padding: 0 24px 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+.chat-chip { font-family: "DM Mono", monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 5px 12px; cursor: pointer; background: rgba(15,30,61,0.6); border: 1px solid var(--border-2); color: var(--muted); transition: all 0.2s; }
+.chat-chip:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.3); color: var(--gold-2); }
 
+/* FOOTER */
+.footer { border-top: 1px solid var(--border); padding: 28px 0; margin-top: 60px; display: flex; justify-content: space-between; align-items: center; }
+.footer-left { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: 4px; color: var(--gold-dim); text-transform: uppercase; cursor: default; user-select: none; }
+.footer-right { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted-2); text-align: right; line-height: 2; }
+
+/* RESPONSIVE */
 @media (max-width:1200px) {
   .stats  { grid-template-columns: repeat(2,1fr); }
   .algos  { grid-template-columns: repeat(2,1fr); }
@@ -711,6 +412,8 @@ body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
   .files   { grid-template-columns: repeat(2,1fr); }
   .hdr     { grid-template-columns: 1fr; }
   .contact-row { grid-template-columns: 36px 1fr 1fr; }
+  .oracle-dl-row { flex-direction: column; align-items: center; padding: 0; }
+  .oracle-dl-tile { flex: none; width: 100%; }
 }
 @media (max-width:600px) {
   .stats  { grid-template-columns: 1fr; }
@@ -719,380 +422,150 @@ body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
   .files  { grid-template-columns: 1fr; }
   .savings { grid-template-columns: 1fr; }
 }
-
-
-/* ── ORACLE DOWNLOAD TILES ── */
-.oracle-dl-row {
-  display: flex; justify-content: center; align-items: stretch;
-  gap: 32px; margin-bottom: 40px; padding: 0 40px;
-}
-.oracle-dl-tile {
-  background: rgba(201,168,76,0.10);
-  border: 1px solid rgba(201,168,76,0.32);
-  border-top: 3px solid var(--gold);
-  padding: 24px 28px; display: flex; align-items: center; gap: 18px;
-  text-decoration: none; transition: background 0.25s, border-color 0.25s, transform 0.15s;
-  flex: 0 1 500px; cursor: pointer;
-}
-.oracle-dl-tile:hover {
-  background: rgba(201,168,76,0.17);
-  border-color: rgba(201,168,76,0.55);
-  transform: translateY(-2px);
-}
-.oracle-dl-icon { font-size: 38px; flex-shrink: 0; }
-.oracle-dl-info { flex: 1; min-width: 0; }
-.oracle-dl-kicker {
-  font-family: 'DM Mono', monospace; font-size: 9px;
-  letter-spacing: 3px; color: var(--gold-dim);
-  text-transform: uppercase; margin-bottom: 6px;
-}
-.oracle-dl-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px; font-weight: 700; letter-spacing: 0.5px;
-  text-transform: uppercase; color: var(--gold-2);
-  margin-bottom: 4px; line-height: 1.2;
-}
-.oracle-dl-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
-.oracle-dl-badge {
-  font-family: 'DM Mono', monospace; font-size: 10px;
-  letter-spacing: 1px; padding: 5px 12px;
-  border: 1px solid rgba(201,168,76,0.35);
-  color: var(--gold-2); background: rgba(201,168,76,0.08);
-  flex-shrink: 0; white-space: nowrap; align-self: center;
-}
-@media (max-width: 900px) {
-  .oracle-dl-row { flex-direction: column; align-items: center; padding: 0; }
-  .oracle-dl-tile { flex: none; width: 100%; }
-}
-
-
-/* ════════════════════════════════════════════════════════════════════════════
-   SENTINEL ADVOCATE — LIVE AI CHAT WIDGET
-════════════════════════════════════════════════════════════════════════════ */
-
-.sentinel-chat-section { margin-bottom: 48px; }
-
-.chat-container {
-  background: var(--navy);
-  border: 1px solid var(--border);
-  border-top: 3px solid var(--gold);
-  position: relative; overflow: hidden;
-}
-
-.chat-container::before {
-  content: "ADVOCATE";
-  position: absolute; right: -8px; bottom: -20px;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 110px; font-weight: 900;
-  color: rgba(201,168,76,0.04); pointer-events: none; line-height: 1;
-}
-
-.chat-header {
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 14px;
-}
-
-.chat-header-indicator {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--green-2);
-  box-shadow: 0 0 8px var(--green-2);
-  animation: pulse-dot 2s infinite;
-  flex-shrink: 0;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.chat-header-title {
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 20px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; color: var(--cream-2);
-}
-
-.chat-header-sub {
-  font-family: "DM Mono", monospace;
-  font-size: 9px; letter-spacing: 2px;
-  color: var(--gold-dim); text-transform: uppercase;
-  margin-left: auto;
-}
-
-.chat-messages {
-  height: 380px; overflow-y: auto;
-  padding: 20px 24px;
-  display: flex; flex-direction: column; gap: 14px;
-  scroll-behavior: smooth;
-}
-
-.chat-messages::-webkit-scrollbar { width: 4px; }
-.chat-messages::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); }
-.chat-messages::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
-
-.chat-msg {
-  display: flex; flex-direction: column; gap: 4px;
-  max-width: 85%;
-}
-
-.chat-msg.user { align-self: flex-end; align-items: flex-end; }
-.chat-msg.assistant { align-self: flex-start; align-items: flex-start; }
-
-.chat-msg-label {
-  font-family: "DM Mono", monospace;
-  font-size: 8px; letter-spacing: 2px; text-transform: uppercase;
-}
-
-.chat-msg.user .chat-msg-label { color: var(--gold-dim); }
-.chat-msg.assistant .chat-msg-label { color: var(--green-dim); }
-
-.chat-msg-bubble {
-  padding: 10px 14px;
-  font-size: 13px; line-height: 1.7;
-}
-
-.chat-msg.user .chat-msg-bubble {
-  background: rgba(201,168,76,0.1);
-  border: 1px solid rgba(201,168,76,0.2);
-  color: var(--cream-2);
-}
-
-.chat-msg.assistant .chat-msg-bubble {
-  background: rgba(15,30,61,0.8);
-  border: 1px solid var(--border-2);
-  border-left: 2px solid var(--green-2);
-  color: var(--cream);
-}
-
-.chat-typing {
-  display: none; margin: 0 24px;
-  padding: 10px 14px;
-  background: rgba(15,30,61,0.8);
-  border: 1px solid var(--border-2);
-  border-left: 2px solid var(--green-2);
-  align-self: flex-start;
-}
-
-.chat-typing.visible { display: flex; gap: 5px; align-items: center; }
-
-.typing-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: var(--green-2); opacity: 0.4;
-  animation: typing-bounce 1.2s infinite;
-}
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes typing-bounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-  30% { transform: translateY(-5px); opacity: 1; }
-}
-
-.chat-input-row {
-  padding: 16px 24px;
-  border-top: 1px solid var(--border);
-  display: flex; gap: 10px; align-items: stretch;
-}
-
-.chat-input {
-  flex: 1;
-  background: rgba(0,0,0,0.3);
-  border: 1px solid var(--border);
-  color: var(--cream); font-family: "Crimson Pro", serif;
-  font-size: 14px; padding: 10px 14px;
-  outline: none; resize: none;
-  transition: border-color 0.2s;
-}
-
-.chat-input:focus { border-color: var(--gold-dim); }
-.chat-input::placeholder { color: var(--muted-2); font-style: italic; }
-
-.chat-send {
-  background: rgba(201,168,76,0.15);
-  border: 1px solid rgba(201,168,76,0.35);
-  color: var(--gold-2);
-  font-family: "DM Mono", monospace;
-  font-size: 10px; letter-spacing: 2px;
-  text-transform: uppercase;
-  padding: 10px 20px; cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-
-.chat-send:hover:not(:disabled) {
-  background: rgba(201,168,76,0.25);
-  border-color: rgba(201,168,76,0.6);
-}
-
-.chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.chat-suggested {
-  padding: 0 24px 16px;
-  display: flex; flex-wrap: wrap; gap: 8px;
-}
-
-.chat-chip {
-  font-family: "DM Mono", monospace;
-  font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
-  padding: 5px 12px; cursor: pointer;
-  background: rgba(15,30,61,0.6);
-  border: 1px solid var(--border-2);
-  color: var(--muted);
-  transition: all 0.2s;
-}
-
-.chat-chip:hover {
-  background: rgba(201,168,76,0.08);
-  border-color: rgba(201,168,76,0.3);
-  color: var(--gold-2);
-}
-
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<!-- ═══════════════════════════════════════════════════════════════ HEADER -->
+<!-- HEADER -->
 <div class="hdr">
   <div>
-    <div class="hdr-kicker">CLASSIFIED WORKING DOCUMENT &nbsp;·&nbsp; PRIVILEGED AND CONFIDENTIAL</div>
-    <div class="hdr-h1">VAHGMA <em>2026</em></div>
-    <div class="hdr-sub">Veterans Automobile and Healthcare Governance Modernization Act &nbsp;·&nbsp; SENTINEL Command Center</div>
+    <div class="hdr-kicker">WORKING DOCUMENT &nbsp;&middot;&nbsp; PRIVILEGED AND CONFIDENTIAL</div>
+    <div class="hdr-h1">VFCAA <em>2026</em></div>
+    <div class="hdr-sub">Veterans and Families Care Accountability Act &nbsp;&middot;&nbsp; SENTINEL Command Center</div>
   </div>
   <div>
     <div class="hdr-meta">
-      Sean Robinson &nbsp;·&nbsp; SK1(SS/SW/AW), USN Retired<br>
+      Sean Robinson &nbsp;&middot;&nbsp; SK1(SS/SW/AW), USN Retired<br>
       Founder, Valiant Heroes Organization<br>
       sean&#64;valiantheroes.org<br>
-      March 28, 2026
+      April 6, 2026
     </div>
-    <div class="hdr-badge">&#9679; ALL 21 AMENDMENTS COMPLETE &nbsp;·&nbsp; 685 PARAGRAPHS</div>
+    <div class="hdr-badge">&#9679; ALL 21 AMENDMENTS COMPLETE &nbsp;&middot;&nbsp; COMMITTEE REFERRAL CONFIRMED</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ VITAL STATS -->
+<!-- SENATE MILESTONE BANNER -->
+<div class="milestone-banner">
+  <div class="milestone-kicker">APRIL 6, 2026 &nbsp;&middot;&nbsp; SENATE REFERRAL CONFIRMED</div>
+  <div class="milestone-headline">Rachel Miller &mdash; Senator Kelly&rsquo;s Office &mdash; VFCAA Going to Committee</div>
+  <div class="milestone-text">
+    Following the April 6 Teams meeting, Rachel Miller of Senator Kelly&rsquo;s legislation team confirmed she is bringing the <strong>Veterans and Families Care Accountability Act (VFCAA)</strong> and <strong>Veterans SENTINEL</strong> back to her team for presentation to the Senate Committee. Copyright protections are filed. The bill is complete. The technology is built. The next step is enterprise-level cost estimates for SENTINEL at national deployment scale &mdash; data required to finalize the legislative bill.
+  </div>
+</div>
+
+<!-- VITAL STATS -->
 <div class="label mb20">VITAL STATISTICS</div>
 <div class="stats mb48">
   <div class="stat" data-n="686">
     <div class="stat-lbl">Bill Paragraphs</div>
     <div class="stat-val gold">685</div>
-    <div class="stat-desc">All validations passed &nbsp;·&nbsp; 19 sections + Sec. 19</div>
+    <div class="stat-desc">All validations passed &nbsp;&middot;&nbsp; 16 sections complete</div>
   </div>
   <div class="stat" data-n="22">
     <div class="stat-lbl">Amendments Inserted</div>
     <div class="stat-val green">21</div>
-    <div class="stat-desc">All three attack streams closed &nbsp;·&nbsp; Inaction as Decision enacted</div>
+    <div class="stat-desc">All three attack streams closed &nbsp;&middot;&nbsp; Inaction as Decision enacted</div>
   </div>
   <div class="stat" data-n="2834">
     <div class="stat-lbl">Source Code Lines</div>
     <div class="stat-val gold">2,834</div>
-    <div class="stat-desc">Python &nbsp;·&nbsp; 6 files &nbsp;·&nbsp; Demo confirmed running</div>
+    <div class="stat-desc">Python &nbsp;&middot;&nbsp; 6 files &nbsp;&middot;&nbsp; Demo confirmed running</div>
   </div>
-  <div class="stat" data-n="10">
-    <div class="stat-lbl">Days to Rachel Miller</div>
-    <div class="stat-val red">9</div>
-    <div class="stat-desc">April 6 &nbsp;·&nbsp; Teams &nbsp;·&nbsp; 2PM ET / 11AM AZ &nbsp;·&nbsp; Senator Kelly's Office</div>
+  <div class="stat" data-n="">
+    <div class="stat-lbl">Senate Meeting</div>
+    <div class="stat-val green" style="font-size:36px;line-height:1.1;">COMPLETE</div>
+    <div class="stat-desc">April 6 &nbsp;&middot;&nbsp; Rachel Miller &nbsp;&middot;&nbsp; Committee Referral Confirmed</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════ THREE STREAMS -->
-<div class="label mb20">THREE ATTACK STREAMS &nbsp;·&nbsp; EVERY KNOWN MECHANISM TO KILL THIS BILL</div>
+<!-- THREE STREAMS -->
+<div class="label mb20">THREE ATTACK STREAMS &nbsp;&middot;&nbsp; EVERY KNOWN MECHANISM TO KILL THIS BILL</div>
 <div class="streams mb48">
-
   <div class="stream ip">
     <div class="stream-hd">Stream 1 &mdash; IP Theft</div>
-    <div class="stream-sub">TITLE 28 · TITLE 35 · TITLE 15 · TITLE 10 · TITLE 17</div>
-    <div class="stream-item done">FAR 52.227-14 — unlimited rights claim on architecture</div>
-    <div class="stream-item done">FAR 52.227-17 — special works unlimited rights</div>
-    <div class="stream-item done">28 USC 1498 — strips injunctive relief</div>
+    <div class="stream-sub">TITLE 28 &middot; TITLE 35 &middot; TITLE 15 &middot; TITLE 10 &middot; TITLE 17</div>
+    <div class="stream-item done">FAR 52.227-14 &mdash; unlimited rights claim on architecture</div>
+    <div class="stream-item done">FAR 52.227-17 &mdash; special works unlimited rights</div>
+    <div class="stream-item done">28 USC 1498 &mdash; strips injunctive relief</div>
     <div class="stream-item done">Bayh-Dole improvement patents create tollgates</div>
-    <div class="stream-item done">OTA — bypasses all FAR IP protections</div>
-    <div class="stream-item done">CRADA — invisible data access agreements</div>
-    <div class="stream-item done">FACA — competitor pre-decisional access</div>
-    <div class="stream-item done">DPA — emergency architecture disclosure</div>
-    <div class="stream-item done">Work for hire — vendor claims implementation</div>
-    <div class="stream-item done">Data absorption — 10 years AI training theft</div>
-    <div class="stream-item done">Air-gap violation — commercial team overlap</div>
-    <div class="stream-verdict">Closed by: FAR Alt III designation · 28 USC 1498 exclusion · Bayh-Dole license-back · OTA prohibition · CRADA prohibition · FACA prohibition · DPA preemption · Work for hire clarification · Criminal data prohibition (18 USC 1030/1905/1836) · Air-gapped engineering mandate</div>
+    <div class="stream-item done">OTA &mdash; bypasses all FAR IP protections</div>
+    <div class="stream-item done">CRADA &mdash; invisible data access agreements</div>
+    <div class="stream-item done">FACA &mdash; competitor pre-decisional access</div>
+    <div class="stream-item done">DPA &mdash; emergency architecture disclosure</div>
+    <div class="stream-item done">Work for hire &mdash; vendor claims implementation</div>
+    <div class="stream-item done">Data absorption &mdash; 10 years AI training theft</div>
+    <div class="stream-item done">Air-gap violation &mdash; commercial team overlap</div>
+    <div class="stream-verdict">Closed by: FAR Alt III designation &middot; 28 USC 1498 exclusion &middot; Bayh-Dole license-back &middot; OTA prohibition &middot; CRADA prohibition &middot; FACA prohibition &middot; DPA preemption &middot; Work for hire clarification &middot; Criminal data prohibition (18 USC 1030/1905/1836) &middot; Air-gapped engineering mandate</div>
   </div>
-
   <div class="stream fund">
     <div class="stream-hd">Stream 2 &mdash; Fund Movement</div>
-    <div class="stream-sub">TITLE 2 · TITLE 31 · TITLE 38 · OMB CIRCULAR A-11</div>
+    <div class="stream-sub">TITLE 2 &middot; TITLE 31 &middot; TITLE 38 &middot; OMB CIRCULAR A-11</div>
     <div class="stream-item done">OMB apportionment slow-walk</div>
     <div class="stream-item done">Restrictive footnotes conditioning fund release</div>
     <div class="stream-item done">Pocket rescissions via A-11 revision</div>
     <div class="stream-item done">Transfer/reprogramming to starve SENTINEL</div>
     <div class="stream-item done">Authorization-appropriations split</div>
-    <div class="stream-item done">Discretionary designation — annual hostage</div>
-    <div class="stream-item done">TMF — GSA financial oversight hook</div>
+    <div class="stream-item done">Discretionary designation &mdash; annual hostage</div>
+    <div class="stream-item done">TMF &mdash; GSA financial oversight hook</div>
     <div class="stream-item done">GAO opinions declared non-binding</div>
-    <div class="stream-verdict">Closed by: Mandatory 30-day apportionment · Comptroller General civil action (2 USC 687) · Transfer prohibition · SENTINEL as mandatory spending under 38 USC 1729A · Appropriations rider void without express amendment · TMF prohibited</div>
+    <div class="stream-verdict">Closed by: Mandatory 30-day apportionment &middot; Comptroller General civil action (2 USC 687) &middot; Transfer prohibition &middot; SENTINEL as mandatory spending under 38 USC 1729A &middot; Appropriations rider void without express amendment &middot; TMF prohibited</div>
   </div>
-
   <div class="stream legis">
     <div class="stream-hd">Stream 3 &mdash; Legislative Deflection</div>
-    <div class="stream-sub">SENATE RULES · TITLE 2 · SHADOW OPERATIONS</div>
-    <div class="stream-item done">Secret Senate hold — 1 senator, no public record</div>
-    <div class="stream-item done">Tag-team holds — infinite anonymous rotation</div>
-    <div class="stream-item done">Appropriations rider — 1 buried sentence kills law</div>
-    <div class="stream-item done">Shadow lobbying — below 20% LDA threshold</div>
-    <div class="stream-item done">Grassroots astroturf — 501(c)(4) campaigns</div>
-    <div class="stream-item done">Revolving door — former VA officials as lobbyists</div>
-    <div class="stream-item done">CISA BOD — future directive modifies architecture</div>
+    <div class="stream-sub">SENATE RULES &middot; TITLE 2 &middot; SHADOW OPERATIONS</div>
+    <div class="stream-item done">Secret Senate hold &mdash; 1 senator, no public record</div>
+    <div class="stream-item done">Tag-team holds &mdash; infinite anonymous rotation</div>
+    <div class="stream-item done">Appropriations rider &mdash; 1 buried sentence kills law</div>
+    <div class="stream-item done">Shadow lobbying &mdash; below 20% LDA threshold</div>
+    <div class="stream-item done">Grassroots astroturf &mdash; 501(c)(4) campaigns</div>
+    <div class="stream-item done">Revolving door &mdash; former VA officials as lobbyists</div>
+    <div class="stream-item done">CISA BOD &mdash; future directive modifies architecture</div>
     <div class="stream-item done">Congressional notification failure by Secretary</div>
-    <div class="stream-verdict">Closed by: Mandatory spending = hold cannot kill it · Appropriations rider void without express section amendment · CISA BOD preemption · SENTINEL self-notifies Committees if Secretary fails · Inaction treated as a decision with permanent audit record</div>
+    <div class="stream-verdict">Closed by: Mandatory spending = hold cannot kill it &middot; Appropriations rider void without express section amendment &middot; CISA BOD preemption &middot; SENTINEL self-notifies Committees if Secretary fails &middot; Inaction treated as a decision with permanent audit record</div>
   </div>
-
 </div>
 
-<!-- ═══════════════════════════════════════════════════ ALL 21 AMENDMENTS -->
-<div class="label mb20">ALL 21 AMENDMENTS &nbsp;·&nbsp; COMPLETE STATUS</div>
+<!-- ALL 21 AMENDMENTS -->
+<div class="label mb20">ALL 21 AMENDMENTS &nbsp;&middot;&nbsp; COMPLETE STATUS</div>
 <div class="amend-wrap mb48">
 <table class="amend-tbl">
-<thead>
-  <tr>
-    <th>#</th><th>Amendment</th><th>Stream</th><th>Statute</th><th>Location</th><th>Status</th>
-  </tr>
-</thead>
+<thead><tr><th>#</th><th>Amendment</th><th>Stream</th><th>Statute</th><th>Location</th><th>Status</th></tr></thead>
 <tbody>
-  <tr><td class="amend-num">A-1</td><td>FAR 52.227-14 Alternate III Restricted Software Designation</td><td><span class="badge ip">IP</span></td><td>48 CFR 52.227-14</td><td>Sec. 12, Part B, (b)(7)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-2</td><td>FAR 52.227-17 Special Works Exclusion</td><td><span class="badge ip">IP</span></td><td>48 CFR 52.227-17</td><td>Sec. 12, Part B, (b)(7)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-3</td><td>28 USC 1498 Authorization and Consent Clause Exclusion — Injunctive Relief Preserved</td><td><span class="badge ip">IP</span></td><td>28 USC 1498</td><td>Sec. 12, Part B, (b)(8)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-4</td><td>Bayh-Dole Mandatory License-Back on Improvement Patents</td><td><span class="badge ip">IP</span></td><td>35 USC 200–212</td><td>Sec. 12, Part B, (b)(9)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-5</td><td>CRADA Prohibition — VSOC Authorization Required</td><td><span class="badge ip">IP</span></td><td>15 USC 3710a</td><td>Sec. 12, Part B, (b)(10)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-6</td><td>OTA Prohibition — FAR-Only Acquisition Mandate</td><td><span class="badge ip">IP</span></td><td>10 USC 4021/4022</td><td>Sec. 12, Part B, (b)(11)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-7</td><td>FITARA CIO — Ministerial Certification Only (30-Day Deadline)</td><td><span class="badge ip">IP</span></td><td>40 USC 11315</td><td>Sec. 12, Part B, (b)(12)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-8</td><td>CICA Competition Challenge Preemption — Statutory Authorization</td><td><span class="badge ip">IP</span></td><td>41 USC 3301(a)</td><td>Sec. 12, Part B, (b)(13)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-9</td><td>Section 508 Accessibility — Mandatory Contract Requirement</td><td><span class="badge ip">IP</span></td><td>29 USC 794d</td><td>Sec. 12, Part B, (b)(14)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-10</td><td>FACA Advisory Committee Prohibition — No Competitor Access</td><td><span class="badge ip">IP</span></td><td>5 USC Ch. 10</td><td>Sec. 12, Part I, (i)(1)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-11</td><td>Defense Production Act Preemption — No Emergency Compelled Disclosure</td><td><span class="badge ip">IP</span></td><td>50 USC 4511/4533</td><td>Sec. 12, Part I, (i)(2)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-12</td><td>Work Made for Hire — Vendor Implementation = US Government Property</td><td><span class="badge ip">IP</span></td><td>17 USC 101</td><td>Sec. 12, Part I, (i)(3)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-13</td><td>SENTINEL Data Commercial Use — Permanent Prohibition + Criminal Penalties</td><td><span class="badge ip">IP</span></td><td>18 USC 1030/1905/1836</td><td>Sec. 12, Part I, (i)(4)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-14</td><td>Air-Gapped Engineering Team — CEO/CLO Certification + OIG Verification</td><td><span class="badge ip">IP</span></td><td>Contract/Statutory</td><td>Sec. 12, Part I, (i)(5)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-15</td><td>OMB Apportionment — Mandatory 30-Day + Restrictive Footnotes Void + CG Civil Action</td><td><span class="badge fund">FUND</span></td><td>2 USC 687; 31 USC 1341</td><td>Sec. 19, (f)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-16</td><td>Transfer and Reprogramming Prohibition — VSOC Annual Certification</td><td><span class="badge fund">FUND</span></td><td>Appropriations Law</td><td>Sec. 19, (g)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-17</td><td>SENTINEL = Mandatory Spending (38 USC 1729A) — Not Subject to Annual Appropriations</td><td><span class="badge fund">FUND</span></td><td>38 USC 1729A; 2 USC 901</td><td>Sec. 19, (h)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-18</td><td>CISA Binding Operational Directive Preemption</td><td><span class="badge legis">LEGIS</span></td><td>44 USC 3553(b)(2)</td><td>Sec. 19, (i)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-19</td><td>Appropriations Rider Prohibition — Express Amendment Required</td><td><span class="badge legis">LEGIS</span></td><td>Structural/A-17</td><td>Sec. 19, (h)(C)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-20</td><td>Congressional Notification Tripwires — 24-Hour Mandatory Secretary Notification</td><td><span class="badge legis">LEGIS</span></td><td>Statutory</td><td>Sec. 19, (j)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
-  <tr><td class="amend-num">A-21</td><td>Inaction as Decision — Mandatory Audit Trail Treatment of Non-Performance</td><td><span class="badge legis">LEGIS</span></td><td>Structural</td><td>Sec. 19, (k)</td><td><span class="badge done">✓ IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-1</td><td>FAR 52.227-14 Alternate III Restricted Software Designation</td><td><span class="badge ip">IP</span></td><td>48 CFR 52.227-14</td><td>Sec. 12, Part B, (b)(7)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-2</td><td>FAR 52.227-17 Special Works Exclusion</td><td><span class="badge ip">IP</span></td><td>48 CFR 52.227-17</td><td>Sec. 12, Part B, (b)(7)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-3</td><td>28 USC 1498 Authorization and Consent Clause Exclusion &mdash; Injunctive Relief Preserved</td><td><span class="badge ip">IP</span></td><td>28 USC 1498</td><td>Sec. 12, Part B, (b)(8)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-4</td><td>Bayh-Dole Mandatory License-Back on Improvement Patents</td><td><span class="badge ip">IP</span></td><td>35 USC 200&ndash;212</td><td>Sec. 12, Part B, (b)(9)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-5</td><td>CRADA Prohibition &mdash; VSOC Authorization Required</td><td><span class="badge ip">IP</span></td><td>15 USC 3710a</td><td>Sec. 12, Part B, (b)(10)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-6</td><td>OTA Prohibition &mdash; FAR-Only Acquisition Mandate</td><td><span class="badge ip">IP</span></td><td>10 USC 4021/4022</td><td>Sec. 12, Part B, (b)(11)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-7</td><td>FITARA CIO &mdash; Ministerial Certification Only (30-Day Deadline)</td><td><span class="badge ip">IP</span></td><td>40 USC 11315</td><td>Sec. 12, Part B, (b)(12)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-8</td><td>CICA Competition Challenge Preemption &mdash; Statutory Authorization</td><td><span class="badge ip">IP</span></td><td>41 USC 3301(a)</td><td>Sec. 12, Part B, (b)(13)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-9</td><td>Section 508 Accessibility &mdash; Mandatory Contract Requirement</td><td><span class="badge ip">IP</span></td><td>29 USC 794d</td><td>Sec. 12, Part B, (b)(14)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-10</td><td>FACA Advisory Committee Prohibition &mdash; No Competitor Access</td><td><span class="badge ip">IP</span></td><td>5 USC Ch. 10</td><td>Sec. 12, Part I, (i)(1)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-11</td><td>Defense Production Act Preemption &mdash; No Emergency Compelled Disclosure</td><td><span class="badge ip">IP</span></td><td>50 USC 4511/4533</td><td>Sec. 12, Part I, (i)(2)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-12</td><td>Work Made for Hire &mdash; Vendor Implementation = US Government Property</td><td><span class="badge ip">IP</span></td><td>17 USC 101</td><td>Sec. 12, Part I, (i)(3)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-13</td><td>SENTINEL Data Commercial Use &mdash; Permanent Prohibition + Criminal Penalties</td><td><span class="badge ip">IP</span></td><td>18 USC 1030/1905/1836</td><td>Sec. 12, Part I, (i)(4)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-14</td><td>Air-Gapped Engineering Team &mdash; CEO/CLO Certification + OIG Verification</td><td><span class="badge ip">IP</span></td><td>Contract/Statutory</td><td>Sec. 12, Part I, (i)(5)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-15</td><td>OMB Apportionment &mdash; Mandatory 30-Day + Restrictive Footnotes Void + CG Civil Action</td><td><span class="badge fund">FUND</span></td><td>2 USC 687; 31 USC 1341</td><td>Sec. 19, (f)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-16</td><td>Transfer and Reprogramming Prohibition &mdash; VSOC Annual Certification</td><td><span class="badge fund">FUND</span></td><td>Appropriations Law</td><td>Sec. 19, (g)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-17</td><td>SENTINEL = Mandatory Spending (38 USC 1729A) &mdash; Not Subject to Annual Appropriations</td><td><span class="badge fund">FUND</span></td><td>38 USC 1729A; 2 USC 901</td><td>Sec. 19, (h)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-18</td><td>CISA Binding Operational Directive Preemption</td><td><span class="badge legis">LEGIS</span></td><td>44 USC 3553(b)(2)</td><td>Sec. 19, (i)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-19</td><td>Appropriations Rider Prohibition &mdash; Express Amendment Required</td><td><span class="badge legis">LEGIS</span></td><td>Structural/A-17</td><td>Sec. 19, (h)(C)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-20</td><td>Congressional Notification Tripwires &mdash; 24-Hour Mandatory Secretary Notification</td><td><span class="badge legis">LEGIS</span></td><td>Statutory</td><td>Sec. 19, (j)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
+  <tr><td class="amend-num">A-21</td><td>Inaction as Decision &mdash; Mandatory Audit Trail Treatment of Non-Performance</td><td><span class="badge legis">LEGIS</span></td><td>Structural</td><td>Sec. 19, (k)</td><td><span class="badge done">&#10003; IN BILL</span></td></tr>
 </tbody>
 </table>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ AUDIT ARCHITECTURE -->
-<div class="label mb20">SENTINEL AUDIT ARCHITECTURE &nbsp;·&nbsp; VETSAFE-GRADE FOUR-LAYER VERIFICATION</div>
+<!-- AUDIT ARCHITECTURE -->
+<div class="label mb20">SENTINEL AUDIT ARCHITECTURE &nbsp;&middot;&nbsp; VETSAFE-GRADE FOUR-LAYER VERIFICATION</div>
 <div class="audit mb48">
   <div>
     <div class="layer" style="margin-bottom:3px;">
-      <div class="layer-num">
-        <div class="layer-n">1</div>
-        <div class="layer-type">AUTO</div>
-      </div>
+      <div class="layer-num"><div class="layer-n">1</div><div class="layer-type">AUTO</div></div>
       <div class="layer-body">
         <div class="layer-title">First Automated Verification &nbsp;<span class="tag-machine">MACHINE</span></div>
-        <div class="layer-desc">Transaction enters SENTINEL. Real-time VBA record pull — rating, conditions, Priority Group, SMC, TDIU, categorical eligibility. Cross-references Program Coverage Schedule entries for this veteran, this condition, this transaction type. No human involvement. No override possible.</div>
+        <div class="layer-desc">Transaction enters SENTINEL. Real-time VBA record pull &mdash; rating, conditions, Priority Group, SMC, TDIU, categorical eligibility. Cross-references Program Coverage Schedule entries for this veteran, this condition, this transaction type. No human involvement. No override possible.</div>
       </div>
       <div class="layer-meta">
         <div class="layer-kv"><span class="layer-k">LATENCY</span><span class="layer-v">&le; 10ms</span></div>
@@ -1101,13 +574,10 @@ body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
       </div>
     </div>
     <div class="layer" style="margin-bottom:3px;">
-      <div class="layer-num">
-        <div class="layer-n">2</div>
-        <div class="layer-type">AUTO</div>
-      </div>
+      <div class="layer-num"><div class="layer-n">2</div><div class="layer-type">AUTO</div></div>
       <div class="layer-body">
-        <div class="layer-title">Second Automated Verification — Independent System &nbsp;<span class="tag-machine">MACHINE</span></div>
-        <div class="layer-desc">Separate code base. Separate engineering team. Independently auditable. VETSAFE-Grade dual verification — the same principle that makes SUBSAFE the most reliable safety standard in American engineering. Two independent systems arriving at the same result is fundamentally different from one system checking twice.</div>
+        <div class="layer-title">Second Automated Verification &mdash; Independent System &nbsp;<span class="tag-machine">MACHINE</span></div>
+        <div class="layer-desc">Separate code base. Separate engineering team. Independently auditable. VETSAFE-Grade dual verification &mdash; the same principle that makes SUBSAFE the most reliable safety standard in American engineering.</div>
       </div>
       <div class="layer-meta">
         <div class="layer-kv"><span class="layer-k">CODE BASE</span><span class="layer-v">SEPARATE</span></div>
@@ -1116,13 +586,10 @@ body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
       </div>
     </div>
     <div class="layer" style="margin-bottom:3px;">
-      <div class="layer-num">
-        <div class="layer-n">3</div>
-        <div class="layer-type">HUMAN</div>
-      </div>
+      <div class="layer-num"><div class="layer-n">3</div><div class="layer-type">HUMAN</div></div>
       <div class="layer-body">
-        <div class="layer-title">Data Integrity Officer — Same VISN, Separate Chain &nbsp;<span class="tag-human">HUMAN</span></div>
-        <div class="layer-desc">Triggers only on Denial Citation Anomaly. DIO assigned within same VISN — completely separate chain of command from originating personnel. Reviews transaction, denial, citation, and displayed Program Coverage Schedule entries. Resolution within 72 hours or automatic escalation to Layer 4. Non-resolution permanently recorded by name.</div>
+        <div class="layer-title">Data Integrity Officer &mdash; Same VISN, Separate Chain &nbsp;<span class="tag-human">HUMAN</span></div>
+        <div class="layer-desc">Triggers only on Denial Citation Anomaly. DIO assigned within same VISN &mdash; completely separate chain of command. Resolution within 72 hours or automatic escalation to Layer 4. Non-resolution permanently recorded by name.</div>
       </div>
       <div class="layer-meta">
         <div class="layer-kv"><span class="layer-k">TRIGGER</span><span class="layer-v">ANOMALY</span></div>
@@ -1131,13 +598,10 @@ body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
       </div>
     </div>
     <div class="layer">
-      <div class="layer-num">
-        <div class="layer-n">4</div>
-        <div class="layer-type">HUMAN</div>
-      </div>
+      <div class="layer-num"><div class="layer-n">4</div><div class="layer-type">HUMAN</div></div>
       <div class="layer-body">
-        <div class="layer-title">DIO — Nationwide Random Assignment — Different VISN &nbsp;<span class="tag-human">HUMAN</span></div>
-        <div class="layer-desc">Automated selection. Zero human input into assignment. Geographically separate facility, different VISN. Reviews blind — no originating facility identity visible. Final human determination. 5-day deadline. Non-resolution triggers automatic OIG referral as potential violation of this Act. Cannot be altered by Secretary, executive order, or directive.</div>
+        <div class="layer-title">DIO &mdash; Nationwide Random Assignment &mdash; Different VISN &nbsp;<span class="tag-human">HUMAN</span></div>
+        <div class="layer-desc">Automated selection. Zero human input into assignment. Geographically separate facility, different VISN. Reviews blind. 5-day deadline. Non-resolution triggers automatic OIG referral. Cannot be altered by Secretary, executive order, or directive.</div>
       </div>
       <div class="layer-meta">
         <div class="layer-kv"><span class="layer-k">SELECTION</span><span class="layer-v">AUTOMATED</span></div>
@@ -1148,427 +612,266 @@ body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
   </div>
   <div class="audit-trail">
     <div class="audit-trail-hd">Immutable Audit Trail</div>
-    <div class="trail-item">Every transaction and verification result — permanent</div>
-    <div class="trail-item">Every DIO determination — recorded by name</div>
-    <div class="trail-item">Every Denial Citation Anomaly — confirmed and tracked</div>
-    <div class="trail-item">Every Spirit Determination vote — by name</div>
-    <div class="trail-item">Every attempted modification of (f)(1a) — by name and office</div>
-    <div class="trail-item">Every VSOC absence — by name</div>
+    <div class="trail-item">Every transaction and verification result &mdash; permanent</div>
+    <div class="trail-item">Every DIO determination &mdash; recorded by name</div>
+    <div class="trail-item">Every Denial Citation Anomaly &mdash; confirmed and tracked</div>
+    <div class="trail-item">Every Spirit Determination vote &mdash; by name</div>
+    <div class="trail-item">Every attempted modification of (f)(1a) &mdash; by name and office</div>
+    <div class="trail-item">Every VSOC absence &mdash; by name</div>
     <div class="trail-item">Every Secretary notification failure</div>
     <div class="trail-item">Every vendor certification non-receipt</div>
     <div class="trail-item">Every OMB footnote violation</div>
-    <div class="inaction-flag">NEW — INACTION AS DECISION: Failure to act within deadline = decision. Recorded identically to an affirmative action. Cannot be walked back. Consequence triggers automatically. No human required to impose it.</div>
+    <div class="inaction-flag">INACTION AS DECISION: Failure to act within deadline = decision. Recorded identically to an affirmative action. Cannot be walked back. Consequence triggers automatically. No human required to impose it.</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════ INACTION VULNERABILITIES -->
-<div class="label mb20">INACTION VULNERABILITIES &nbsp;·&nbsp; ALL 7 CLOSED — AMENDMENT 21</div>
+<!-- INACTION VULNERABILITIES -->
+<div class="label mb20">INACTION VULNERABILITIES &nbsp;&middot;&nbsp; ALL 7 CLOSED &mdash; AMENDMENT 21</div>
 <div class="mb48">
-  <div class="vuln-item">
-    <div class="vuln-label">Layer 3 DIO takes no action on Denial Citation Anomaly</div>
-    <div class="vuln-fix"><strong>CLOSED:</strong> 72-hour mandatory clock. Expiration = automatic Layer 4 escalation + DIO name/timestamp permanently in audit trail.</div>
-  </div>
-  <div class="vuln-item">
-    <div class="vuln-label">Layer 4 DIO takes no action on escalated matter</div>
-    <div class="vuln-fix"><strong>CLOSED:</strong> 5-day mandatory clock. Expiration = automatic OIG referral as potential violation of this Act. Not discretionary — clock triggers it.</div>
-  </div>
-  <div class="vuln-item">
-    <div class="vuln-label">VSOC quorum manipulation — members simply absent</div>
-    <div class="vuln-fix"><strong>CLOSED:</strong> Absence without pre-recorded cause = concurrence with majority. You must appear and vote to block. Absence is not a blocking mechanism.</div>
-  </div>
-  <div class="vuln-item">
-    <div class="vuln-label">Secretary fails to transmit 24-hour notification</div>
-    <div class="vuln-fix"><strong>CLOSED:</strong> SENTINEL monitors its own triggers. 24-hour clock starts at audit trail entry. If Secretary fails, SENTINEL auto-notifies both Committees directly. System bypasses the Secretary.</div>
-  </div>
-  <div class="vuln-item">
-    <div class="vuln-label">Vendor fails to submit annual air-gap certification</div>
-    <div class="vuln-fix"><strong>CLOSED:</strong> Hard certification deadline. Non-receipt on deadline day = Non-Certification Event auto-transmitted to VSOC, OIG, and both Committees. Absence IS the adverse finding.</div>
-  </div>
-  <div class="vuln-item">
-    <div class="vuln-label">OMB issues conditional apportionment with footnote</div>
-    <div class="vuln-fix"><strong>CLOSED:</strong> Conditional apportionment = non-apportionment. 30-day clock runs from appropriations act enactment regardless of whether OMB issued any document.</div>
-  </div>
-  <div class="vuln-item">
-    <div class="vuln-label">Mandatory certifications (CG, VSOC) simply not produced</div>
-    <div class="vuln-fix"><strong>CLOSED:</strong> Certification Failure Event auto-recorded and transmitted to both Committees on day after deadline. Failure to certify is itself auditable with consequences independent of what the certification would have said.</div>
-  </div>
+  <div class="vuln-item"><div class="vuln-label">Layer 3 DIO takes no action on Denial Citation Anomaly</div><div class="vuln-fix"><strong>CLOSED:</strong> 72-hour mandatory clock. Expiration = automatic Layer 4 escalation + DIO name/timestamp permanently in audit trail.</div></div>
+  <div class="vuln-item"><div class="vuln-label">Layer 4 DIO takes no action on escalated matter</div><div class="vuln-fix"><strong>CLOSED:</strong> 5-day mandatory clock. Expiration = automatic OIG referral as potential violation of this Act.</div></div>
+  <div class="vuln-item"><div class="vuln-label">VSOC quorum manipulation &mdash; members simply absent</div><div class="vuln-fix"><strong>CLOSED:</strong> Absence without pre-recorded cause = concurrence with majority. You must appear and vote to block.</div></div>
+  <div class="vuln-item"><div class="vuln-label">Secretary fails to transmit 24-hour notification</div><div class="vuln-fix"><strong>CLOSED:</strong> SENTINEL monitors its own triggers. If Secretary fails, SENTINEL auto-notifies both Committees directly.</div></div>
+  <div class="vuln-item"><div class="vuln-label">Vendor fails to submit annual air-gap certification</div><div class="vuln-fix"><strong>CLOSED:</strong> Non-receipt on deadline day = Non-Certification Event auto-transmitted to VSOC, OIG, and both Committees.</div></div>
+  <div class="vuln-item"><div class="vuln-label">OMB issues conditional apportionment with footnote</div><div class="vuln-fix"><strong>CLOSED:</strong> Conditional apportionment = non-apportionment. 30-day clock runs from appropriations act enactment regardless.</div></div>
+  <div class="vuln-item"><div class="vuln-label">Mandatory certifications (CG, VSOC) simply not produced</div><div class="vuln-fix"><strong>CLOSED:</strong> Certification Failure Event auto-recorded and transmitted to both Committees on day after deadline.</div></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ EIGHT ALGORITHMS -->
+<!-- EIGHT ALGORITHMS -->
 <div class="label mb20">EIGHT ALGORITHM INTEGRATION ENGINES</div>
 <div class="algos mb48">
-  <div class="algo">
-    <div class="algo-bg">1</div>
-    <div class="algo-name">Service-Connected Care</div>
-    <div class="algo-desc">All SC-rated veterans. Priority care, free care at 50%+, 100%/TDIU expanded entitlements, SMC enhanced care, MST universal mandatory display.</div>
-    <div class="algo-pop">~3.7M veterans</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE — 325 paragraphs</span></div>
-  </div>
-  <div class="algo">
-    <div class="algo-bg">2</div>
-    <div class="algo-name">Presumptive Care</div>
-    <div class="algo-desc">Agent Orange, Camp Lejeune, Gulf War illness, PACT Act. Legal presumption of SC without proof of direct causation. Cross-references deployment data.</div>
-    <div class="algo-pop">~3.5M veterans · PACT Act population</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE — see Algs 2-8 doc</span></div>
-  </div>
-  <div class="algo">
-    <div class="algo-bg">3</div>
-    <div class="algo-name">Time-Limited Free Care</div>
-    <div class="algo-desc">Five-year free care window from discharge for combat veterans. 38 USC 1710(e). Calculates window in real time. Suppresses means-test prompts automatically.</div>
-    <div class="algo-pop">OIF/OEF/GWOT veterans</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE</span></div>
-  </div>
-  <div class="algo">
-    <div class="algo-bg">4</div>
-    <div class="algo-name">Categorical Eligibility</div>
-    <div class="algo-desc">Medal of Honor, former POW, medical discharge, VA pension. Priority Group 1 regardless of rating. Reads categorical flags directly from VBA at point of care.</div>
-    <div class="algo-pop">~500K veterans</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE</span></div>
-  </div>
-  <div class="algo">
-    <div class="algo-bg">5</div>
-    <div class="algo-name">Dependent &amp; Survivor Benefits</div>
-    <div class="algo-desc">DIC, Survivors Pension, Accrued Benefits, PCAFC. The Ripple Effect — veteran death recorded → 24-hour automatic notification to next of kin. Every entitlement. No claim required.</div>
-    <div class="algo-pop">~650K survivor households</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE</span></div>
-  </div>
-  <div class="algo">
-    <div class="algo-bg">6</div>
-    <div class="algo-name">Caregiver Support</div>
-    <div class="algo-desc">PCAFC under 38 USC 1720G. Stipend, healthcare, mental health, respite, training. Auto-triggers PCAFC assessment at qualifying injury or SMC aid/attendance designation.</div>
-    <div class="algo-pop">~20K PCAFC · expanding post-MISSION Act</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE</span></div>
-  </div>
-  <div class="algo">
-    <div class="algo-bg">7</div>
-    <div class="algo-name">Community Care</div>
-    <div class="algo-desc">MISSION Act access standards — 20-day primary / 28-day specialty. Drive-time standards. Applied condition-by-condition, not globally. SC veterans get condition-specific analysis.</div>
-    <div class="algo-pop">~900K annual authorizations</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE</span></div>
-  </div>
-  <div class="algo">
-    <div class="algo-bg">8</div>
-    <div class="algo-name">Special Populations</div>
-    <div class="algo-desc">Women veterans (Deborah Sampson Act), SCI/D, blind veterans, homeless veterans, IDES transition, OTH discharge humanitarian exception. Each population: distinct legal framework at point of care.</div>
-    <div class="algo-pop">~500K across categories</div>
-    <div class="algo-status"><span class="badge done">✓ PCS COMPLETE</span></div>
-  </div>
+  <div class="algo"><div class="algo-bg">1</div><div class="algo-name">Service-Connected Care</div><div class="algo-desc">All SC-rated veterans. Priority care, free care at 50%+, 100%/TDIU expanded entitlements, SMC enhanced care, MST universal mandatory display.</div><div class="algo-pop">~3.7M veterans</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE &mdash; 325 paragraphs</span></div></div>
+  <div class="algo"><div class="algo-bg">2</div><div class="algo-name">Presumptive Care</div><div class="algo-desc">Agent Orange, Camp Lejeune, Gulf War illness, PACT Act. Legal presumption of SC without proof of direct causation.</div><div class="algo-pop">~3.5M veterans &middot; PACT Act population</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE</span></div></div>
+  <div class="algo"><div class="algo-bg">3</div><div class="algo-name">Time-Limited Free Care</div><div class="algo-desc">Five-year free care window from discharge for combat veterans. 38 USC 1710(e). Calculates window in real time.</div><div class="algo-pop">OIF/OEF/GWOT veterans</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE</span></div></div>
+  <div class="algo"><div class="algo-bg">4</div><div class="algo-name">Categorical Eligibility</div><div class="algo-desc">Medal of Honor, former POW, medical discharge, VA pension. Priority Group 1 regardless of rating.</div><div class="algo-pop">~500K veterans</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE</span></div></div>
+  <div class="algo"><div class="algo-bg">5</div><div class="algo-name">Dependent &amp; Survivor Benefits</div><div class="algo-desc">DIC, Survivors Pension, Accrued Benefits, PCAFC. Veteran death recorded &rarr; 24-hour automatic notification to next of kin. Every entitlement. No claim required.</div><div class="algo-pop">~650K survivor households</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE</span></div></div>
+  <div class="algo"><div class="algo-bg">6</div><div class="algo-name">Caregiver Support</div><div class="algo-desc">PCAFC under 38 USC 1720G. Stipend, healthcare, mental health, respite, training. Auto-triggers at qualifying injury.</div><div class="algo-pop">~20K PCAFC &middot; expanding post-MISSION Act</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE</span></div></div>
+  <div class="algo"><div class="algo-bg">7</div><div class="algo-name">Community Care</div><div class="algo-desc">MISSION Act access standards &mdash; 20-day primary / 28-day specialty. Applied condition-by-condition, not globally.</div><div class="algo-pop">~900K annual authorizations</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE</span></div></div>
+  <div class="algo"><div class="algo-bg">8</div><div class="algo-name">Special Populations</div><div class="algo-desc">Women veterans (Deborah Sampson Act), SCI/D, blind veterans, homeless veterans, IDES transition, OTH discharge humanitarian exception.</div><div class="algo-pop">~500K across categories</div><div class="algo-status"><span class="badge done">&#10003; PCS COMPLETE</span></div></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ SELF-DEFENSE TABLE -->
-<div class="label mb20">SELF-DEFENDING ARCHITECTURE &nbsp;·&nbsp; EVERY ATTACK AND ITS BUILT-IN STATUTORY RESPONSE</div>
+<!-- SELF-DEFENSE TABLE -->
+<div class="label mb20">SELF-DEFENDING ARCHITECTURE &nbsp;&middot;&nbsp; EVERY ATTACK AND ITS BUILT-IN STATUTORY RESPONSE</div>
 <div class="mb48">
 <table class="def-tbl">
-<thead>
-  <tr><th>Hostile Action</th><th>Built-In Statutory Response</th><th>Where It Lives</th></tr>
-</thead>
+<thead><tr><th>Hostile Action</th><th>Built-In Statutory Response</th><th>Where It Lives</th></tr></thead>
 <tbody>
-  <tr><td class="threat">Secretary modifies architecture by regulation (38 USC 501)</td><td class="response">Any such rulemaking void ab initio. (f)(1a)(P) explicitly excludes 501 authority from SENTINEL jurisdiction.</td><td class="loc-done">Sec. 12F(f)(1a)(P) ✓</td></tr>
-  <tr><td class="threat">Executive Order attempts to modify SENTINEL</td><td class="response">Jurisdictional wall. Political branch has no jurisdiction. Submission entered in audit trail by name.</td><td class="loc-done">Sec. 12F(f)(1) ✓</td></tr>
-  <tr><td class="threat">Vendor claims their implementation code is their copyright</td><td class="response">Vendor implementation = work for hire = US Government property. Vendor receives no copyright interest.</td><td class="loc-done">Sec. 12I(i)(3) ✓</td></tr>
-  <tr><td class="threat">Vendor patents improvements, creates tollgate on architecture</td><td class="response">Mandatory license-back to Sean Robinson / Valiant Heroes on Bayh-Dole terms before patent is enforceable.</td><td class="loc-done">Sec. 12B(b)(9) ✓</td></tr>
-  <tr><td class="threat">28 USC 1498 invoked to strip injunctive relief</td><td class="response">FAR 52.227-1 Authorization and Consent clause excluded. 1498 cannot apply. Injunctive relief preserved.</td><td class="loc-done">Sec. 12B(b)(8) ✓</td></tr>
-  <tr><td class="threat">Winning vendor uses SENTINEL data to train commercial AI</td><td class="response">Permanent statutory prohibition. Criminal. Survives contract termination. Mandatory DOJ referral.</td><td class="loc-done">Sec. 12I(i)(4)/(i)(5) ✓</td></tr>
-  <tr><td class="threat">OMB slow-walks SENTINEL fund apportionment</td><td class="response">Mandatory 30-day deadline. Conditional footnotes void. Comptroller General civil action within 10 days of breach.</td><td class="loc-done">Sec. 19(f) ✓</td></tr>
-  <tr><td class="threat">Appropriations Committee never funds SENTINEL</td><td class="response">SENTINEL = mandatory spending under 38 USC 1729A. Does not go through annual appropriations. Cannot be unfunded.</td><td class="loc-done">Sec. 19(h) ✓</td></tr>
-  <tr><td class="threat">Senator places secret hold on VAHGMA 2026</td><td class="response">Mandatory spending means hold cannot kill — only delay. Bipartisan + VSO coalition makes hold politically toxic.</td><td class="loc-done">Sec. 19(h) + Political ✓</td></tr>
-  <tr><td class="threat">Appropriations rider buries suspension clause in omnibus</td><td class="response">Any appropriations provision affecting SENTINEL void unless it expressly amends this Act by section and subsection.</td><td class="loc-done">Sec. 19(h)(C) ✓</td></tr>
-  <tr><td class="threat">Administration uses CRADA to give competitor access to SENTINEL</td><td class="response">VA may not enter any CRADA involving SENTINEL without prior VSOC written authorization (6 of 8 affirmative).</td><td class="loc-done">Sec. 12B(b)(10) ✓</td></tr>
-  <tr><td class="threat">Administration uses OTA to bypass FAR IP protections</td><td class="response">SENTINEL acquisition is exclusively FAR-based. OTA expressly prohibited for any SENTINEL agreement at any tier.</td><td class="loc-done">Sec. 12B(b)(11) ✓</td></tr>
-  <tr><td class="threat">Layer 3/4 DIO takes no action — obstruction by inaction</td><td class="response">Inaction = decision. Clock expiration = auto-escalate + permanent record by name + auto-OIG referral.</td><td class="loc-done">Sec. 19(k) ✓</td></tr>
-  <tr><td class="threat">Vendor at re-bid lowers standards for cheaper contract</td><td class="response">Permanent hardware floor (f)(16). Every successive vendor must meet or exceed all standards of predecessor.</td><td class="loc-done">Sec. 12F(f)(16) ✓</td></tr>
+  <tr><td class="threat">Secretary modifies architecture by regulation (38 USC 501)</td><td class="response">Any such rulemaking void ab initio. (f)(1a)(P) explicitly excludes 501 authority from SENTINEL jurisdiction.</td><td class="loc-done">Sec. 12F(f)(1a)(P) &#10003;</td></tr>
+  <tr><td class="threat">Executive Order attempts to modify SENTINEL</td><td class="response">Jurisdictional wall. Political branch has no jurisdiction. Submission entered in audit trail by name.</td><td class="loc-done">Sec. 12F(f)(1) &#10003;</td></tr>
+  <tr><td class="threat">Vendor claims their implementation code is their copyright</td><td class="response">Vendor implementation = work for hire = US Government property. Vendor receives no copyright interest.</td><td class="loc-done">Sec. 12I(i)(3) &#10003;</td></tr>
+  <tr><td class="threat">Vendor patents improvements, creates tollgate on architecture</td><td class="response">Mandatory license-back to Sean Robinson / Valiant Heroes on Bayh-Dole terms before patent is enforceable.</td><td class="loc-done">Sec. 12B(b)(9) &#10003;</td></tr>
+  <tr><td class="threat">28 USC 1498 invoked to strip injunctive relief</td><td class="response">FAR 52.227-1 Authorization and Consent clause excluded. 1498 cannot apply. Injunctive relief preserved.</td><td class="loc-done">Sec. 12B(b)(8) &#10003;</td></tr>
+  <tr><td class="threat">Winning vendor uses SENTINEL data to train commercial AI</td><td class="response">Permanent statutory prohibition. Criminal. Survives contract termination. Mandatory DOJ referral.</td><td class="loc-done">Sec. 12I(i)(4)/(i)(5) &#10003;</td></tr>
+  <tr><td class="threat">OMB slow-walks SENTINEL fund apportionment</td><td class="response">Mandatory 30-day deadline. Conditional footnotes void. Comptroller General civil action within 10 days of breach.</td><td class="loc-done">Sec. 19(f) &#10003;</td></tr>
+  <tr><td class="threat">Appropriations Committee never funds SENTINEL</td><td class="response">SENTINEL = mandatory spending under 38 USC 1729A. Does not go through annual appropriations. Cannot be unfunded.</td><td class="loc-done">Sec. 19(h) &#10003;</td></tr>
+  <tr><td class="threat">Senator places secret hold on VFCAA 2026</td><td class="response">Mandatory spending means hold cannot kill &mdash; only delay. Bipartisan + VSO coalition makes hold politically toxic.</td><td class="loc-done">Sec. 19(h) + Political &#10003;</td></tr>
+  <tr><td class="threat">Appropriations rider buries suspension clause in omnibus</td><td class="response">Any appropriations provision affecting SENTINEL void unless it expressly amends this Act by section and subsection.</td><td class="loc-done">Sec. 19(h)(C) &#10003;</td></tr>
+  <tr><td class="threat">Administration uses CRADA to give competitor access to SENTINEL</td><td class="response">VA may not enter any CRADA involving SENTINEL without prior VSOC written authorization (6 of 8 affirmative).</td><td class="loc-done">Sec. 12B(b)(10) &#10003;</td></tr>
+  <tr><td class="threat">Administration uses OTA to bypass FAR IP protections</td><td class="response">SENTINEL acquisition is exclusively FAR-based. OTA expressly prohibited for any SENTINEL agreement at any tier.</td><td class="loc-done">Sec. 12B(b)(11) &#10003;</td></tr>
+  <tr><td class="threat">Layer 3/4 DIO takes no action &mdash; obstruction by inaction</td><td class="response">Inaction = decision. Clock expiration = auto-escalate + permanent record by name + auto-OIG referral.</td><td class="loc-done">Sec. 19(k) &#10003;</td></tr>
+  <tr><td class="threat">Vendor at re-bid lowers standards for cheaper contract</td><td class="response">Permanent hardware floor (f)(16). Every successive vendor must meet or exceed all standards of predecessor.</td><td class="loc-done">Sec. 12F(f)(16) &#10003;</td></tr>
 </tbody>
 </table>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ CHESS FRAMEWORK -->
-<div class="label mb20">20-MOVE CHESS FRAMEWORK &nbsp;·&nbsp; CURRENT POSITION</div>
+<!-- CHESS FRAMEWORK -->
+<div class="label mb20">20-MOVE CHESS FRAMEWORK &nbsp;&middot;&nbsp; CURRENT POSITION</div>
 <div class="chess mb48">
   <div class="move done">
-    <div class="move-lbl">✓ MOVES 1–5 — COMPLETE</div>
+    <div class="move-lbl">&#10003; MOVES 1&ndash;5 &mdash; COMPLETE</div>
     <div class="move-title">Pre-Enactment IP Foundation</div>
     <ul>
       <li>Copyright in source code established at creation</li>
-      <li>2,834 lines Python — confirmed running</li>
-      <li>IP Protection Agreement — 5 targeted additions</li>
-      <li>Revenue Assignment — all to Valiant Heroes</li>
-      <li>Bill at 686 paragraphs — all 22 amendments in</li>
-      <li>Both citation corrections applied</li>
-      <li>Master Command Document built and locked</li>
+      <li>2,834 lines Python &mdash; confirmed running</li>
+      <li>Copyright registered: Case No. 1-15132777731 (SENTINEL) &amp; 1-15132801581 (VFCAA)</li>
+      <li>USPTO trademark &ldquo;Veteran-Sentinel&rdquo; &mdash; Class 042 filed</li>
+      <li>Bill at 685 paragraphs &mdash; all 21 amendments in</li>
+      <li>SENTINEL Advocate deployed: seantr62.github.io/Veterans-Sentinel</li>
     </ul>
   </div>
   <div class="move active">
-    <div class="move-lbl">&rarr; MOVES 6–10 — ACTIVE</div>
-    <div class="move-title">Final Legal Lockdown</div>
+    <div class="move-lbl">&rarr; MOVES 6&ndash;10 &mdash; ACTIVE</div>
+    <div class="move-title">Political Architecture</div>
     <ul>
-      <li>All 22 amendments in bill ✓</li>
-      <li>Copyright.gov registration — $65 — URGENT</li>
-      <li>USPTO ITU filings — $500 — URGENT</li>
-      <li>Program Coverage Schedule — All 8 algorithms ✓</li>
-      <li>Oracle contract analysis complete ✓</li>
-      <li>NDA document</li>
-      <li>Family/Survivor summary</li>
+      <li>April 6 &mdash; Rachel Miller meeting &#10003; COMPLETE</li>
+      <li>Committee referral confirmed &#10003;</li>
+      <li>Enterprise cost estimates for SENTINEL &mdash; IN PROGRESS</li>
+      <li>Bipartisan Senate co-sponsors &mdash; identification phase</li>
+      <li>Company outreach &mdash; IPOA signed first</li>
+      <li>VSO endorsement coalition &mdash; 5 major VSOs</li>
     </ul>
   </div>
   <div class="move next">
-    <div class="move-lbl">&#9672; MOVES 11–15 — NEXT</div>
-    <div class="move-title">Political Architecture</div>
+    <div class="move-lbl">&#9672; MOVES 11&ndash;15 &mdash; NEXT</div>
+    <div class="move-title">Enterprise Outreach</div>
     <ul>
-      <li>April 6 — Rachel Miller — single ask</li>
-      <li>Bipartisan Senate co-sponsors identified</li>
-      <li>Company outreach — IPOA signed first</li>
-      <li>VSO endorsement coalition — 5 major VSOs</li>
+      <li>AWS &mdash; Dave Levy / Jamie Baker</li>
+      <li>OpenAI &mdash; Joseph Larson, VP Federal</li>
+      <li>Scale AI, Nvidia, Meta outreach</li>
       <li>Revenue Assignment with winning vendor</li>
+      <li>NDA / IPOA executed before all technical conversations</li>
     </ul>
   </div>
   <div class="move future">
-    <div class="move-lbl">&#9671; MOVES 16–20 — HORIZON</div>
+    <div class="move-lbl">&#9671; MOVES 16&ndash;20 &mdash; HORIZON</div>
     <div class="move-title">Fortress Construction</div>
     <ul>
       <li>VSOC constituted within 90 days of enactment</li>
-      <li>Winning vendor contract — every IP protection in it</li>
-      <li>Annual copyright registrations — new code versions</li>
-      <li>VSOC quarterly reports — public transparency armor</li>
-      <li>Re-bid cycle — permanent hardware floor maintained</li>
+      <li>Winning vendor contract &mdash; every IP protection in it</li>
+      <li>Annual copyright registrations &mdash; new code versions</li>
+      <li>VSOC quarterly reports &mdash; public transparency armor</li>
+      <li>Re-bid cycle &mdash; permanent hardware floor maintained</li>
     </ul>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ CRITICAL PATH + CONTACTS -->
+<!-- CRITICAL PATH + CONTACTS -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;" class="mb48">
   <div>
-    <div class="label mb20">CRITICAL PATH &nbsp;·&nbsp; BEFORE APRIL 6</div>
+    <div class="label mb20">CRITICAL PATH &nbsp;&middot;&nbsp; NEXT ACTIONS</div>
     <div class="crit-item">
       <div class="crit-n">1</div>
       <div>
-        <div class="crit-title">Copyright.gov Registration</div>
-        <div class="crit-desc">SENTINEL source code + VAHGMA 2026 bill. Public federal record predating all vendor conversations.</div>
+        <div class="crit-title">Enterprise Cost Estimates &mdash; SENTINEL National Scale</div>
+        <div class="crit-desc">Servicing and maintenance cost data required to finalize the legislative bill. AWS (Dave Levy / Jamie Baker) first target.</div>
       </div>
-      <div class="crit-tag p1">$65 · URGENT</div>
+      <div class="crit-tag p1">URGENT</div>
     </div>
     <div class="crit-item">
       <div class="crit-n">2</div>
       <div>
-        <div class="crit-title">USPTO ITU Filings</div>
-        <div class="crit-desc">SENTINEL mark + VAHGMA mark. Intent-to-Use. Priority date established today.</div>
+        <div class="crit-title">Bipartisan Co-Sponsor Identification</div>
+        <div class="crit-desc">Senate Veterans&rsquo; Affairs Committee members &mdash; both parties. Political armor that makes a secret hold toxic.</div>
       </div>
-      <div class="crit-tag p1">$500 · URGENT</div>
+      <div class="crit-tag p1">URGENT</div>
     </div>
     <div class="crit-item">
       <div class="crit-n">3</div>
       <div>
-        <div class="crit-title">NDA Document</div>
-        <div class="crit-desc">Short-form NDA for initial conversations before full IPOA is triggered.</div>
+        <div class="crit-title">Company Outreach &mdash; IPOA First</div>
+        <div class="crit-desc">IP Protection Agreement must be executed before any technical conversation. No exceptions. Ever.</div>
       </div>
       <div class="crit-tag p2">BEFORE OUTREACH</div>
     </div>
     <div class="crit-item">
       <div class="crit-n">4</div>
       <div>
-        <div class="crit-title">Family and Survivor Plain Language Summary</div>
-        <div class="crit-desc">Ripple Effect, Algorithm 5, 24-hour notification. For family advocates and VSO briefings.</div>
+        <div class="crit-title">VSO Coalition &mdash; 5 Major Organizations</div>
+        <div class="crit-desc">VFW, DAV, American Legion, IAVA, PVA. Endorsement letters for Senate committee presentation.</div>
       </div>
-      <div class="crit-tag p2">BEFORE APRIL 6</div>
+      <div class="crit-tag p2">IN PROGRESS</div>
     </div>
     <div class="crit-item">
       <div class="crit-n">5</div>
       <div>
-        <div class="crit-title">Rachel Miller — April 6 — 2PM ET / 11AM AZ</div>
-        <div class="crit-desc">Single ask: Senator Kelly's blessing to conduct research outreach to American AI companies. This is the door.</div>
+        <div class="crit-title">USPTO Trademark Payment &mdash; &ldquo;Veteran-Sentinel&rdquo;</div>
+        <div class="crit-desc">Draft saved under USPTO Drafts and Docket. $350 fee. Complete payment to lock priority date.</div>
       </div>
-      <div class="crit-tag p1">9 DAYS</div>
+      <div class="crit-tag p2">PENDING</div>
     </div>
   </div>
   <div>
     <div class="label mb20">COMPANY OUTREACH SEQUENCE</div>
-    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gold-dim);letter-spacing:1px;padding:5px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:36px 150px 80px 80px 1fr;gap:14px;">#&nbsp;|&nbsp;COMPANY|RISK|VET|CONTACT</div>
-    <div class="contact-row"><div class="contact-rank">1</div><div class="contact-co">OpenAI</div><div class="risk-val low">LOWEST</div><div class="vet-tag">✓ Veteran</div><div class="contact-person">Joseph Larson — VP Federal</div></div>
-    <div class="contact-row"><div class="contact-rank">2</div><div class="contact-co">AWS</div><div class="risk-val low">LOWER</div><div class="vet-tag">Fed contractor</div><div class="contact-person">Dave Levy — VP Worldwide Public Sector</div></div>
-    <div class="contact-row"><div class="contact-rank">3</div><div class="contact-co">Scale AI</div><div class="risk-val mod">MOD</div><div class="vet-tag">USAF connection</div><div class="contact-person">Jason Droege — CEO</div></div>
-    <div class="contact-row"><div class="contact-rank">4</div><div class="contact-co">Microsoft</div><div class="risk-val mod">MOD</div><div class="vet-tag">Long-term fed</div><div class="contact-person">Candice Ling — SVP US Federal</div></div>
-    <div class="contact-row"><div class="contact-rank">5</div><div class="contact-co">Nvidia</div><div class="risk-val low">LOWEST</div><div class="vet-tag">HW only</div><div class="contact-person">Nvidia Federal Team</div></div>
-    <div class="contact-row"><div class="contact-rank">6</div><div class="contact-co">Meta</div><div class="risk-val mod">MOD-HIGH</div><div class="vet-tag">✓ Veteran</div><div class="contact-person">Kevin Weil — Chief Product Officer</div></div>
-    <div class="contact-row"><div class="contact-rank">7</div><div class="contact-co">Google</div><div class="risk-val high">HIGH</div><div class="vet-tag">Nat'l Security</div><div class="contact-person">Jan Niemiec — MD National Security</div></div>
-    <div class="contact-row"><div class="contact-rank">8</div><div class="contact-co">Palantir</div><div class="risk-val high">HIGHEST</div><div class="vet-tag">✓ Veteran</div><div class="contact-person">Shyam Sankar — CTO</div></div>
-    <div class="ipoa-warn">&#9888; IPOA MUST BE SIGNED BEFORE ANY TECHNICAL CONVERSATION — NO EXCEPTIONS — EVER</div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gold-dim);letter-spacing:1px;padding:5px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:36px 150px 80px 80px 1fr;gap:14px;"># &nbsp;| COMPANY | RISK | VET | CONTACT</div>
+    <div class="contact-row"><div class="contact-rank">1</div><div class="contact-co">OpenAI</div><div class="risk-val low">LOWEST</div><div class="vet-tag">&#10003; Veteran</div><div class="contact-person">Joseph Larson &mdash; VP Federal</div></div>
+    <div class="contact-row"><div class="contact-rank">2</div><div class="contact-co">AWS</div><div class="risk-val low">LOWER</div><div class="vet-tag">Fed contractor</div><div class="contact-person">Dave Levy &mdash; VP Worldwide Public Sector</div></div>
+    <div class="contact-row"><div class="contact-rank">3</div><div class="contact-co">Scale AI</div><div class="risk-val mod">MOD</div><div class="vet-tag">USAF connection</div><div class="contact-person">Jason Droege &mdash; CEO</div></div>
+    <div class="contact-row"><div class="contact-rank">4</div><div class="contact-co">Nvidia</div><div class="risk-val low">LOWEST</div><div class="vet-tag">HW only</div><div class="contact-person">Nvidia Federal Team</div></div>
+    <div class="contact-row"><div class="contact-rank">5</div><div class="contact-co">Meta</div><div class="risk-val mod">MOD-HIGH</div><div class="vet-tag">&#10003; Veteran</div><div class="contact-person">Kevin Weil &mdash; Chief Product Officer</div></div>
+    <div class="contact-row"><div class="contact-rank">6</div><div class="contact-co">Google</div><div class="risk-val high">HIGH</div><div class="vet-tag">Nat&rsquo;l Security</div><div class="contact-person">Jan Niemiec &mdash; MD National Security</div></div>
+    <div class="contact-row"><div class="contact-rank">7</div><div class="contact-co">Palantir</div><div class="risk-val high">HIGHEST</div><div class="vet-tag">&#10003; Veteran</div><div class="contact-person">Shyam Sankar &mdash; CTO</div></div>
+    <div class="ipoa-warn">&#9888; IPOA MUST BE SIGNED BEFORE ANY TECHNICAL CONVERSATION &mdash; NO EXCEPTIONS &mdash; EVER</div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════ ORACLE: WHY SENTINEL EXISTS -->
-<div class="label mb20">THE ORACLE FAILURE &nbsp;·&nbsp; WHY SENTINEL EXISTS &nbsp;·&nbsp; WHAT IT COST VETERANS</div>
-
+<!-- ORACLE SECTION -->
+<div class="label mb20">THE ORACLE FAILURE &nbsp;&middot;&nbsp; WHY SENTINEL EXISTS &nbsp;&middot;&nbsp; WHAT IT COST VETERANS</div>
 <div class="oracle-banner mb32">
-  <div class="oracle-kicker">THE DOCUMENT RECORD &nbsp;·&nbsp; TWO FILES. TWO DECADES. ONE PATTERN.</div>
-  <div class="oracle-headline">How Oracle's $37 Billion Failure Created SENTINEL</div>
-  <div class="oracle-narrative">
-    Two documents in this Command Center tell the complete story. The first — <strong>Oracle Federal Contract Failure Record</strong> — covers 20 years across VA, DoD, GSA, and Oregon: $13.84 billion obligated for the VA EHR alone, 6 of 171 facilities live after 8 years, veterans fatally harmed, 11,000 clinical orders routed to an unknown queue, FBI investigation in Oregon, $280 million DoD HR system terminated by DOGE, 9 of 10 GAO priority recommendations unimplemented. The second — <strong>VA IT Infrastructure and Oracle Contract Analysis FY2026</strong> — shows what happened next: Oracle's contract was doubled to $2.2 billion while DOGE terminated the 6 veteran-owned small businesses providing support, including the HIPAA compliance vendor and the DoD interoperability contractor.
-  </div>
-  <div class="oracle-narrative">
-    That pattern — a system that cannot see the veteran's record, cannot apply the correct law, and cannot be held accountable when it fails — is structural, not incidental. VistA runs in 130 separate implementations across 171 facilities. They do not talk to each other. A rating change in VBA does not reach VHA in real time. A denial gets written citing law that never applied to that veteran — and there is no architectural mechanism to catch it. <strong>That gap is what SENTINEL was built to close. The architecture Oracle was paid $37 billion to create and did not deliver — SENTINEL delivers it from the ground up, built right, built to a statutory standard, and built so no future Oracle can happen again.</strong>
-  </div>
+  <div class="oracle-kicker">THE DOCUMENT RECORD &nbsp;&middot;&nbsp; TWO FILES. TWO DECADES. ONE PATTERN.</div>
+  <div class="oracle-headline">How Oracle&rsquo;s $37 Billion Failure Created SENTINEL</div>
+  <div class="oracle-narrative">Two documents in this Command Center tell the complete story. The first &mdash; <strong>Oracle Federal Contract Failure Record</strong> &mdash; covers 20 years across VA, DoD, GSA, and Oregon: $13.84 billion obligated for the VA EHR alone, 6 of 171 facilities live after 8 years, veterans fatally harmed, 11,000 clinical orders routed to an unknown queue, FBI investigation in Oregon, $280 million DoD HR system terminated by DOGE, 9 of 10 GAO priority recommendations unimplemented. The second &mdash; <strong>VA IT Infrastructure and Oracle Contract Analysis FY2026</strong> &mdash; shows what happened next: Oracle&rsquo;s contract was doubled to $2.2 billion while DOGE terminated the 6 veteran-owned small businesses providing support.</div>
+  <div class="oracle-narrative">That pattern &mdash; a system that cannot see the veteran&rsquo;s record, cannot apply the correct law, and cannot be held accountable when it fails &mdash; is structural, not incidental. <strong>That gap is what SENTINEL was built to close. The architecture Oracle was paid $37 billion to create and did not deliver &mdash; SENTINEL delivers it from the ground up, built right, built to a statutory standard, and built so no future Oracle can happen again.</strong></div>
 </div>
 
 <div class="oracle-stats mb32">
-  <div class="oracle-stat">
-    <div class="os-lbl">Oracle FY2026 Direct Contract Value</div>
-    <div class="os-val">$3.5B</div>
-    <div class="os-desc">$2.2B Oracle contract + $660M infrastructure readiness + $658M personnel. Lifecycle cost: $37B (House VA Committee). Original 2018 contract: $10B.</div>
-  </div>
-  <div class="oracle-stat">
-    <div class="os-lbl">Support Contractors Terminated by DOGE</div>
-    <div class="os-val">6</div>
-    <div class="os-desc">Six service-disabled veteran-owned small businesses cut — including the HIPAA compliance vendor and DoD interoperability contractor. Oracle's own contract: untouched.</div>
-  </div>
-  <div class="oracle-stat gold">
-    <div class="os-lbl">PACT Act Fund Used for Oracle IT</div>
-    <div class="os-val">$1.39B</div>
-    <div class="os-desc">$1.385 billion of the Toxic Exposures Fund — created to deliver healthcare to burn pit and Agent Orange veterans — used for IT systems including Oracle infrastructure in FY2026.</div>
-  </div>
-  <div class="oracle-stat green">
-    <div class="os-lbl">VA Staff: Oracle Increased Patient Safety Risk</div>
-    <div class="os-val">58%</div>
-    <div class="os-desc">GAO Report, March 2026. Only 13% believe Oracle makes VA as efficient as possible. 94% of VA medical centers still on legacy VistA after 8 years. 70+ OIG recommendations mostly unimplemented.</div>
-  </div>
+  <div class="oracle-stat"><div class="os-lbl">Oracle FY2026 Direct Contract Value</div><div class="os-val">$3.5B</div><div class="os-desc">$2.2B Oracle contract + $660M infrastructure readiness + $658M personnel. Lifecycle cost: $37B (House VA Committee). Original 2018 contract: $10B.</div></div>
+  <div class="oracle-stat"><div class="os-lbl">Support Contractors Terminated by DOGE</div><div class="os-val">6</div><div class="os-desc">Six service-disabled veteran-owned small businesses cut &mdash; including the HIPAA compliance vendor and DoD interoperability contractor. Oracle&rsquo;s own contract: untouched.</div></div>
+  <div class="oracle-stat gold"><div class="os-lbl">PACT Act Fund Used for Oracle IT</div><div class="os-val">$1.39B</div><div class="os-desc">$1.385 billion of the Toxic Exposures Fund &mdash; created to deliver healthcare to burn pit and Agent Orange veterans &mdash; used for IT systems including Oracle infrastructure in FY2026.</div></div>
+  <div class="oracle-stat green"><div class="os-lbl">VA Staff: Oracle Increased Patient Safety Risk</div><div class="os-val">58%</div><div class="os-desc">GAO Report, March 2026. Only 13% believe Oracle makes VA as efficient as possible. 94% of VA medical centers still on legacy VistA after 8 years.</div></div>
 </div>
 
-<div class="label mb20">HOW ORACLE'S FAILURE IGNITED SENTINEL &nbsp;·&nbsp; FOUR STRUCTURAL PROBLEMS, FOUR ARCHITECTURAL SOLUTIONS</div>
+<div class="label mb20">HOW ORACLE&rsquo;S FAILURE IGNITED SENTINEL &nbsp;&middot;&nbsp; FOUR STRUCTURAL PROBLEMS, FOUR ARCHITECTURAL SOLUTIONS</div>
 <div class="ignition mb32">
-  <div class="ignition-item">
-    <div class="ig-num">01</div>
-    <div>
-      <div class="ig-title">The Fragmentation Problem</div>
-      <div class="ig-text">Oracle/Cerner's EHR replaced nothing systemically. VistA still runs at 94% of VA facilities. The two systems do not synchronize reliably — a veteran treated at an Oracle site whose medications are checked at a VistA site requires manual pharmacist safety verification because the automated process cannot be trusted. That is not a software bug. That is an architectural failure to unify the data. <strong>SENTINEL's response:</strong> mandatory 15-minute synchronization ceiling between VBA and VHA databases, by statute, with automatic breach consequences if violated.</div>
-    </div>
-  </div>
-  <div class="ignition-item">
-    <div class="ig-num">02</div>
-    <div>
-      <div class="ig-title">The Denial Pattern</div>
-      <div class="ig-text">VA OIG audits and GAO reports document a consistent pattern: veterans denied care through citation of policies that do not apply to them. Pediatric policies applied to adult prosthetics orders. MST care denied for absence of documentation the law never required. These are systemic — caused by the correct law not being on the screen when the decision is made. Oracle did not solve this. <strong>SENTINEL's response:</strong> Program Coverage Schedule displays only law applicable to this veteran, this condition, this transaction. Law not applicable cannot be cited because it was not on the screen.</div>
-    </div>
-  </div>
-  <div class="ignition-item">
-    <div class="ig-num">03</div>
-    <div>
-      <div class="ig-title">The Accountability Vacuum</div>
-      <div class="ig-text">Oracle received $4.4 billion through FY2025 and refunded $325,000. The Inspector General issued 70+ recommendations — most unimplemented. 58% of VA staff using Oracle's system believe it increased patient safety risk. There is no mechanism to automatically catch a bad denial, record who made it, and escalate without human intervention. <strong>SENTINEL's response:</strong> four-layer VETSAFE-Grade verification, immutable audit trail by name, Inaction-as-Decision — consequences trigger from the clock, not from a human deciding to impose them.</div>
-    </div>
-  </div>
-  <div class="ignition-item">
-    <div class="ig-num">04</div>
-    <div>
-      <div class="ig-title">The Survivor Blind Spot</div>
-      <div class="ig-text">Neither Oracle's EHR nor VistA has a mechanism to automatically notify a veteran's family of benefits owed at time of death. The family must know to ask. They must know what to ask for. They must file within deadlines they were never told existed. <strong>SENTINEL's response:</strong> Algorithm 5 Ripple Effect — veteran's death recorded in VBA, SENTINEL generates a complete survivor benefits notification to next of kin within 24 hours. DIC. Survivors Pension. Accrued Benefits. Every entitlement. Automatically. No family left behind because they did not know to ask.</div>
-    </div>
-  </div>
+  <div class="ignition-item"><div class="ig-num">01</div><div><div class="ig-title">The Fragmentation Problem</div><div class="ig-text">VistA still runs at 94% of VA facilities. The two systems do not synchronize reliably. <strong>SENTINEL&rsquo;s response:</strong> mandatory 15-minute synchronization ceiling between VBA and VHA databases, by statute, with automatic breach consequences if violated.</div></div></div>
+  <div class="ignition-item"><div class="ig-num">02</div><div><div class="ig-title">The Denial Pattern</div><div class="ig-text">Veterans denied care through citation of policies that do not apply to them. These are systemic &mdash; caused by the correct law not being on the screen when the decision is made. <strong>SENTINEL&rsquo;s response:</strong> Program Coverage Schedule displays only law applicable to this veteran, this condition, this transaction.</div></div></div>
+  <div class="ignition-item"><div class="ig-num">03</div><div><div class="ig-title">The Accountability Vacuum</div><div class="ig-text">Oracle received $4.4 billion through FY2025 and refunded $325,000. There is no mechanism to automatically catch a bad denial and escalate without human intervention. <strong>SENTINEL&rsquo;s response:</strong> four-layer VETSAFE-Grade verification, immutable audit trail by name, Inaction-as-Decision.</div></div></div>
+  <div class="ignition-item"><div class="ig-num">04</div><div><div class="ig-title">The Survivor Blind Spot</div><div class="ig-text">Neither Oracle&rsquo;s EHR nor VistA automatically notifies a veteran&rsquo;s family of benefits owed at time of death. The family must know to ask. <strong>SENTINEL&rsquo;s response:</strong> Algorithm 5 Ripple Effect &mdash; 24-hour automatic notification to next of kin. Every entitlement. No claim required.</div></div></div>
 </div>
 
-<div class="label mb20">ORACLE vs. SENTINEL &nbsp;·&nbsp; COST AND PERFORMANCE COMPARISON</div>
+<div class="label mb20">ORACLE vs. SENTINEL &nbsp;&middot;&nbsp; COST AND PERFORMANCE COMPARISON</div>
 <div style="overflow-x:auto;" class="mb32">
 <table class="cmp-tbl">
-<thead>
-  <tr>
-    <th style="width:220px;">METRIC</th>
-    <th class="oracle-col">ORACLE / CERNER EHR</th>
-    <th class="sentinel-col">SENTINEL — VAHGMA 2026</th>
-  </tr>
-</thead>
+<thead><tr><th style="width:220px;">METRIC</th><th class="oracle-col">ORACLE / CERNER EHR</th><th class="sentinel-col">SENTINEL &mdash; VFCAA 2026</th></tr></thead>
 <tbody>
-  <tr><td class="metric-col">Lifecycle Cost</td><td class="oracle-col bad">$37B–$49.8B (8 years in, 94% of facilities still waiting)</td><td class="sentinel-col good">Estimated $3B–$8B over 10 years — competitive American AI, cloud architecture economics</td></tr>
-  <tr><td class="metric-col">Facilities Covered</td><td class="oracle-col bad">6 of 171 after 8 years — 3.5%</td><td class="sentinel-col good">National deployment from day one — unified cloud architecture, mandatory by statute</td></tr>
-  <tr><td class="metric-col">Core Function</td><td class="oracle-col">Records clinical encounters — replaces paper charts with digital ones</td><td class="sentinel-col good">Cross-references veteran's legal entitlement against every transaction in real time — prevents unlawful denials before they are issued</td></tr>
-  <tr><td class="metric-col">VBA–VHA Data Unification</td><td class="oracle-col bad">No — two separate systems, unreliable sync, manual pharmacist safety checks required</td><td class="sentinel-col good">Mandatory 15-minute synchronization ceiling between VBA and VHA by statute. Breach triggers automatic consequences.</td></tr>
-  <tr><td class="metric-col">Denial Citation Validation</td><td class="oracle-col bad">None — no architectural mechanism</td><td class="sentinel-col good">Layer 1 and Layer 2 automated. Layer 3 and Layer 4 human review. Every denial validated against displayed law.</td></tr>
-  <tr><td class="metric-col">Patient Safety</td><td class="oracle-col bad">58% of staff believe Oracle increased patient safety risk (GAO 2026)</td><td class="sentinel-col good">VETSAFE-Grade standard — 0.20% error rate ceiling, 99.9% uptime floor, dual independent verification by statute</td></tr>
-  <tr><td class="metric-col">Survivor Notification</td><td class="oracle-col bad">None — family must know to ask, know what to ask for, file within unknown deadlines</td><td class="sentinel-col good">24-hour automatic notification to next of kin at veteran's death — every entitlement, every time, no claim required</td></tr>
-  <tr><td class="metric-col">Accountability</td><td class="oracle-col bad">70+ OIG recommendations, mostly unimplemented. $4.4B received, $325K refunded.</td><td class="sentinel-col good">Immutable audit trail by name. Inaction = decision. Auto-OIG referral at 5-day clock. No human decides to impose consequences.</td></tr>
-  <tr><td class="metric-col">IP Ownership</td><td class="oracle-col bad">Oracle retains IP. DoD declined to negotiate data rights. Government locked in indefinitely.</td><td class="sentinel-col good">Architecture owned by Sean Robinson / Valiant Heroes Organization. Vendor implementation = work-made-for-hire owned by US Government. No lock-in possible.</td></tr>
+  <tr><td class="metric-col">Lifecycle Cost</td><td class="oracle-col bad">$37B&ndash;$49.8B (8 years in, 94% of facilities still waiting)</td><td class="sentinel-col good">Estimated $3B&ndash;$8B over 10 years &mdash; competitive American AI, cloud architecture economics</td></tr>
+  <tr><td class="metric-col">Facilities Covered</td><td class="oracle-col bad">6 of 171 after 8 years &mdash; 3.5%</td><td class="sentinel-col good">National deployment from day one &mdash; unified cloud architecture, mandatory by statute</td></tr>
+  <tr><td class="metric-col">Core Function</td><td class="oracle-col">Records clinical encounters &mdash; replaces paper charts with digital ones</td><td class="sentinel-col good">Cross-references veteran&rsquo;s legal entitlement against every transaction in real time &mdash; prevents unlawful denials before they are issued</td></tr>
+  <tr><td class="metric-col">VBA&ndash;VHA Data Unification</td><td class="oracle-col bad">No &mdash; two separate systems, unreliable sync, manual pharmacist safety checks required</td><td class="sentinel-col good">Mandatory 15-minute synchronization ceiling between VBA and VHA by statute.</td></tr>
+  <tr><td class="metric-col">Denial Citation Validation</td><td class="oracle-col bad">None &mdash; no architectural mechanism</td><td class="sentinel-col good">Layer 1 and Layer 2 automated. Layer 3 and Layer 4 human review. Every denial validated against displayed law.</td></tr>
+  <tr><td class="metric-col">Patient Safety</td><td class="oracle-col bad">58% of staff believe Oracle increased patient safety risk (GAO 2026)</td><td class="sentinel-col good">VETSAFE-Grade standard &mdash; 0.20% error rate ceiling, 99.9% uptime floor, dual independent verification by statute</td></tr>
+  <tr><td class="metric-col">Survivor Notification</td><td class="oracle-col bad">None &mdash; family must know to ask, know what to ask for, file within unknown deadlines</td><td class="sentinel-col good">24-hour automatic notification to next of kin at veteran&rsquo;s death &mdash; every entitlement, every time</td></tr>
+  <tr><td class="metric-col">Accountability</td><td class="oracle-col bad">70+ OIG recommendations, mostly unimplemented. $4.4B received, $325K refunded.</td><td class="sentinel-col good">Immutable audit trail by name. Inaction = decision. Auto-OIG referral at 5-day clock.</td></tr>
+  <tr><td class="metric-col">IP Ownership</td><td class="oracle-col bad">Oracle retains IP. Government locked in indefinitely.</td><td class="sentinel-col good">Architecture owned by Sean Robinson / Valiant Heroes Organization. Vendor implementation = work-made-for-hire owned by US Government.</td></tr>
 </tbody>
 </table>
 </div>
 
-<div class="label mb20">SENTINEL &nbsp;·&nbsp; ESTIMATED FUTURE SAVINGS PROJECTION</div>
-<div class="savings-note">
-  <strong>IMPORTANT — READ FIRST:</strong> These are best-estimate projections based on documented VA spending patterns, denial rates, improper payment data, and actuarial baselines from published GAO, OIG, and VA reports. Real numbers will only emerge after SENTINEL is deployed and operational. The methodology and sources are stated for each estimate. These projections are conservative — actual savings are more likely to exceed these numbers than fall short, given the documented scope of the systemic problems SENTINEL closes architecturally.
-</div>
+<div class="label mb20">SENTINEL &nbsp;&middot;&nbsp; ESTIMATED FUTURE SAVINGS PROJECTION</div>
+<div class="savings-note"><strong>IMPORTANT &mdash; READ FIRST:</strong> These are best-estimate projections based on documented VA spending patterns, denial rates, improper payment data, and actuarial baselines from published GAO, OIG, and VA reports. Real numbers will only emerge after SENTINEL is deployed and operational.</div>
 <div class="savings mb48">
-  <div class="saving">
-    <div class="saving-cat">Denial Reversal Savings</div>
-    <div class="saving-amt">$2.1B–$4.8B</div>
-    <div class="saving-period">per year, once fully operational</div>
-    <div class="saving-basis">VA processes ~1.8 million claims annually. GAO documented VA's improper payment rate for compensation and pension at 1.4% in FY2023 — approximately $3.2 billion. SENTINEL's Denial Citation Anomaly architecture eliminates the specific class of improper denials caused by citation of inapplicable policy — documented as systemic in multiple OIG audits. Conservative estimate: SENTINEL captures 65–100% of documentation-error denials. These are not new expenditures — they are benefits veterans were already legally owed but were denied.</div>
-  </div>
-  <div class="saving">
-    <div class="saving-cat">Appeals Processing Cost Reduction</div>
-    <div class="saving-amt">$800M–$1.6B</div>
-    <div class="saving-period">per year</div>
-    <div class="saving-basis">VA's Board of Veterans Appeals processes ~150,000 appeals annually. Average cost per appeal including BVA attorney time, VBA rework, CAVC litigation, and VSO representation: $8,000–$12,000. A significant percentage of appeals are filed because the original denial cited inapplicable law — the exact failure SENTINEL closes architecturally. Conservative estimate: SENTINEL reduces the documentation-error appeal class by 60–80%, eliminating 55,000–80,000 appeals per year.</div>
-  </div>
-  <div class="saving">
-    <div class="saving-cat">Survivor Benefits Now Reaching Families</div>
-    <div class="saving-amt">$600M–$1.2B</div>
-    <div class="saving-period">per year in benefits now delivered</div>
-    <div class="saving-basis">The National Academy of Sciences estimated in 2018 that VA was underpaying survivors by several billion dollars annually due to awareness gaps. SENTINEL's 24-hour Ripple Effect notification at veteran death reaches an estimated 300,000–600,000 survivor households per year who currently receive no automatic notification. This is not a government saving — it is money reaching veterans' families that currently does not reach them.</div>
-  </div>
-  <div class="saving">
-    <div class="saving-cat">Community Care Over-Authorization Reduction</div>
-    <div class="saving-amt">$400M–$900M</div>
-    <div class="saving-period">per year</div>
-    <div class="saving-basis">Community care spending: $34 billion in FY2026 — 40% of all VA medical visits. A portion of authorizations occur because VA facilities do not have the veteran's current rating and priority group visible at scheduling, leading to incorrect access standard calculations. SENTINEL's real-time VBA–VHA synchronization ensures correct priority group and access standard are applied at first contact, reducing over-referral while also eliminating under-referral for veterans incorrectly denied.</div>
-  </div>
-  <div class="saving">
-    <div class="saving-cat">Oracle Contract Replacement — Lifecycle Cost Avoidance</div>
-    <div class="saving-amt">$29B–$42B</div>
-    <div class="saving-period">lifecycle cost avoidance — 10-year horizon</div>
-    <div class="saving-basis">Oracle EHR lifecycle: $37B (House VA Committee) to $49.8B (independent estimate) over full deployment. SENTINEL's estimated build-and-operate cost using competitive American AI infrastructure: $3B–$8B over 10 years. The cost avoidance is the difference between completing Oracle's contract to full deployment and replacing its core function with SENTINEL. SENTINEL does not replace Oracle's clinical documentation function — it replaces Oracle's failed promise to unify veteran data and apply entitlements correctly at point of care.</div>
-  </div>
-  <div class="saving">
-    <div class="saving-cat">Total Estimated 10-Year Impact</div>
-    <div class="saving-amt">$35B–$55B</div>
-    <div class="saving-period">combined savings and cost avoidance</div>
-    <div class="saving-basis">Conservative total across all five categories over a 10-year operational horizon. Oracle contract replacement savings dominate the calculation. Denial reversal, appeals reduction, and survivor benefit delivery are recurring annual figures that compound over time. The methodology is documented. The projections are conservative. The only number that cannot be estimated is the value of a veteran who dies without ever receiving the benefits they earned — that number has no dollar figure.</div>
-  </div>
+  <div class="saving"><div class="saving-cat">Denial Reversal Savings</div><div class="saving-amt">$2.1B&ndash;$4.8B</div><div class="saving-period">per year, once fully operational</div><div class="saving-basis">VA processes ~1.8 million claims annually. GAO documented VA&rsquo;s improper payment rate for compensation and pension at 1.4% in FY2023 &mdash; approximately $3.2 billion. SENTINEL&rsquo;s Denial Citation Anomaly architecture eliminates the specific class of improper denials caused by citation of inapplicable policy.</div></div>
+  <div class="saving"><div class="saving-cat">Appeals Processing Cost Reduction</div><div class="saving-amt">$800M&ndash;$1.6B</div><div class="saving-period">per year</div><div class="saving-basis">VA&rsquo;s Board of Veterans Appeals processes ~150,000 appeals annually. Average cost per appeal: $8,000&ndash;$12,000. Conservative estimate: SENTINEL reduces the documentation-error appeal class by 60&ndash;80%, eliminating 55,000&ndash;80,000 appeals per year.</div></div>
+  <div class="saving"><div class="saving-cat">Survivor Benefits Now Reaching Families</div><div class="saving-amt">$600M&ndash;$1.2B</div><div class="saving-period">per year in benefits now delivered</div><div class="saving-basis">SENTINEL&rsquo;s 24-hour Ripple Effect notification at veteran death reaches an estimated 300,000&ndash;600,000 survivor households per year who currently receive no automatic notification.</div></div>
+  <div class="saving"><div class="saving-cat">Community Care Over-Authorization Reduction</div><div class="saving-amt">$400M&ndash;$900M</div><div class="saving-period">per year</div><div class="saving-basis">Community care spending: $34 billion in FY2026 &mdash; 40% of all VA medical visits. SENTINEL&rsquo;s real-time VBA&ndash;VHA synchronization ensures correct priority group and access standard are applied at first contact.</div></div>
+  <div class="saving"><div class="saving-cat">Oracle Contract Replacement &mdash; Lifecycle Cost Avoidance</div><div class="saving-amt">$29B&ndash;$42B</div><div class="saving-period">lifecycle cost avoidance &mdash; 10-year horizon</div><div class="saving-basis">Oracle EHR lifecycle: $37B to $49.8B over full deployment. SENTINEL&rsquo;s estimated build-and-operate cost: $3B&ndash;$8B over 10 years.</div></div>
+  <div class="saving"><div class="saving-cat">Total Estimated 10-Year Impact</div><div class="saving-amt">$35B&ndash;$55B</div><div class="saving-period">combined savings and cost avoidance</div><div class="saving-basis">Conservative total across all five categories over a 10-year operational horizon. The only number that cannot be estimated is the value of a veteran who dies without ever receiving the benefits they earned &mdash; that number has no dollar figure.</div></div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ PROPOSAL BANNER -->
-<!-- ════════ ORACLE SOURCE DOCUMENTS ═══════════════════════════════════════ -->
+<!-- ORACLE SOURCE DOCUMENTS -->
 <div class="label mb20">ORACLE SOURCE DOCUMENTS &nbsp;&middot;&nbsp; DOWNLOAD THE FULL RESEARCH</div>
 <div class="oracle-dl-row mb48">
-  <a class="oracle-dl-tile" id="oracle-file1" href="https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip" target="_blank">
+  <a class="oracle-dl-tile" href="https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip" target="_blank">
     <div class="oracle-dl-icon">&#128269;</div>
     <div class="oracle-dl-info">
       <div class="oracle-dl-kicker">20-Year Federal Contract Record</div>
       <div class="oracle-dl-title">Oracle Federal Contract Failure Record</div>
-      <div class="oracle-dl-desc">The complete documented record across VA, DoD, GSA, and Oregon. $13.84 billion obligated. 6 of 171 facilities live after 8 years. Veterans fatally harmed. FBI investigation. $280M DoD HR system terminated by DOGE. Twenty years. One pattern.</div>
+      <div class="oracle-dl-desc">The complete documented record across VA, DoD, GSA, and Oregon. $13.84 billion obligated. 6 of 171 facilities live after 8 years. Veterans fatally harmed. FBI investigation. Twenty years. One pattern.</div>
     </div>
     <div class="oracle-dl-badge">&#8595; DOWNLOAD</div>
   </a>
-  <a class="oracle-dl-tile" id="oracle-file2" href="https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/ugd/2b1944_28fbfbeca0204774aeeda1d55281d641.docx" target="_blank">
+  <a class="oracle-dl-tile" href="https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/ugd/2b1944_28fbfbeca0204774aeeda1d55281d641.docx" target="_blank">
     <div class="oracle-dl-icon">&#128202;</div>
     <div class="oracle-dl-info">
       <div class="oracle-dl-kicker">FY2026 Budget &amp; Contract Analysis</div>
       <div class="oracle-dl-title">VA IT Infrastructure &amp; Oracle Analysis &mdash; FY2026</div>
-      <div class="oracle-dl-desc">401 paragraphs. Oracle doubled to $2.2B while support contractors were cut. PACT Act fund used for IT. Unfunded integration contract. Six confirmed fund movement mechanisms. Sourced from official VA budget submissions and congressional testimony.</div>
+      <div class="oracle-dl-desc">401 paragraphs. Oracle doubled to $2.2B while support contractors were cut. PACT Act fund used for IT. Six confirmed fund movement mechanisms. Sourced from official VA budget submissions and congressional testimony.</div>
     </div>
     <div class="oracle-dl-badge">&#8595; DOWNLOAD</div>
   </a>
 </div>
 
 <div class="proposal mb32">
-  <div class="proposal-kicker">VAHGMA 2026 &nbsp;·&nbsp; SENTINEL &nbsp;·&nbsp; VALIANT HEROES ORGANIZATION</div>
-  <div class="proposal-text">Review the full proposal, system structure, and supporting materials behind SENTINEL and VAHGMA 2026.</div>
+  <div class="proposal-kicker">VFCAA 2026 &nbsp;&middot;&nbsp; SENTINEL &nbsp;&middot;&nbsp; VALIANT HEROES ORGANIZATION</div>
+  <div class="proposal-text">The Bill is the Law. SENTINEL is the Engine That Enforces It. One cannot work without the other.</div>
   <div class="proposal-sub">All documents produced by Sean Robinson, SK1(SS/SW/AW), United States Navy, Retired &nbsp;&middot;&nbsp; Copyright &copy; 2026 Sean Robinson and Valiant Heroes Organization</div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════ FILES SECTION -->
+<!-- FILES -->
 <div class="label mb20">ALL OUTPUT FILES</div>
-
-<!-- ADMIN PANEL — INVISIBLE TO ALL VISITORS -->
-<!-- HOW TO ACCESS: Click "VALIANT HEROES ORGANIZATION" in the footer 5 times quickly -->
 <div id="adminPanel">
   <div class="admin-bar">
     <div>
-      <div class="admin-lbl">&#9881; ADMIN &nbsp;·&nbsp; Document Access Control</div>
+      <div class="admin-lbl">&#9881; ADMIN &nbsp;&middot;&nbsp; Document Access Control</div>
       <div class="admin-note">Logged in as Administrator &mdash; Sean Robinson / Valiant Heroes Organization &mdash; sean&#64;valiantheroes.org</div>
     </div>
     <div class="toggle-sw" onclick="toggleDownloads()">
@@ -1577,225 +880,121 @@ body.downloads-on .file-item[href]:not([href='#']) { cursor: pointer; }
     </div>
   </div>
 </div>
-
-<!-- VISITOR NOTICE -->
 <div class="visitor-notice mb20" id="visitorNotice">
   <span class="visitor-notice-icon">&#128229;</span>
-  <span class="visitor-notice-text">All VAHGMA 2026 and SENTINEL documents listed below are available for download when enabled by Valiant Heroes Organization. Contact <strong>sean&#64;valiantheroes.org</strong> to request access.</span>
+  <span class="visitor-notice-text">All VFCAA 2026 and SENTINEL documents listed below are available for download when enabled by Valiant Heroes Organization. Contact <strong>sean&#64;valiantheroes.org</strong> to request access.</span>
 </div>
-
 <div class="files mb48">
-  <a class="file-item" id="file1">
-    <div class="file-icon">&#128203;</div>
-    <div class="file-info"><div class="file-name">VAHGMA 2026 &mdash; Complete Bill</div><div class="file-type">686 paragraphs &middot; 22 amendments &middot; All validations passed</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file2">
-    <div class="file-icon">&#128203;</div>
-    <div class="file-info"><div class="file-name">SENTINEL PCS &mdash; Algorithm 1: Service-Connected Care</div><div class="file-type">325 paragraphs &middot; 14 schedule entries</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file3">
-    <div class="file-icon">&#128203;</div>
-    <div class="file-info"><div class="file-name">SENTINEL PCS &mdash; Algorithms 2 through 8</div><div class="file-type">445 paragraphs &middot; All algorithm categories complete</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file4">
-    <div class="file-icon">&#128203;</div>
-    <div class="file-info"><div class="file-name">VAHGMA 2026 &mdash; Master Command Document</div><div class="file-type">413 paragraphs &middot; Full project chess board</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file5">
-    <div class="file-icon">&#128274;</div>
-    <div class="file-info"><div class="file-name">VAHGMA 2026 &mdash; IP Protection Agreement</div><div class="file-type">101 paragraphs &middot; Execute before all technical conversations</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file6">
-    <div class="file-icon">&#128196;</div>
-    <div class="file-info"><div class="file-name">VAHGMA 2026 &mdash; Revenue Assignment Agreement</div><div class="file-type">All revenue assigned to Valiant Heroes Organization</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file7">
-    <div class="file-icon">&#128196;</div>
-    <div class="file-info"><div class="file-name">VAHGMA 2026 &mdash; Agreement of Understanding</div><div class="file-type">Pre-conversation framework document</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file8">
-    <div class="file-icon">&#128187;</div>
-    <div class="file-info"><div class="file-name">SENTINEL Source Code &mdash; VAHGMA 2026</div><div class="file-type">2,834 lines Python &middot; 6 files &middot; All 8 algorithm engines</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file9">
-    <div class="file-icon">&#128202;</div>
-    <div class="file-info"><div class="file-name">SENTINEL Visual Briefing</div><div class="file-type">Congressional and company briefing deck</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file10">
-    <div class="file-icon">&#128197;</div>
-    <div class="file-info"><div class="file-name">VAHGMA 2026 &mdash; Rachel Miller Briefing</div><div class="file-type">Senator Kelly office briefing &middot; April 6, 2026</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file11">
-    <div class="file-icon">&#128221;</div>
-    <div class="file-info"><div class="file-name">SENTINEL Plain Language Summary</div><div class="file-type">Veteran-facing plain language explanation</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file12">
-    <div class="file-icon">&#128203;</div>
-    <div class="file-info"><div class="file-name">VAHGMA 2026 &mdash; Copyright and Trademark Filing Guide</div><div class="file-type">Step-by-step &middot; copyright.gov + USPTO &middot; $630 total</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file13">
-    <div class="file-icon">&#128269;</div>
-    <div class="file-info"><div class="file-name">VA IT Infrastructure and Oracle Contract Analysis &mdash; FY2026</div><div class="file-type">401 paragraphs &middot; Oracle contract &middot; Fund movement &middot; Full FY2026 analysis</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file14">
-    <div class="file-icon">&#128100;</div>
-    <div class="file-info"><div class="file-name">Company Contact Files &mdash; All 8 Companies</div><div class="file-type">OpenAI &middot; AWS &middot; Microsoft &middot; Google &middot; Meta &middot; Palantir &middot; Scale AI &middot; Nvidia</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
-  <a class="file-item" id="file15">
-    <div class="file-icon">&#127962;</div>
-    <div class="file-info"><div class="file-name">Company Background Dossiers &mdash; All 9 Companies</div><div class="file-type">Full background dossiers on all target companies</div></div>
-    <span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span>
-  </a>
+  <a class="file-item" id="file1"><div class="file-icon">&#128203;</div><div class="file-info"><div class="file-name">VFCAA 2026 &mdash; Complete Bill</div><div class="file-type">685 paragraphs &middot; 21 amendments &middot; All validations passed</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file2"><div class="file-icon">&#128203;</div><div class="file-info"><div class="file-name">SENTINEL PCS &mdash; Algorithm 1: Service-Connected Care</div><div class="file-type">325 paragraphs &middot; 14 schedule entries</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file3"><div class="file-icon">&#128203;</div><div class="file-info"><div class="file-name">SENTINEL PCS &mdash; Algorithms 2 through 8</div><div class="file-type">445 paragraphs &middot; All algorithm categories complete</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file4"><div class="file-icon">&#128203;</div><div class="file-info"><div class="file-name">VFCAA 2026 &mdash; Master Command Document</div><div class="file-type">413 paragraphs &middot; Full project chess board</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file5"><div class="file-icon">&#128274;</div><div class="file-info"><div class="file-name">VFCAA 2026 &mdash; IP Protection Agreement</div><div class="file-type">101 paragraphs &middot; Execute before all technical conversations</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file6"><div class="file-icon">&#128196;</div><div class="file-info"><div class="file-name">VFCAA 2026 &mdash; Revenue Assignment Agreement</div><div class="file-type">All revenue assigned to Valiant Heroes Organization</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file7"><div class="file-icon">&#128196;</div><div class="file-info"><div class="file-name">VFCAA 2026 &mdash; Agreement of Understanding</div><div class="file-type">Pre-conversation framework document</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file8"><div class="file-icon">&#128187;</div><div class="file-info"><div class="file-name">SENTINEL Source Code &mdash; VFCAA 2026</div><div class="file-type">2,834 lines Python &middot; 6 files &middot; All 8 algorithm engines</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file9"><div class="file-icon">&#128202;</div><div class="file-info"><div class="file-name">SENTINEL Visual Briefing</div><div class="file-type">Congressional and company briefing deck</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file10"><div class="file-icon">&#128197;</div><div class="file-info"><div class="file-name">VFCAA 2026 &mdash; April 6 Rachel Miller Briefing Packet</div><div class="file-type">Senator Kelly office briefing &middot; Committee referral confirmed</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file11"><div class="file-icon">&#128221;</div><div class="file-info"><div class="file-name">SENTINEL Plain Language Summary</div><div class="file-type">Veteran-facing plain language explanation</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file12"><div class="file-icon">&#128203;</div><div class="file-info"><div class="file-name">VFCAA 2026 &mdash; Copyright and Trademark Filing Guide</div><div class="file-type">ECO 1-15132801581 &middot; ECO 1-15132777731 &middot; USPTO &ldquo;Veteran-Sentinel&rdquo;</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file13"><div class="file-icon">&#128269;</div><div class="file-info"><div class="file-name">VA IT Infrastructure and Oracle Contract Analysis &mdash; FY2026</div><div class="file-type">401 paragraphs &middot; Oracle contract &middot; Fund movement &middot; Full FY2026 analysis</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file14"><div class="file-icon">&#128100;</div><div class="file-info"><div class="file-name">Company Contact Files &mdash; All 8 Companies</div><div class="file-type">OpenAI &middot; AWS &middot; Scale AI &middot; Nvidia &middot; Google &middot; Meta &middot; Palantir &middot; IBM excluded</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
+  <a class="file-item" id="file15"><div class="file-icon">&#127962;</div><div class="file-info"><div class="file-name">Company Background Dossiers &mdash; All Target Companies</div><div class="file-type">Full background dossiers on all target companies</div></div><span class="dl-badge dl-on">&#8595; DOWNLOAD</span><span class="dl-badge dl-off">COMING SOON</span></a>
 </div>
 
-<!-- ══════════════════════════════════════ SENTINEL ADVOCATE CHAT -->
+<!-- SENTINEL ADVOCATE CHAT -->
 <div class="sentinel-chat-section">
-<div class="label mb20">SENTINEL ADVOCATE &nbsp;&middot;&nbsp; LIVE AI — ASK ABOUT VFCAA &amp; YOUR VETERAN RIGHTS</div>
+<div class="label mb20">SENTINEL ADVOCATE &nbsp;&middot;&nbsp; LIVE AI &mdash; ASK ABOUT VFCAA &amp; YOUR VETERAN RIGHTS</div>
 <div class="chat-container">
-
   <div class="chat-header">
     <div class="chat-header-indicator"></div>
     <div class="chat-header-title">SENTINEL Advocate</div>
     <div class="chat-header-sub">AI-Powered &nbsp;&middot;&nbsp; Mission-Focused &nbsp;&middot;&nbsp; Veterans First</div>
   </div>
-
   <div class="chat-messages" id="chatMessages">
     <div class="chat-msg assistant">
       <div class="chat-msg-label">SENTINEL Advocate</div>
       <div class="chat-msg-bubble">
-        I am the SENTINEL Advocate — your direct line to understanding the Veterans and Families Care Accountability Act and the SENTINEL oversight system.<br><br>
+        I am the SENTINEL Advocate &mdash; your direct line to understanding the Veterans and Families Care Accountability Act and the SENTINEL oversight system.<br><br>
         Ask me anything about the bill, your VA rights, how to appeal a denied claim, or what SENTINEL does that the current system cannot. No bureaucratic runaround. Straight answers.
       </div>
     </div>
   </div>
-
   <div class="chat-typing" id="chatTyping">
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
+    <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
   </div>
-
   <div class="chat-suggested" id="chatChips">
     <div class="chat-chip" onclick="sendChip(this)">What is the VFCAA?</div>
     <div class="chat-chip" onclick="sendChip(this)">How does SENTINEL work?</div>
-    <div class="chat-chip" onclick="sendChip(this)">My VA claim was denied — what now?</div>
+    <div class="chat-chip" onclick="sendChip(this)">My VA claim was denied &mdash; what now?</div>
     <div class="chat-chip" onclick="sendChip(this)">How do I support this bill?</div>
     <div class="chat-chip" onclick="sendChip(this)">What are the 21 amendments?</div>
     <div class="chat-chip" onclick="sendChip(this)">How do I contact Valiant Heroes?</div>
   </div>
-
   <div class="chat-input-row">
-    <textarea
-      class="chat-input"
-      id="chatInput"
-      rows="2"
-      placeholder="Ask about VFCAA, SENTINEL, your VA rights, or how to get involved..."
-    ></textarea>
+    <textarea class="chat-input" id="chatInput" rows="2" placeholder="Ask about VFCAA, SENTINEL, your VA rights, or how to get involved..."></textarea>
     <button class="chat-send" id="chatSend" onclick="sendMessage()">SEND</button>
   </div>
-
 </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════ FOOTER -->
+<!-- FOOTER -->
 <div class="footer">
   <div class="footer-left" id="adminTrigger">VALIANT HEROES ORGANIZATION</div>
   <div class="footer-right">
-    All revenue from SENTINEL and VAHGMA 2026 assigned exclusively to assisting veterans and their families.<br>
-    Copyright &copy; 2026 Sean Robinson, SK1(SS/SW/AW), United States Navy, Retired &nbsp;&middot;&nbsp; Architect, VAHGMA 2026<br>
-    sean&#64;valiantheroes.org
+    All revenue from SENTINEL and VFCAA 2026 assigned exclusively to assisting veterans and their families.<br>
+    Copyright &copy; 2026 Sean Robinson, SK1(SS/SW/AW), United States Navy, Retired &nbsp;&middot;&nbsp; Architect, VFCAA 2026<br>
+    sean&#64;valiantheroes.org &nbsp;&middot;&nbsp; 602-622-3036
   </div>
 </div>
 
-</div>
+</div><!-- end .wrap -->
 
-<!-- ═══════════════════════════════════════════ ADMIN JAVASCRIPT -->
 <script>
-// ════════════════════════════════════════════════════════════════════════════
-//  ADMIN-ONLY DOWNLOAD CONTROL — VALIANT HEROES ORGANIZATION
-//  Sean Robinson — SK1(SS/SW/AW), USN Retired
-// ════════════════════════════════════════════════════════════════════════════
-//
-//  HOW TO ACCESS THE ADMIN PANEL:
-//  Scroll to the very bottom of the dashboard.
-//  Click "VALIANT HEROES ORGANIZATION" in the footer left — 5 times quickly.
-//  The admin control bar fades in above the file tiles.
-//
-//  TURN ON:  Click footer text 5x → admin bar appears → click toggle → GREEN
-//  TURN OFF: Click footer text 5x → admin bar appears → click toggle → RED
-//
-//  THE SETTING PERSISTS — it remembers your choice across page reloads.
-//  Visitors always see the current state without needing to do anything.
-//
-// ════════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
+//  ADMIN DOWNLOAD CONTROL
+//  Access: Click "VALIANT HEROES ORGANIZATION" footer 5x
+// ════════════════════════════════════════════════════════════
 
-// ── MASTER ON/OFF SWITCH ─────────────────────────────────────────────────
-// TRUE  = downloads are ON for all visitors  (current state)
-// FALSE = downloads are OFF, showing COMING SOON
-// To change: use the footer 5-click admin toggle — it updates this automatically
 var DOWNLOADS_ON = true;
-// ─────────────────────────────────────────────────────────────────────────
-
-var STORAGE_KEY = 'vh_sentinel_downloads';
-var clickCount  = 0;
-var clickTimer  = null;
-var isAdmin     = false;
+var STORAGE_KEY  = 'vh_sentinel_downloads';
+var clickCount   = 0;
+var clickTimer   = null;
+var isAdmin      = false;
 var downloadsEnabled = false;
 
-// FILE URLS — replace each # with your actual Google Drive or Dropbox share link
 var FILE_URLS = {
-  file1:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // VAHGMA 2026 Complete Bill — in Core ZIP
-  file2:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // SENTINEL PCS Algorithm 1 — in Core ZIP
-  file3:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // SENTINEL PCS Algorithms 2-8 — in Core ZIP
-  file4:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/ugd/2b1944_09d46ee6b35346249e76a53ff5dbef0c.docx",  // Master Command Document
-  file5:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // IP Protection Agreement — in Core ZIP
-  file6:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // Revenue Assignment Agreement — in Core ZIP
-  file7:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // Agreement of Understanding — in Core ZIP
-  file8:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // Source Code ZIP — in Core ZIP
-  file9:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // Visual Briefing — in Core ZIP
-  file10: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // Rachel Miller Briefing — in Core ZIP
-  file11: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // Plain Language Summary — in Core ZIP
-  file12: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/ugd/2b1944_57fce4e4d29c49fbb378c13323c5f69d.docx",   // Copyright Trademark Guide
-  file13: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",    // VA IT Infrastructure Oracle Analysis — in Core ZIP
-  file14: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_bca6e850408c471a88d5b0d714d98f41.zip", // Contact Files ZIP
-  file15: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_a09776eb87c54f5b82731a3bfacca3d3.zip"  // Dossier Files ZIP
+  file1:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file2:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file3:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file4:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/ugd/2b1944_09d46ee6b35346249e76a53ff5dbef0c.docx",
+  file5:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file6:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file7:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file8:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file9:  "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file10: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file11: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file12: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/ugd/2b1944_57fce4e4d29c49fbb378c13323c5f69d.docx",
+  file13: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_15d17d888ee647f685a4b1ca6da3d06f.zip",
+  file14: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_bca6e850408c471a88d5b0d714d98f41.zip",
+  file15: "https://2b194454-0f3d-4596-8d7b-2c3be953f3e3.usrfiles.com/archives/2b1944_a09776eb87c54f5b82731a3bfacca3d3.zip"
 };
 
-// ── APPLY DOWNLOAD STATE TO THE PAGE ─────────────────────────────────────
 function applyDownloadState(enabled) {
   downloadsEnabled = enabled;
   var track  = document.getElementById('toggleTrack');
   var status = document.getElementById('toggleStatus');
   var notice = document.getElementById('visitorNotice');
-
   if (enabled) {
     if (track)  track.classList.add('on');
     if (status) { status.innerHTML = '&#9679; DOWNLOADS ENABLED'; status.classList.add('on'); }
     document.body.classList.add('downloads-on');
     Object.keys(FILE_URLS).forEach(function(id) {
       var el = document.getElementById(id);
-      if (el && FILE_URLS[id] && FILE_URLS[id] !== '#') {
-        el.setAttribute('href', FILE_URLS[id]);
-        el.setAttribute('target', '_blank');
-      }
+      if (el && FILE_URLS[id]) { el.setAttribute('href', FILE_URLS[id]); el.setAttribute('target', '_blank'); }
     });
-    if (notice) notice.innerHTML =
-      '<span class="visitor-notice-icon">&#128229;</span>' +
-      '<span class="visitor-notice-text"><strong>Documents are now available for download.</strong> Click any file tile below to download directly.</span>';
+    if (notice) notice.innerHTML = '<span class="visitor-notice-icon">&#128229;</span><span class="visitor-notice-text"><strong>Documents are now available for download.</strong> Click any file tile below to download directly.</span>';
   } else {
     if (track)  track.classList.remove('on');
     if (status) { status.innerHTML = '&#9679; DOWNLOADS DISABLED'; status.classList.remove('on'); }
@@ -1804,25 +1003,15 @@ function applyDownloadState(enabled) {
       var el = document.getElementById(id);
       if (el) { el.removeAttribute('href'); el.removeAttribute('target'); }
     });
-    if (notice) notice.innerHTML =
-      '<span class="visitor-notice-icon">&#128229;</span>' +
-      '<span class="visitor-notice-text">All VAHGMA 2026 and SENTINEL documents are available for download when enabled by Valiant Heroes Organization. Contact <strong>sean&#64;valiantheroes.org</strong> to request access.</span>';
+    if (notice) notice.innerHTML = '<span class="visitor-notice-icon">&#128229;</span><span class="visitor-notice-text">All VFCAA 2026 and SENTINEL documents are available for download when enabled by Valiant Heroes Organization. Contact <strong>sean&#64;valiantheroes.org</strong> to request access.</span>';
   }
 }
 
-// ── TOGGLE — CALLED BY ADMIN CLICKING THE SWITCH ─────────────────────────
 function toggleDownloads() {
   if (!isAdmin) return;
-  var newState = !downloadsEnabled;
-  applyDownloadState(newState);
-  // Show the admin a reminder to update the file for permanent change
-  if (!newState) {
-    var status = document.getElementById('toggleStatus');
-    if (status) status.innerHTML = '&#9679; DOWNLOADS DISABLED &mdash; Contact sean&#64;valiantheroes.org to make permanent';
-  }
+  applyDownloadState(!downloadsEnabled);
 }
 
-// ── REVEAL ADMIN PANEL ────────────────────────────────────────────────────
 function revealAdmin() {
   isAdmin = true;
   var panel = document.getElementById('adminPanel');
@@ -1831,13 +1020,10 @@ function revealAdmin() {
     panel.style.opacity = '0';
     panel.style.transition = 'opacity 0.4s ease';
     setTimeout(function() { panel.style.opacity = '1'; }, 10);
-    setTimeout(function() {
-      panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 150);
+    setTimeout(function() { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 150);
   }
 }
 
-// ── SECRET 5-CLICK FOOTER TRIGGER ────────────────────────────────────────
 function handleFooterClick() {
   clickCount++;
   if (clickTimer) clearTimeout(clickTimer);
@@ -1849,94 +1035,17 @@ function handleFooterClick() {
   }
 }
 
-// ── TOGGLE DOWNLOADS ─────────────────────────────────────────────────────
-function toggleDownloads() {
-  if (!isAdmin) return;
-  downloadsEnabled = !downloadsEnabled;
-  var track  = document.getElementById('toggleTrack');
-  var status = document.getElementById('toggleStatus');
-  var notice = document.getElementById('visitorNotice');
-
-  if (downloadsEnabled) {
-    if (track)  track.classList.add('on');
-    if (status) { status.innerHTML = '&#9679; DOWNLOADS ENABLED'; status.classList.add('on'); }
-    document.body.classList.add('downloads-on');
-    Object.keys(FILE_URLS).forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el && FILE_URLS[id] && FILE_URLS[id] !== '#') {
-        el.setAttribute('href', FILE_URLS[id]);
-        el.setAttribute('target', '_blank');
-      }
-    });
-    if (notice) notice.innerHTML =
-      '<span class="visitor-notice-icon">&#128229;</span>' +
-      '<span class="visitor-notice-text"><strong>Documents are now available for download.</strong> Click any file tile below to download directly.</span>';
-  } else {
-    if (track)  track.classList.remove('on');
-    if (status) { status.innerHTML = '&#9679; DOWNLOADS DISABLED'; status.classList.remove('on'); }
-    document.body.classList.remove('downloads-on');
-    Object.keys(FILE_URLS).forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) { el.removeAttribute('href'); el.removeAttribute('target'); }
-    });
-    if (notice) notice.innerHTML =
-      '<span class="visitor-notice-icon">&#128229;</span>' +
-      '<span class="visitor-notice-text">All VAHGMA 2026 and SENTINEL documents are available for download when enabled by Valiant Heroes Organization. Contact <strong>sean&#64;valiantheroes.org</strong> to request access.</span>';
-  }
-}
-
-// ── ON PAGE LOAD ─────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', function() {
   var trigger = document.getElementById('adminTrigger');
   if (trigger) trigger.addEventListener('click', handleFooterClick);
   applyDownloadState(DOWNLOADS_ON);
 });
 
-function applyDownloadState(enabled) {
-  downloadsEnabled = enabled;
-  var track  = document.getElementById('toggleTrack');
-  var status = document.getElementById('toggleStatus');
-  var notice = document.getElementById('visitorNotice');
-  if (enabled) {
-    if (track)  track.classList.add('on');
-    if (status) { status.innerHTML = '&#9679; DOWNLOADS ENABLED'; status.classList.add('on'); }
-    document.body.classList.add('downloads-on');
-    Object.keys(FILE_URLS).forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el && FILE_URLS[id] && FILE_URLS[id] !== '#') {
-        el.setAttribute('href', FILE_URLS[id]);
-        el.setAttribute('target', '_blank');
-      }
-    });
-    if (notice) notice.innerHTML =
-      '<span class="visitor-notice-icon">&#128229;</span>' +
-      '<span class="visitor-notice-text"><strong>Documents are now available for download.</strong> Click any file tile below to download directly.</span>';
-  } else {
-    if (track)  track.classList.remove('on');
-    if (status) { status.innerHTML = '&#9679; DOWNLOADS DISABLED'; status.classsList.remove('on'); }
-    document.body.classList.remove('downloads-on');
-    Object.keys(FILE_URLS).forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) { el.removeAttribute('href'); el.removeAttribute('target'); }
-    });
-    if (notice) notice.innerHTML =
-      '<span class="visitor-notice-icon">&#128229;</span>' +
-      '<span class="visitor-notice-text">All VAHGMA 2026 and SENTINEL documents are available for download when enabled by Valiant Heroes Organization. Contact <strong>sean&#64;valiantheroes.org</strong> to request access.</span>';
-  }
-}
-
-window.addEventListener('DOMContentLoaded', function() {
-  var trigger = document.getElementById('adminTrigger');
-  if (trigger) trigger.addEventListener('click', handleFooterClick);
-  applyDownloadState(DOWNLOADS_ON);
-});
-
-// ════════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
 //  SENTINEL ADVOCATE — LIVE AI CHAT
-//  Replace WORKER_URL below with your deployed Cloudflare Worker URL
-// ════════════════════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════
 
-var WORKER_URL = 'https://sentinel-advocate.royal-forest-fb7b.workers.dev';
+var WORKER_URL = 'https://sentinel-command-center.sentinel-command-center.workers.dev';
 var chatHistory = [];
 
 function scrollToBottom() {
@@ -1949,9 +1058,7 @@ function addMessage(role, text) {
   var div = document.createElement('div');
   div.className = 'chat-msg ' + role;
   var label = role === 'user' ? 'You' : 'SENTINEL Advocate';
-  div.innerHTML =
-    '<div class="chat-msg-label">' + label + '</div>' +
-    '<div class="chat-msg-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
+  div.innerHTML = '<div class="chat-msg-label">' + label + '</div><div class="chat-msg-bubble">' + text.replace(/\n/g, '<br>') + '</div>';
   msgs.appendChild(div);
   scrollToBottom();
 }
@@ -1971,10 +1078,7 @@ function setInputDisabled(disabled) {
 
 function sendChip(el) {
   var input = document.getElementById('chatInput');
-  if (input) {
-    input.value = el.textContent;
-    sendMessage();
-  }
+  if (input) { input.value = el.textContent; sendMessage(); }
 }
 
 async function sendMessage() {
@@ -1982,59 +1086,42 @@ async function sendMessage() {
   if (!input) return;
   var text = input.value.trim();
   if (!text) return;
-
-  if (WORKER_URL === 'https://sentinel-advocate.royal-forest-fb7b.workers.dev') {
-    addMessage('assistant', 'The SENTINEL Advocate is not yet connected. Please contact sean@valiantheroes.org for assistance.');
-    return;
-  }
-
   input.value = '';
   addMessage('user', text);
   setTyping(true);
   setInputDisabled(true);
-
   try {
     var response = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: text, history: chatHistory })
     });
-
     var data = await response.json();
-
     if (data.error) {
       addMessage('assistant', 'I encountered an issue. Please try again or contact sean@valiantheroes.org directly.');
     } else {
       chatHistory.push({ role: 'user', content: text });
       chatHistory.push({ role: 'assistant', content: data.reply });
-      // Keep history to last 10 exchanges to control costs
       if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
       addMessage('assistant', data.reply);
     }
   } catch (err) {
     addMessage('assistant', 'Connection issue. Please try again or reach us at sean@valiantheroes.org.');
   }
-
   setTyping(false);
   setInputDisabled(false);
   var inputEl = document.getElementById('chatInput');
   if (inputEl) inputEl.focus();
 }
 
-// Allow Enter to send (Shift+Enter for new line)
 document.addEventListener('DOMContentLoaded', function() {
   var input = document.getElementById('chatInput');
   if (input) {
     input.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
   }
 });
-
 </script>
-
 </body>
 </html>
