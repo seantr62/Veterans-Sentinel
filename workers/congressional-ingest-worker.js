@@ -1,329 +1,278 @@
-// congressional-ingest-worker.js
-// Scheduled Worker — runs every 24 hours
-// Truth-By-Consensus: queries 4 APIs, verifies across 3 of 4
-// Covers all 51 jurisdictions (50 states + DC)
-
-const DB_NAME = 'congressional-verified';
-
-// All 51 state/territory codes
-const ALL_STATES = [
-  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
-  'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
-  'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
-  'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC'
-];
+// congressional-ingest-worker.js v2
+// Truth-By-Consensus: 4 APIs, 3 of 4 must agree — all 51 jurisdictions
 
 export default {
-  // Scheduled trigger — runs every 24 hours
   async scheduled(event, env, ctx) {
     ctx.waitUntil(runIngestion(env));
   },
 
-  // Manual trigger via GET /ingest for testing
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
     if (url.pathname === '/ingest') {
       ctx.waitUntil(runIngestion(env));
       return new Response(JSON.stringify({ status: 'Ingestion started', time: new Date().toISOString() }), {
         headers: { 'Content-Type': 'application/json' }
       });
     }
+
     if (url.pathname === '/status') {
-      const result = await env.DB.prepare(
+      const counts = await env.DB.prepare(
         'SELECT status_consensus, COUNT(*) as count FROM members GROUP BY status_consensus'
       ).all();
-      const lastRun = await env.DB.prepare(
-        'SELECT MAX(check_time) as last_run FROM verification_log'
+      const last = await env.DB.prepare(
+        'SELECT MAX(last_verified) as last_run FROM members'
       ).first();
-      return new Response(JSON.stringify({ counts: result.results, last_run: lastRun }), {
+      return new Response(JSON.stringify({ counts: counts.results, last_run: last?.last_run || null, total: counts.results.reduce((a,r) => a + r.count, 0) }), {
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    return new Response('Congressional Verification Worker — use /ingest or /status', { status: 200 });
+
+    return new Response('Congressional Verification Worker — use /ingest or /status');
   }
 };
 
 async function runIngestion(env) {
-  console.log('Starting congressional ingestion:', new Date().toISOString());
+  console.log('Ingestion started:', new Date().toISOString());
+  const now = new Date().toISOString();
 
   try {
-    // SOURCE 1: Congress.gov — The Anchor
-    const congressMembers = await fetchCongressGov(env.CONGRESS_API_KEY);
-    console.log(`Congress.gov: ${congressMembers.length} members`);
+    // Pull all four sources in parallel
+    const [congressMembers, propublicaSenate, propublicaHouse, legiscanMembers, pluralMembers] = await Promise.all([
+      fetchCongressGov(env.CONGRESS_API_KEY),
+      fetchProPublica(env.PROPUBLICA_API_KEY, 'senate'),
+      fetchProPublica(env.PROPUBLICA_API_KEY, 'house'),
+      fetchLegiScan(env.LEGISCAN_API_KEY),
+      fetchPlural(env.PLURAL_API_KEY)
+    ]);
 
-    // SOURCE 2: ProPublica — The Pulse
-    const propublicaMembers = await fetchProPublica(env.PROPUBLICA_API_KEY);
-    console.log(`ProPublica: ${propublicaMembers.length} members`);
+    const propublicaMembers = [...propublicaSenate, ...propublicaHouse];
+    console.log(`Sources — Congress: ${congressMembers.length}, ProPublica: ${propublicaMembers.length}, LegiScan: ${legiscanMembers.length}, Plural: ${pluralMembers.length}`);
 
-    // SOURCE 3: LegiScan — The Cross-Check
-    const legiscanMembers = await fetchLegiScan(env.LEGISCAN_API_KEY);
-    console.log(`LegiScan: ${legiscanMembers.length} members`);
+    // Build consensus
+    const consensusMap = buildConsensus(congressMembers, propublicaMembers, legiscanMembers, pluralMembers);
+    console.log(`Consensus map built: ${Object.keys(consensusMap).length} members`);
 
-    // SOURCE 4: Plural — The Public Advocate
-    const pluralMembers = await fetchPlural(env.PLURAL_API_KEY);
-    console.log(`Plural: ${pluralMembers.length} members`);
+    let verified = 0, discrepancy = 0, manual = 0;
 
-    // Build consensus map keyed by bioguide_id
-    const consensusMap = buildConsensus(
-      congressMembers,
-      propublicaMembers,
-      legiscanMembers,
-      pluralMembers
-    );
+    for (const [bioguideId, r] of Object.entries(consensusMap)) {
+      try {
+        await env.DB.prepare(`
+          INSERT INTO members (
+            bioguide_id, official_name, first_name, last_name, party,
+            state, district, role_type, phone, office, website, in_office,
+            status_consensus, api_congress, api_propublica, api_legiscan, api_plural,
+            sources_agree, last_verified
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(bioguide_id) DO UPDATE SET
+            official_name = excluded.official_name,
+            party = excluded.party,
+            state = excluded.state,
+            district = excluded.district,
+            phone = excluded.phone,
+            office = excluded.office,
+            website = excluded.website,
+            in_office = excluded.in_office,
+            status_consensus = excluded.status_consensus,
+            api_congress = excluded.api_congress,
+            api_propublica = excluded.api_propublica,
+            api_legiscan = excluded.api_legiscan,
+            api_plural = excluded.api_plural,
+            sources_agree = excluded.sources_agree,
+            last_verified = excluded.last_verified
+        `).bind(
+          bioguideId,
+          r.official_name || '',
+          r.first_name || '',
+          r.last_name || '',
+          r.party || '',
+          r.state || '',
+          r.district || '',
+          r.role_type || '',
+          r.phone || '',
+          r.office || '',
+          r.website || '',
+          r.in_office ? 1 : 0,
+          r.status_consensus,
+          r.api_congress ? 1 : 0,
+          r.api_propublica ? 1 : 0,
+          r.api_legiscan ? 1 : 0,
+          r.api_plural ? 1 : 0,
+          r.sources_agree,
+          now
+        ).run();
 
-    // Write verified records to D1
-    let verified = 0, discrepancy = 0;
-    for (const [bioguideId, record] of Object.entries(consensusMap)) {
-      await env.DB.prepare(`
-        INSERT INTO members (
-          bioguide_id, official_name, first_name, last_name, party,
-          state, district, role_type, phone, office, website, in_office,
-          status_consensus, api_congress, api_propublica, api_legiscan, api_plural,
-          sources_agree, last_verified
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
-        ON CONFLICT(bioguide_id) DO UPDATE SET
-          official_name = excluded.official_name,
-          party = excluded.party,
-          state = excluded.state,
-          district = excluded.district,
-          phone = excluded.phone,
-          office = excluded.office,
-          website = excluded.website,
-          in_office = excluded.in_office,
-          status_consensus = excluded.status_consensus,
-          api_congress = excluded.api_congress,
-          api_propublica = excluded.api_propublica,
-          api_legiscan = excluded.api_legiscan,
-          api_plural = excluded.api_plural,
-          sources_agree = excluded.sources_agree,
-          last_verified = datetime('now')
-      `).bind(
-        bioguideId,
-        record.official_name,
-        record.first_name,
-        record.last_name,
-        record.party,
-        record.state,
-        record.district,
-        record.role_type,
-        record.phone || '',
-        record.office || '',
-        record.website || '',
-        record.in_office ? 1 : 0,
-        record.status_consensus,
-        record.api_congress ? 1 : 0,
-        record.api_propublica ? 1 : 0,
-        record.api_legiscan ? 1 : 0,
-        record.api_plural ? 1 : 0,
-        record.sources_agree,
-        datetime('now')
-      ).run();
-
-      // Log verification
-      await env.DB.prepare(`
-        INSERT INTO verification_log (bioguide_id, api_congress, api_propublica, api_legiscan, api_plural, consensus, flag)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-      `).bind(
-        bioguideId,
-        record.api_congress ? 'Active' : 'Not Found',
-        record.api_propublica ? 'Active' : 'Not Found',
-        record.api_legiscan ? 'Active' : 'Not Found',
-        record.api_plural ? 'Active' : 'Not Found',
-        record.status_consensus,
-        record.status_consensus === 'Discrepancy' ? 'Manual Review Required' : null
-      ).run();
-
-      if (record.status_consensus === 'Verified') verified++;
-      else discrepancy++;
+        if (r.status_consensus === 'Verified') verified++;
+        else if (r.status_consensus === 'Discrepancy') discrepancy++;
+        else manual++;
+      } catch (dbErr) {
+        console.error(`DB error for ${bioguideId}:`, dbErr.message);
+      }
     }
 
-    console.log(`Ingestion complete — Verified: ${verified}, Discrepancy: ${discrepancy}`);
+    console.log(`Ingestion complete — Verified: ${verified}, Discrepancy: ${discrepancy}, Manual: ${manual}`);
 
   } catch (err) {
-    console.error('Ingestion error:', err.message);
+    console.error('Ingestion failed:', err.message, err.stack);
   }
 }
 
-// SOURCE 1: Congress.gov API
 async function fetchCongressGov(apiKey) {
   const members = [];
   try {
-    // Current 119th Congress members
-    const res = await fetch(
-      `https://api.congress.gov/v3/member?congress=119&limit=250&format=json`,
-      { headers: { 'X-API-Key': apiKey } }
-    );
-    if (!res.ok) throw new Error('Congress.gov API error: ' + res.status);
-    const data = await res.json();
-    for (const m of (data.members || [])) {
-      members.push({
-        bioguide_id: m.bioguideId,
-        official_name: m.name,
-        first_name: m.firstName || '',
-        last_name: m.lastName || '',
-        party: m.partyName || '',
-        state: m.state || '',
-        district: m.district ? String(m.district) : '',
-        role_type: m.terms?.item?.[0]?.memberType || '',
-        in_office: m.terms?.item?.[0]?.endYear >= 2027,
-        source: 'congress'
-      });
-    }
-  } catch (err) {
-    console.error('Congress.gov fetch error:', err.message);
-  }
-  return members;
-}
-
-// SOURCE 2: ProPublica Congress API
-async function fetchProPublica(apiKey) {
-  const members = [];
-  try {
-    for (const chamber of ['senate', 'house']) {
+    let offset = 0;
+    while (true) {
       const res = await fetch(
-        `https://api.propublica.org/congress/v1/119/${chamber}/members.json`,
+        `https://api.congress.gov/v3/member?congress=119&limit=250&offset=${offset}&format=json`,
         { headers: { 'X-API-Key': apiKey } }
       );
-      if (!res.ok) continue;
+      if (!res.ok) { console.error('Congress.gov error:', res.status); break; }
       const data = await res.json();
-      for (const m of (data.results?.[0]?.members || [])) {
-        if (!m.in_office) continue;
+      const batch = data.members || [];
+      if (batch.length === 0) break;
+      for (const m of batch) {
         members.push({
-          bioguide_id: m.id,
-          official_name: `${m.first_name} ${m.last_name}`,
-          first_name: m.first_name || '',
-          last_name: m.last_name || '',
-          party: m.party === 'R' ? 'Republican' : m.party === 'D' ? 'Democrat' : m.party,
+          bioguide_id: m.bioguideId,
+          official_name: m.name || '',
+          first_name: (m.name || '').split(', ')[1] || '',
+          last_name: (m.name || '').split(', ')[0] || '',
+          party: m.partyName || '',
           state: m.state || '',
-          district: m.district || '',
-          role_type: chamber === 'senate' ? 'Senator' : 'Representative',
-          phone: m.phone || '',
-          office: m.office || '',
-          website: m.url || '',
-          in_office: true,
-          source: 'propublica'
+          district: m.district !== undefined ? String(m.district) : '',
+          role_type: m.terms?.item?.[0]?.memberType === 'Senator' ? 'Senator' : 'Representative',
+          in_office: true
         });
       }
+      if (batch.length < 250) break;
+      offset += 250;
     }
-  } catch (err) {
-    console.error('ProPublica fetch error:', err.message);
-  }
+  } catch (err) { console.error('Congress.gov fetch error:', err.message); }
   return members;
 }
 
-// SOURCE 3: LegiScan API
+async function fetchProPublica(apiKey, chamber) {
+  const members = [];
+  try {
+    const res = await fetch(
+      `https://api.propublica.org/congress/v1/119/${chamber}/members.json`,
+      { headers: { 'X-API-Key': apiKey } }
+    );
+    if (!res.ok) { console.error(`ProPublica ${chamber} error:`, res.status); return members; }
+    const data = await res.json();
+    for (const m of (data.results?.[0]?.members || [])) {
+      if (!m.in_office) continue;
+      members.push({
+        bioguide_id: m.id,
+        official_name: `${m.last_name}, ${m.first_name}`,
+        first_name: m.first_name || '',
+        last_name: m.last_name || '',
+        party: m.party === 'R' ? 'Republican' : m.party === 'D' ? 'Democrat' : m.party || '',
+        state: m.state || '',
+        district: m.district || '',
+        role_type: chamber === 'senate' ? 'Senator' : 'Representative',
+        phone: m.phone || '',
+        office: m.office || '',
+        website: m.url || '',
+        in_office: true
+      });
+    }
+  } catch (err) { console.error(`ProPublica ${chamber} error:`, err.message); }
+  return members;
+}
+
 async function fetchLegiScan(apiKey) {
   const members = [];
   try {
-    const res = await fetch(
-      `https://api.legiscan.com/?key=${apiKey}&op=getSessionPeople&session_id=2096`
-    );
-    if (!res.ok) throw new Error('LegiScan API error: ' + res.status);
+    // LegiScan session 2096 = 119th US Congress
+    const res = await fetch(`https://api.legiscan.com/?key=${apiKey}&op=getSessionPeople&session_id=2096`);
+    if (!res.ok) { console.error('LegiScan error:', res.status); return members; }
     const data = await res.json();
     for (const m of (data.sessionpeople?.people || [])) {
       members.push({
-        bioguide_id: m.people_id ? `LS_${m.people_id}` : null,
+        bioguide_id: null, // LegiScan uses its own IDs
+        legiscan_id: m.people_id,
         official_name: m.name || '',
         first_name: m.first_name || '',
         last_name: m.last_name || '',
         party: m.party_id === 1 ? 'Democrat' : m.party_id === 2 ? 'Republican' : 'Other',
-        state: m.state_id || '',
+        state: m.state || '',
         district: m.district || '',
-        role_type: m.role || '',
-        in_office: true,
-        source: 'legiscan'
+        role_type: (m.role || '').includes('Sen') ? 'Senator' : 'Representative',
+        in_office: true
       });
     }
-  } catch (err) {
-    console.error('LegiScan fetch error:', err.message);
-  }
+  } catch (err) { console.error('LegiScan error:', err.message); }
   return members;
 }
 
-// SOURCE 4: Plural (Open States) API
 async function fetchPlural(apiKey) {
   const members = [];
   try {
     const res = await fetch(
-      'https://v3.openstates.org/people?jurisdiction=us&per_page=100&apikey=' + apiKey
+      `https://v3.openstates.org/people?jurisdiction=us&per_page=100&apikey=${apiKey}`
     );
-    if (!res.ok) throw new Error('Plural API error: ' + res.status);
+    if (!res.ok) { console.error('Plural error:', res.status); return members; }
     const data = await res.json();
     for (const m of (data.results || [])) {
       members.push({
-        bioguide_id: m.openstates_url?.split('/').pop() || null,
+        bioguide_id: null,
         official_name: m.name || '',
         first_name: m.given_name || '',
         last_name: m.family_name || '',
         party: m.party?.[0]?.name || '',
-        state: m.jurisdiction?.name || '',
+        state: m.current_role?.division_id?.split('/')?.pop()?.toUpperCase() || '',
         district: m.current_role?.district || '',
-        role_type: m.current_role?.title || '',
+        role_type: (m.current_role?.title || '').includes('Senator') ? 'Senator' : 'Representative',
         phone: m.offices?.[0]?.voice || '',
         website: m.links?.[0]?.url || '',
-        in_office: true,
-        source: 'plural'
+        in_office: true
       });
     }
-  } catch (err) {
-    console.error('Plural fetch error:', err.message);
-  }
+  } catch (err) { console.error('Plural error:', err.message); }
   return members;
 }
 
-// Truth-By-Consensus — 3 of 4 sources must agree
 function buildConsensus(congressList, propublicaList, legiscanList, pluralList) {
   const map = {};
 
-  // Congress.gov is the anchor — start with its data
+  // Congress.gov is the anchor
   for (const m of congressList) {
     if (!m.bioguide_id) continue;
-    map[m.bioguide_id] = {
-      ...m,
-      api_congress: true,
-      api_propublica: false,
-      api_legiscan: false,
-      api_plural: false,
-      sources_agree: 1,
-      status_consensus: 'Pending'
-    };
+    map[m.bioguide_id] = { ...m, api_congress: true, api_propublica: false, api_legiscan: false, api_plural: false, sources_agree: 1 };
   }
 
-  // Cross-reference ProPublica by bioguide_id
+  // ProPublica — matches by bioguide_id directly
   for (const m of propublicaList) {
     if (!m.bioguide_id) continue;
     if (map[m.bioguide_id]) {
       map[m.bioguide_id].api_propublica = true;
       map[m.bioguide_id].sources_agree++;
-      // ProPublica has better phone/office data — merge it
       if (m.phone) map[m.bioguide_id].phone = m.phone;
       if (m.office) map[m.bioguide_id].office = m.office;
       if (m.website) map[m.bioguide_id].website = m.website;
     } else {
-      map[m.bioguide_id] = { ...m, api_congress: false, api_propublica: true, api_legiscan: false, api_plural: false, sources_agree: 1, status_consensus: 'Pending' };
+      map[m.bioguide_id] = { ...m, api_congress: false, api_propublica: true, api_legiscan: false, api_plural: false, sources_agree: 1 };
     }
   }
 
-  // Cross-reference LegiScan by name matching
+  // LegiScan — match by last name + state
   for (const m of legiscanList) {
+    if (!m.last_name || !m.state) continue;
     const match = Object.values(map).find(r =>
-      r.last_name && m.last_name &&
-      r.last_name.toLowerCase() === m.last_name.toLowerCase() &&
-      r.state === m.state
+      r.last_name?.toLowerCase() === m.last_name?.toLowerCase() &&
+      r.state === m.state &&
+      r.role_type === m.role_type
     );
-    if (match) {
-      match.api_legiscan = true;
-      match.sources_agree++;
-    }
+    if (match) { match.api_legiscan = true; match.sources_agree++; }
   }
 
-  // Cross-reference Plural by name matching
+  // Plural — match by last name + state
   for (const m of pluralList) {
+    if (!m.last_name || !m.state) continue;
     const match = Object.values(map).find(r =>
-      r.last_name && m.last_name &&
-      r.last_name.toLowerCase() === m.last_name.toLowerCase() &&
-      r.state === m.state
+      r.last_name?.toLowerCase() === m.last_name?.toLowerCase() &&
+      r.state === m.state &&
+      r.role_type === m.role_type
     );
     if (match) {
       match.api_plural = true;
@@ -333,16 +282,12 @@ function buildConsensus(congressList, propublicaList, legiscanList, pluralList) 
     }
   }
 
-  // Apply consensus logic — 3 of 4 = Verified
+  // Apply consensus — 3 of 4 = Verified
   for (const id of Object.keys(map)) {
     const r = map[id];
-    if (r.sources_agree >= 3) {
-      r.status_consensus = 'Verified';
-    } else if (r.sources_agree === 2) {
-      r.status_consensus = 'Discrepancy';
-    } else {
-      r.status_consensus = 'Manual Review';
-    }
+    if (r.sources_agree >= 3) r.status_consensus = 'Verified';
+    else if (r.sources_agree === 2) r.status_consensus = 'Discrepancy';
+    else r.status_consensus = 'Manual Review';
   }
 
   return map;
