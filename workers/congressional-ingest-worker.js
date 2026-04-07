@@ -1,293 +1,348 @@
 // congressional-ingest-worker.js
 // Scheduled Worker — runs every 24 hours
-// Truth-By-Consensus: queries 4 APIs, requires 3-of-4 agreement to mark Verified
+// Truth-By-Consensus: queries 4 APIs, verifies across 3 of 4
 // Covers all 51 jurisdictions (50 states + DC)
 
-const DB_ID = "9d51b85f-5e67-4119-8bf0-595fa5477f1f";
+const DB_NAME = 'congressional-verified';
+
+// All 51 state/territory codes
+const ALL_STATES = [
+  'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
+  'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
+  'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
+  'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
+  'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY','DC'
+];
 
 export default {
+  // Scheduled trigger — runs every 24 hours
   async scheduled(event, env, ctx) {
     ctx.waitUntil(runIngestion(env));
   },
-  async fetch(request, env) {
+
+  // Manual trigger via GET /ingest for testing
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.pathname === "/run" && request.method === "POST") {
-      await runIngestion(env);
-      return new Response(JSON.stringify({ status: "Ingestion complete" }), {
-        headers: { "Content-Type": "application/json" }
+    if (url.pathname === '/ingest') {
+      ctx.waitUntil(runIngestion(env));
+      return new Response(JSON.stringify({ status: 'Ingestion started', time: new Date().toISOString() }), {
+        headers: { 'Content-Type': 'application/json' }
       });
     }
-    return new Response("Congressional Ingest Worker — OK", { status: 200 });
+    if (url.pathname === '/status') {
+      const result = await env.DB.prepare(
+        'SELECT status_consensus, COUNT(*) as count FROM members GROUP BY status_consensus'
+      ).all();
+      const lastRun = await env.DB.prepare(
+        'SELECT MAX(check_time) as last_run FROM verification_log'
+      ).first();
+      return new Response(JSON.stringify({ counts: result.results, last_run: lastRun }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    return new Response('Congressional Verification Worker — use /ingest or /status', { status: 200 });
   }
 };
 
 async function runIngestion(env) {
-  console.log("Starting congressional ingestion:", new Date().toISOString());
+  console.log('Starting congressional ingestion:', new Date().toISOString());
 
   try {
-    // Pull all four sources in parallel
-    const [congressData, propublicaData, legiscanData, pluralData] = await Promise.allSettled([
-      fetchCongress(env.CONGRESS_API_KEY),
-      fetchPropublica(env.PROPUBLICA_API_KEY),
-      fetchLegiscan(env.LEGISCAN_API_KEY),
-      fetchPlural(env.PLURAL_API_KEY)
-    ]);
+    // SOURCE 1: Congress.gov — The Anchor
+    const congressMembers = await fetchCongressGov(env.CONGRESS_API_KEY);
+    console.log(`Congress.gov: ${congressMembers.length} members`);
 
-    // Build lookup maps keyed by bioguide_id
-    const congressMap = congressData.status === "fulfilled" ? congressData.value : {};
-    const propublicaMap = propublicaData.status === "fulfilled" ? propublicaData.value : {};
-    const legiscanMap = legiscanData.status === "fulfilled" ? legiscanData.value : {};
-    const pluralMap = pluralData.status === "fulfilled" ? pluralData.value : {};
+    // SOURCE 2: ProPublica — The Pulse
+    const propublicaMembers = await fetchProPublica(env.PROPUBLICA_API_KEY);
+    console.log(`ProPublica: ${propublicaMembers.length} members`);
 
-    // Congress.gov is the anchor — iterate over its members as the base set
-    const allBioguides = Object.keys(congressMap);
-    console.log(`Congress.gov returned ${allBioguides.length} members`);
+    // SOURCE 3: LegiScan — The Cross-Check
+    const legiscanMembers = await fetchLegiScan(env.LEGISCAN_API_KEY);
+    console.log(`LegiScan: ${legiscanMembers.length} members`);
 
-    let verified = 0, discrepancy = 0, vacant = 0;
+    // SOURCE 4: Plural — The Public Advocate
+    const pluralMembers = await fetchPlural(env.PLURAL_API_KEY);
+    console.log(`Plural: ${pluralMembers.length} members`);
 
-    for (const bioguide_id of allBioguides) {
-      const cm = congressMap[bioguide_id];
-      const pm = propublicaMap[bioguide_id];
-      const lm = legiscanMap[bioguide_id];
-      const plm = pluralMap[bioguide_id];
+    // Build consensus map keyed by bioguide_id
+    const consensusMap = buildConsensus(
+      congressMembers,
+      propublicaMembers,
+      legiscanMembers,
+      pluralMembers
+    );
 
-      // Truth-By-Consensus: count how many sources say in_office = true
-      const votes = [
-        cm?.in_office ? 1 : 0,
-        pm?.in_office ? 1 : 0,
-        lm?.in_office ? 1 : 0,
-        plm?.in_office ? 1 : 0
-      ];
-      const agreeing = votes.reduce((a, b) => a + b, 0);
-
-      let status;
-      if (agreeing >= 3) status = "Verified";
-      else if (agreeing === 0) status = "Vacant";
-      else status = "Discrepancy";
-
-      if (status === "Verified") verified++;
-      else if (status === "Vacant") vacant++;
-      else discrepancy++;
-
-      const apiFlags = JSON.stringify({
-        congress: cm?.in_office ? "Active" : "Inactive",
-        propublica: pm?.in_office ? "Active" : "Inactive",
-        legiscan: lm?.in_office ? "Active" : "Inactive",
-        plural: plm?.in_office ? "Active" : "Inactive"
-      });
-
-      // Upsert into D1 — Congress.gov is authoritative for names/contact
+    // Write verified records to D1
+    let verified = 0, discrepancy = 0;
+    for (const [bioguideId, record] of Object.entries(consensusMap)) {
       await env.DB.prepare(`
         INSERT INTO members (
-          bioguide_id, official_name, first_name, last_name, party, state, district,
-          role_type, phone, office, status_consensus,
-          in_office_congress, in_office_propublica, in_office_legiscan, in_office_plural,
-          sources_agree, api_flags, last_verified
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+          bioguide_id, official_name, first_name, last_name, party,
+          state, district, role_type, phone, office, website, in_office,
+          status_consensus, api_congress, api_propublica, api_legiscan, api_plural,
+          sources_agree, last_verified
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
         ON CONFLICT(bioguide_id) DO UPDATE SET
           official_name = excluded.official_name,
-          first_name = excluded.first_name,
-          last_name = excluded.last_name,
           party = excluded.party,
           state = excluded.state,
           district = excluded.district,
-          role_type = excluded.role_type,
           phone = excluded.phone,
           office = excluded.office,
+          website = excluded.website,
+          in_office = excluded.in_office,
           status_consensus = excluded.status_consensus,
-          in_office_congress = excluded.in_office_congress,
-          in_office_propublica = excluded.in_office_propublica,
-          in_office_legiscan = excluded.in_office_legiscan,
-          in_office_plural = excluded.in_office_plural,
+          api_congress = excluded.api_congress,
+          api_propublica = excluded.api_propublica,
+          api_legiscan = excluded.api_legiscan,
+          api_plural = excluded.api_plural,
           sources_agree = excluded.sources_agree,
-          api_flags = excluded.api_flags,
           last_verified = datetime('now')
       `).bind(
-        bioguide_id,
-        cm.official_name || "",
-        cm.first_name || "",
-        cm.last_name || "",
-        cm.party || pm?.party || "",
-        cm.state || "",
-        cm.district || "",
-        cm.role_type || "",
-        cm.phone || pm?.phone || "",
-        cm.office || "",
-        status,
-        cm?.in_office ? 1 : 0,
-        pm?.in_office ? 1 : 0,
-        lm?.in_office ? 1 : 0,
-        plm?.in_office ? 1 : 0,
-        agreeing,
-        apiFlags
+        bioguideId,
+        record.official_name,
+        record.first_name,
+        record.last_name,
+        record.party,
+        record.state,
+        record.district,
+        record.role_type,
+        record.phone || '',
+        record.office || '',
+        record.website || '',
+        record.in_office ? 1 : 0,
+        record.status_consensus,
+        record.api_congress ? 1 : 0,
+        record.api_propublica ? 1 : 0,
+        record.api_legiscan ? 1 : 0,
+        record.api_plural ? 1 : 0,
+        record.sources_agree,
+        datetime('now')
       ).run();
 
-      // Log verification result
+      // Log verification
       await env.DB.prepare(`
-        INSERT INTO verification_log (bioguide_id, congress_status, propublica_status, legiscan_status, plural_status, result)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO verification_log (bioguide_id, api_congress, api_propublica, api_legiscan, api_plural, consensus, flag)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
       `).bind(
-        bioguide_id,
-        cm?.in_office ? "Active" : "Inactive",
-        pm?.in_office ? "Active" : "Inactive",
-        lm?.in_office ? "Active" : "Inactive",
-        plm?.in_office ? "Active" : "Inactive",
-        status
+        bioguideId,
+        record.api_congress ? 'Active' : 'Not Found',
+        record.api_propublica ? 'Active' : 'Not Found',
+        record.api_legiscan ? 'Active' : 'Not Found',
+        record.api_plural ? 'Active' : 'Not Found',
+        record.status_consensus,
+        record.status_consensus === 'Discrepancy' ? 'Manual Review Required' : null
       ).run();
+
+      if (record.status_consensus === 'Verified') verified++;
+      else discrepancy++;
     }
 
-    console.log(`Ingestion complete — Verified: ${verified}, Discrepancy: ${discrepancy}, Vacant: ${vacant}`);
+    console.log(`Ingestion complete — Verified: ${verified}, Discrepancy: ${discrepancy}`);
 
   } catch (err) {
-    console.error("Ingestion error:", err.message);
+    console.error('Ingestion error:', err.message);
   }
 }
 
 // SOURCE 1: Congress.gov API
-async function fetchCongress(apiKey) {
-  const map = {};
-  let offset = 0;
-  const limit = 250;
-
-  while (true) {
-    const url = `https://api.congress.gov/v3/member?limit=${limit}&offset=${offset}&currentMember=true&api_key=${apiKey}`;
-    const res = await fetch(url);
-    if (!res.ok) break;
+async function fetchCongressGov(apiKey) {
+  const members = [];
+  try {
+    // Current 119th Congress members
+    const res = await fetch(
+      `https://api.congress.gov/v3/member?congress=119&limit=250&format=json`,
+      { headers: { 'X-API-Key': apiKey } }
+    );
+    if (!res.ok) throw new Error('Congress.gov API error: ' + res.status);
     const data = await res.json();
-    const members = data.members || [];
-    if (members.length === 0) break;
-
-    for (const m of members) {
-      const bioguide = m.bioguideId;
-      if (!bioguide) continue;
-
-      // Get terms to find current role
-      const terms = m.terms?.item || [];
-      const currentTerm = terms[terms.length - 1] || {};
-      const isSenator = currentTerm.chamber === "Senate";
-      const district = isSenator ? "" : String(currentTerm.district || "");
-
-      map[bioguide] = {
-        in_office: true,
-        official_name: m.name || `${m.firstName} ${m.lastName}`,
-        first_name: m.firstName || "",
-        last_name: m.lastName || "",
-        party: m.partyName || "",
-        state: m.state || "",
-        district,
-        role_type: isSenator ? "senator" : "representative",
-        phone: "",
-        office: ""
-      };
+    for (const m of (data.members || [])) {
+      members.push({
+        bioguide_id: m.bioguideId,
+        official_name: m.name,
+        first_name: m.firstName || '',
+        last_name: m.lastName || '',
+        party: m.partyName || '',
+        state: m.state || '',
+        district: m.district ? String(m.district) : '',
+        role_type: m.terms?.item?.[0]?.memberType || '',
+        in_office: m.terms?.item?.[0]?.endYear >= 2027,
+        source: 'congress'
+      });
     }
-
-    offset += limit;
-    if (members.length < limit) break;
+  } catch (err) {
+    console.error('Congress.gov fetch error:', err.message);
   }
-
-  return map;
+  return members;
 }
 
 // SOURCE 2: ProPublica Congress API
-async function fetchPropublica(apiKey) {
-  const map = {};
-  const chambers = ["senate", "house"];
-
-  for (const chamber of chambers) {
-    const url = `https://api.propublica.org/congress/v1/119/${chamber}/members.json`;
-    const res = await fetch(url, { headers: { "X-API-Key": apiKey } });
-    if (!res.ok) continue;
-    const data = await res.json();
-    const members = data.results?.[0]?.members || [];
-
-    for (const m of members) {
-      if (!m.id) continue;
-      map[m.id] = {
-        in_office: m.in_office === true,
-        party: m.party === "R" ? "Republican" : m.party === "D" ? "Democrat" : m.party,
-        phone: m.phone || "",
-        district: m.district || ""
-      };
+async function fetchProPublica(apiKey) {
+  const members = [];
+  try {
+    for (const chamber of ['senate', 'house']) {
+      const res = await fetch(
+        `https://api.propublica.org/congress/v1/119/${chamber}/members.json`,
+        { headers: { 'X-API-Key': apiKey } }
+      );
+      if (!res.ok) continue;
+      const data = await res.json();
+      for (const m of (data.results?.[0]?.members || [])) {
+        if (!m.in_office) continue;
+        members.push({
+          bioguide_id: m.id,
+          official_name: `${m.first_name} ${m.last_name}`,
+          first_name: m.first_name || '',
+          last_name: m.last_name || '',
+          party: m.party === 'R' ? 'Republican' : m.party === 'D' ? 'Democrat' : m.party,
+          state: m.state || '',
+          district: m.district || '',
+          role_type: chamber === 'senate' ? 'Senator' : 'Representative',
+          phone: m.phone || '',
+          office: m.office || '',
+          website: m.url || '',
+          in_office: true,
+          source: 'propublica'
+        });
+      }
     }
+  } catch (err) {
+    console.error('ProPublica fetch error:', err.message);
   }
-
-  return map;
+  return members;
 }
 
 // SOURCE 3: LegiScan API
-async function fetchLegiscan(apiKey) {
-  const map = {};
-
-  const url = `https://api.legiscan.com/?key=${apiKey}&op=getSessionList&state=US`;
-  const res = await fetch(url);
-  if (!res.ok) return map;
-  const data = await res.json();
-
-  const sessions = data.sessions || [];
-  const session119 = sessions.find(s => s.session_name && s.session_name.includes("119"));
-  if (!session119) return map;
-
-  const peopleUrl = `https://api.legiscan.com/?key=${apiKey}&op=getSessionPeople&id=${session119.session_id}`;
-  const peopleRes = await fetch(peopleUrl);
-  if (!peopleRes.ok) return map;
-  const peopleData = await peopleRes.json();
-
-  const people = peopleData.sessionpeople?.people || [];
-  for (const p of people) {
-    if (!p.bioguide_id) continue;
-    map[p.bioguide_id] = {
-      in_office: p.active === 1,
-      party: p.party_id === 1 ? "Democrat" : p.party_id === 2 ? "Republican" : "Other"
-    };
+async function fetchLegiScan(apiKey) {
+  const members = [];
+  try {
+    const res = await fetch(
+      `https://api.legiscan.com/?key=${apiKey}&op=getSessionPeople&session_id=2096`
+    );
+    if (!res.ok) throw new Error('LegiScan API error: ' + res.status);
+    const data = await res.json();
+    for (const m of (data.sessionpeople?.people || [])) {
+      members.push({
+        bioguide_id: m.people_id ? `LS_${m.people_id}` : null,
+        official_name: m.name || '',
+        first_name: m.first_name || '',
+        last_name: m.last_name || '',
+        party: m.party_id === 1 ? 'Democrat' : m.party_id === 2 ? 'Republican' : 'Other',
+        state: m.state_id || '',
+        district: m.district || '',
+        role_type: m.role || '',
+        in_office: true,
+        source: 'legiscan'
+      });
+    }
+  } catch (err) {
+    console.error('LegiScan fetch error:', err.message);
   }
-
-  return map;
+  return members;
 }
 
 // SOURCE 4: Plural (Open States) API
 async function fetchPlural(apiKey) {
+  const members = [];
+  try {
+    const res = await fetch(
+      'https://v3.openstates.org/people?jurisdiction=us&per_page=100&apikey=' + apiKey
+    );
+    if (!res.ok) throw new Error('Plural API error: ' + res.status);
+    const data = await res.json();
+    for (const m of (data.results || [])) {
+      members.push({
+        bioguide_id: m.openstates_url?.split('/').pop() || null,
+        official_name: m.name || '',
+        first_name: m.given_name || '',
+        last_name: m.family_name || '',
+        party: m.party?.[0]?.name || '',
+        state: m.jurisdiction?.name || '',
+        district: m.current_role?.district || '',
+        role_type: m.current_role?.title || '',
+        phone: m.offices?.[0]?.voice || '',
+        website: m.links?.[0]?.url || '',
+        in_office: true,
+        source: 'plural'
+      });
+    }
+  } catch (err) {
+    console.error('Plural fetch error:', err.message);
+  }
+  return members;
+}
+
+// Truth-By-Consensus — 3 of 4 sources must agree
+function buildConsensus(congressList, propublicaList, legiscanList, pluralList) {
   const map = {};
 
-  const query = `{
-    people(memberOf: "ocd-organization/united-states-of-america", first: 600) {
-      edges {
-        node {
-          id
-          name
-          party: primaryParty
-          currentRole { active district title }
-          identifiers { identifier scheme }
-          contactDetails { type value }
-        }
-      }
-    }
-  }`;
-
-  const res = await fetch("https://v3.openstates.org/graphql", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-API-KEY": apiKey
-    },
-    body: JSON.stringify({ query })
-  });
-
-  if (!res.ok) return map;
-  const data = await res.json();
-  const edges = data.data?.people?.edges || [];
-
-  for (const edge of edges) {
-    const node = edge.node;
-    const bioguide = node.identifiers?.find(i => i.scheme === "bioguide")?.identifier;
-    if (!bioguide) continue;
-
-    const phone = node.contactDetails?.find(c => c.type === "voice")?.value || "";
-
-    map[bioguide] = {
-      in_office: node.currentRole?.active === true,
-      party: node.party || "",
-      phone
+  // Congress.gov is the anchor — start with its data
+  for (const m of congressList) {
+    if (!m.bioguide_id) continue;
+    map[m.bioguide_id] = {
+      ...m,
+      api_congress: true,
+      api_propublica: false,
+      api_legiscan: false,
+      api_plural: false,
+      sources_agree: 1,
+      status_consensus: 'Pending'
     };
+  }
+
+  // Cross-reference ProPublica by bioguide_id
+  for (const m of propublicaList) {
+    if (!m.bioguide_id) continue;
+    if (map[m.bioguide_id]) {
+      map[m.bioguide_id].api_propublica = true;
+      map[m.bioguide_id].sources_agree++;
+      // ProPublica has better phone/office data — merge it
+      if (m.phone) map[m.bioguide_id].phone = m.phone;
+      if (m.office) map[m.bioguide_id].office = m.office;
+      if (m.website) map[m.bioguide_id].website = m.website;
+    } else {
+      map[m.bioguide_id] = { ...m, api_congress: false, api_propublica: true, api_legiscan: false, api_plural: false, sources_agree: 1, status_consensus: 'Pending' };
+    }
+  }
+
+  // Cross-reference LegiScan by name matching
+  for (const m of legiscanList) {
+    const match = Object.values(map).find(r =>
+      r.last_name && m.last_name &&
+      r.last_name.toLowerCase() === m.last_name.toLowerCase() &&
+      r.state === m.state
+    );
+    if (match) {
+      match.api_legiscan = true;
+      match.sources_agree++;
+    }
+  }
+
+  // Cross-reference Plural by name matching
+  for (const m of pluralList) {
+    const match = Object.values(map).find(r =>
+      r.last_name && m.last_name &&
+      r.last_name.toLowerCase() === m.last_name.toLowerCase() &&
+      r.state === m.state
+    );
+    if (match) {
+      match.api_plural = true;
+      match.sources_agree++;
+      if (m.phone && !match.phone) match.phone = m.phone;
+      if (m.website && !match.website) match.website = m.website;
+    }
+  }
+
+  // Apply consensus logic — 3 of 4 = Verified
+  for (const id of Object.keys(map)) {
+    const r = map[id];
+    if (r.sources_agree >= 3) {
+      r.status_consensus = 'Verified';
+    } else if (r.sources_agree === 2) {
+      r.status_consensus = 'Discrepancy';
+    } else {
+      r.status_consensus = 'Manual Review';
+    }
   }
 
   return map;
