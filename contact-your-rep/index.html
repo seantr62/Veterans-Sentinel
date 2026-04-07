@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VFCAA — How to Contact Your Congressional Representative</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      color: #111;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 0 0 60px 0;
+    }
+
+    /* HEADER */
+    .header-navy {
+      background: #1B3A6B;
+      color: #fff;
+      text-align: center;
+      padding: 24px 30px 18px 30px;
+    }
+    .header-navy h1 { font-size: 22px; letter-spacing: 1px; margin-bottom: 6px; }
+    .header-gold {
+      background: #C8960C;
+      color: #000;
+      text-align: center;
+      padding: 14px 30px;
+    }
+    .header-gold h2 { font-size: 19px; font-weight: bold; }
+    .header-subtitle {
+      background: #1B3A6B;
+      color: #fff;
+      text-align: center;
+      padding: 18px 30px;
+    }
+    .header-subtitle h2 { font-size: 26px; font-weight: bold; margin-bottom: 4px; }
+    .header-subtitle p { font-size: 17px; color: #ccd6e8; }
+
+    /* BODY CONTENT */
+    .content { padding: 36px 40px; }
+
+    /* INTRO */
+    .intro { font-size: 20px; line-height: 1.8; margin-bottom: 32px; color: #222; }
+    .intro strong { color: #1B3A6B; }
+
+    /* BEFORE YOU BEGIN BOX */
+    .before-box {
+      border: 3px solid #8B0000;
+      background: #fff8f8;
+      border-radius: 6px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+    }
+    .before-box h3 {
+      color: #8B0000;
+      font-size: 20px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .before-box ol { padding-left: 24px; }
+    .before-box ol li { font-size: 19px; margin-bottom: 10px; line-height: 1.6; }
+
+    /* STEP BOXES */
+    .step { margin-bottom: 36px; }
+    .step-header {
+      display: flex;
+      align-items: stretch;
+      border-radius: 6px 6px 0 0;
+      overflow: hidden;
+    }
+    .step-num {
+      background: #1B3A6B;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 110px;
+      text-align: center;
+      line-height: 1.3;
+      letter-spacing: 1px;
+    }
+    .step-title {
+      background: #D5E8F0;
+      color: #1B3A6B;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    .step-body {
+      border: 2px solid #D5E8F0;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      padding: 22px 28px;
+      background: #fff;
+    }
+    .step-body ol { padding-left: 24px; }
+    .step-body ol li { font-size: 19px; margin-bottom: 12px; line-height: 1.7; }
+    .step-body p { font-size: 19px; margin-bottom: 12px; line-height: 1.7; }
+
+    /* ZIP LOOKUP */
+    .zip-lookup {
+      background: #f0f4f8;
+      border: 2px solid #1B3A6B;
+      border-radius: 6px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+    .zip-lookup p { font-size: 18px; margin-bottom: 12px; font-weight: bold; color: #1B3A6B; }
+    .zip-row { display: flex; gap: 0; max-width: 420px; }
+    .zip-input {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 20px;
+      border: 2px solid #1B3A6B;
+      border-right: none;
+      border-radius: 6px 0 0 6px;
+      letter-spacing: 4px;
+      outline: none;
+    }
+    .zip-btn {
+      background: #1B3A6B;
+      color: #fff;
+      border: none;
+      padding: 12px 22px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 0 6px 6px 0;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+    .zip-btn:hover { background: #2a5298; }
+    .zip-btn:disabled { background: #888; cursor: not-allowed; }
+
+    .rep-result {
+      display: none;
+      margin-top: 16px;
+    }
+    .rep-result.show { display: block; }
+
+    .rep-card {
+      background: #fff;
+      border: 2px solid #1B3A6B;
+      border-left: 6px solid #C8960C;
+      border-radius: 6px;
+      padding: 18px 22px;
+      margin-bottom: 10px;
+    }
+    .rep-card h4 { font-size: 20px; color: #1B3A6B; margin-bottom: 4px; }
+    .rep-card .rep-role { font-size: 15px; color: #555; margin-bottom: 12px; letter-spacing: 1px; text-transform: uppercase; }
+    .rep-card .rep-party-R { color: #c0392b; font-weight: bold; font-size: 14px; }
+    .rep-card .rep-party-D { color: #2980b9; font-weight: bold; font-size: 14px; }
+    .rep-card .rep-links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .rep-link-btn {
+      display: inline-block;
+      padding: 8px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+    .rep-link-btn.primary { background: #1B3A6B; color: #fff; }
+    .rep-link-btn.primary:hover { background: #2a5298; }
+    .rep-link-btn.secondary { background: #fff; color: #1B3A6B; border: 2px solid #1B3A6B; }
+    .rep-link-btn.secondary:hover { background: #f0f4f8; }
+    .rep-office { font-size: 14px; color: #666; margin-top: 8px; }
+    .zip-error { color: #8B0000; font-weight: bold; font-size: 17px; margin-top: 10px; }
+
+    /* URL BOX */
+    .url-box {
+      background: #333;
+      color: #fff;
+      font-family: monospace;
+      font-size: 18px;
+      padding: 14px 22px;
+      border-radius: 6px;
+      text-align: center;
+      margin: 16px 0;
+      letter-spacing: 0.5px;
+      word-break: break-all;
+    }
+
+    /* BUTTON LABELS */
+    .button-box {
+      background: #1B3A6B;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px 22px;
+      border-radius: 6px;
+      text-align: center;
+      margin: 16px 0;
+      letter-spacing: 1px;
+    }
+
+    /* TIP BOX */
+    .tip {
+      display: flex;
+      align-items: stretch;
+      margin: 16px 0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .tip-label {
+      background: #C8960C;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
+      letter-spacing: 1px;
+    }
+    .tip-text {
+      background: #FFF9E6;
+      font-size: 18px;
+      padding: 10px 18px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    /* WARNING BOX */
+    .warning {
+      background: #8B0000;
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 14px 22px;
+      border-radius: 6px;
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    /* EMAIL FIELDS TABLE */
+    .email-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 18px;
+    }
+    .email-table td { padding: 12px 16px; border: 1px solid #ccc; vertical-align: top; }
+    .email-table .field-label {
+      background: #1B3A6B;
+      color: #fff;
+      font-weight: bold;
+      width: 130px;
+      white-space: nowrap;
+    }
+    .email-table .field-value { background: #f9f9f9; }
+
+    /* EMAIL TEMPLATE BOX */
+    .email-template {
+      border: 3px solid #1B3A6B;
+      border-radius: 6px;
+      padding: 24px 28px;
+      background: #f8fafd;
+      font-size: 18px;
+      line-height: 1.8;
+      margin: 20px 0;
+      position: relative;
+    }
+    .email-template p { margin-bottom: 14px; }
+    .email-template .quote {
+      font-style: italic;
+      color: #1B3A6B;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .email-template .attribution { color: #555; font-size: 16px; }
+    .email-template .signature { margin-top: 20px; color: #333; }
+    .copy-email-btn {
+      display: inline-block;
+      margin-top: 16px;
+      background: #C8960C;
+      color: #000;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 10px 22px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    .copy-email-btn:hover { background: #e8aa14; }
+    .copy-email-btn.copied { background: #27ae60; color: #fff; }
+
+    /* ATTACH SECTION */
+    .attach-list {
+      background: #f4f4f4;
+      border-left: 6px solid #1B3A6B;
+      padding: 18px 24px;
+      border-radius: 0 6px 6px 0;
+      margin: 16px 0;
+    }
+    .attach-list p { font-size: 18px; margin-bottom: 8px; font-weight: bold; color: #1B3A6B; }
+    .attach-list ul { padding-left: 22px; }
+    .attach-list ul li { font-size: 18px; margin-bottom: 8px; }
+
+    /* DIVIDER */
+    .divider { border: none; border-top: 4px solid #C8960C; margin: 36px 0; }
+
+    /* FOOTER */
+    .footer {
+      background: #1B3A6B;
+      color: #ccd6e8;
+      text-align: center;
+      padding: 28px 30px;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    .footer strong { color: #fff; font-size: 18px; }
+    .footer .lincoln {
+      font-style: italic;
+      color: #C8960C;
+      font-size: 19px;
+      margin-top: 16px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .content { padding: 24px 20px; }
+      .zip-row { flex-direction: column; }
+      .zip-input { border-right: 2px solid #1B3A6B; border-radius: 6px 6px 0 0; }
+      .zip-btn { border-radius: 0 0 6px 6px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header-navy">
+    <h1>VALIANT HEROES ORGANIZATION</h1>
+  </div>
+  <div class="header-gold">
+    <h2>Veterans and Families Care Accountability Act &mdash; VFCAA</h2>
+  </div>
+  <div class="header-subtitle">
+    <h2>HOW TO CONTACT YOUR CONGRESSIONAL REPRESENTATIVE</h2>
+    <p>Step-by-Step Instructions for Members &mdash; Print and Keep This Page</p>
+  </div>
+
+  <div class="content">
+
+    <!-- INTRO -->
+    <p class="intro">
+      Fellow Veteran,<br><br>
+      You have served this country. Now we are asking you to serve your fellow veterans one more time &mdash; by contacting your congressional representative and asking them to support the <strong>Veterans and Families Care Accountability Act (VFCAA)</strong>.<br><br>
+      This does not require any prior experience with email or computers. Follow the steps below, one at a time. If you need help, ask a family member or your Post Commander to sit with you.
+    </p>
+
+    <hr class="divider">
+
+    <!-- BEFORE YOU BEGIN -->
+    <div class="before-box">
+      <h3>&#9888; Before You Begin &mdash; What You Will Need</h3>
+      <ol>
+        <li>A computer, tablet, or smartphone with internet access</li>
+        <li>Your email account open and ready (Gmail, Outlook, Yahoo, or any email)</li>
+        <li>The documents attached to this packet &mdash; saved on your device or in your email</li>
+        <li>Your ZIP code &mdash; to look up your congressional representative below</li>
+      </ol>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">STEP 1</div>
+        <div class="step-title">FIND YOUR CONGRESSIONAL REPRESENTATIVE</div>
+      </div>
+      <div class="step-body">
+        <p>Enter your ZIP code below and your representative's information will appear right here on this page &mdash; no need to go anywhere else.</p>
+
+        <div class="zip-lookup">
+          <p>&#128269; Look Up Your Representative by ZIP Code:</p>
+          <div class="zip-row">
+            <input type="text" class="zip-input" id="zipInput" placeholder="85001" maxlength="5" inputmode="numeric">
+            <button class="zip-btn" id="zipBtn" onclick="lookupRep()">FIND MY REP</button>
+          </div>
+          <div class="rep-result" id="repResult">
+            <div id="repCards"></div>
+          </div>
+        </div>
+
+        <div class="tip">
+          <div class="tip-label">TIP</div>
+          <div class="tip-text">Write down your representative's name after it appears above. You will need it in Step 4 when you fill out the email.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">STEP 2</div>
+        <div class="step-title">GO TO YOUR REPRESENTATIVE'S WEBSITE</div>
+      </div>
+      <div class="step-body">
+        <ol>
+          <li>Click the blue <strong>"CONTACT PAGE"</strong> button that appears next to your representative's name above.</li>
+          <li>This will take you to their official website.</li>
+          <li>Look for a button or link on their website that says one of these:</li>
+        </ol>
+        <div class="button-box">"Contact" &nbsp;&mdash;&nbsp; "Contact Me" &nbsp;&mdash;&nbsp; "Email Me" &nbsp;&mdash;&nbsp; "Send a Message"</div>
+        <ol start="4">
+          <li>Click that button. It will open a contact form or show you their email address.</li>
+        </ol>
+        <div class="tip">
+          <div class="tip-label">TIP</div>
+          <div class="tip-text">Most representatives have a contact form on their website. Some also list a direct email address. Either one works perfectly fine.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">STEP 3</div>
+        <div class="step-title">OPEN YOUR EMAIL</div>
+      </div>
+      <div class="step-body">
+        <p>If the website gives you an email address, send them an email from your own email account:</p>
+        <ol>
+          <li>Open your email &mdash; Gmail, Outlook, Yahoo, or whatever you normally use.</li>
+          <li>Click the button that says <strong>COMPOSE</strong>, <strong>NEW</strong>, or <strong>NEW MESSAGE</strong>.</li>
+          <li>A blank email window will open.</li>
+        </ol>
+        <div class="warning">DO NOT CLOSE THIS WINDOW &mdash; Continue to Step 4</div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">STEP 4</div>
+        <div class="step-title">FILL IN THE EMAIL</div>
+      </div>
+      <div class="step-body">
+        <p><strong>Fill in each part of the email as follows:</strong></p>
+        <table class="email-table">
+          <tr>
+            <td class="field-label">TO:</td>
+            <td class="field-value">Type your representative's email address here</td>
+          </tr>
+          <tr>
+            <td class="field-label">SUBJECT:</td>
+            <td class="field-value"><strong>Support the Veterans and Families Care Accountability Act &mdash; VFCAA</strong></td>
+          </tr>
+          <tr>
+            <td class="field-label">BODY:</td>
+            <td class="field-value">Copy and paste the message below exactly as written</td>
+          </tr>
+        </table>
+
+        <p><strong>COPY THIS MESSAGE INTO THE BODY OF YOUR EMAIL:</strong></p>
+
+        <div class="email-template" id="emailTemplate">
+          <p>Dear [Representative's Name],</p>
+          <p>I am a veteran and a constituent in your congressional district. I am writing to ask for your support of the Veterans and Families Care Accountability Act &mdash; the VFCAA.</p>
+          <p>This bill is currently before Senator Mark Kelly's legislative team. It creates a real, enforceable accountability system for the VA &mdash; powered by American AI technology &mdash; that protects veterans' claims and appeals from being wrongly denied.</p>
+          <p>I have attached the full bill and supporting documents for your review. I ask that you read them and stand with Arizona's veterans by supporting the VFCAA.</p>
+          <p class="quote">"To care for him who shall have borne the battle and for his widow and his orphan."</p>
+          <p class="attribution">&mdash; Abraham Lincoln</p>
+          <div class="signature">
+            <p>Respectfully,</p>
+            <p>[Your Name]<br>
+            [Your City, AZ]<br>
+            [Your Phone Number or Email]<br>
+            Veteran &mdash; [Branch of Service] &mdash; [Years Served]</p>
+          </div>
+          <br>
+          <button class="copy-email-btn" onclick="copyEmail()">&#128203; COPY THIS EMAIL</button>
+        </div>
+
+        <div class="tip">
+          <div class="tip-label">TIP</div>
+          <div class="tip-text">Replace [Representative's Name] with the name you wrote down in Step 1. Replace [Your Name], [Your City], and [Your Branch] with your own information.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">STEP 5</div>
+        <div class="step-title">ATTACH THE DOCUMENTS</div>
+      </div>
+      <div class="step-body">
+        <p>Before you send the email, you need to attach the documents that were sent to you with this packet. Here is how:</p>
+        <ol>
+          <li>Look for a <strong>paperclip icon</strong> in your email window &mdash; it is usually at the bottom of the compose window.</li>
+          <li>Click the paperclip icon.</li>
+          <li>A window will open showing the files on your device. Find the VFCAA documents and click on each one to attach it.</li>
+          <li>Attach all of the following documents:</li>
+        </ol>
+        <div class="attach-list">
+          <p>Documents to Attach:</p>
+          <ul>
+            <li>VFCAA Complete Bill</li>
+            <li>April 6 Briefing Packet</li>
+            <li>VA IT Infrastructure Oracle Analysis FY2026</li>
+            <li>Veterans SENTINEL Research Outreach Protocol</li>
+            <li>PACKET &mdash; Dave Levy, AWS (example company packet)</li>
+            <li>Copyright Confirmation (ECO 1-15132801581)</li>
+          </ul>
+        </div>
+        <div class="tip">
+          <div class="tip-label">TIP</div>
+          <div class="tip-text">If you cannot find the documents on your device, ask your Post Commander or a family member to help you locate the files that were sent in the email from Valiant Heroes Organization.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">STEP 6</div>
+        <div class="step-title">SEND THE EMAIL</div>
+      </div>
+      <div class="step-body">
+        <ol>
+          <li>Read over your email one more time to make sure everything looks correct.</li>
+          <li>Confirm all documents are attached &mdash; you should see the file names listed below the message.</li>
+          <li>Click the <strong>SEND</strong> button.</li>
+          <li>You are done. You have just stood up for every veteran in your district.</li>
+        </ol>
+        <div class="tip">
+          <div class="tip-label">TIP</div>
+          <div class="tip-text">After sending, let your Post Commander know you sent the email. We are tracking responses across all nine Arizona congressional districts.</div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- NEED HELP -->
+    <div class="before-box">
+      <h3>Need Help?</h3>
+      <p style="font-size:19px; margin-top:10px;">Contact Sean Robinson directly at Valiant Heroes Organization:</p>
+      <p style="font-size:19px; margin-top:10px;"><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d5e484c436d5b4c41444c435945485f42485e03425f4a">[email&#160;protected]</a></p>
+      <p style="font-size:19px; margin-top:6px;"><strong>Phone:</strong> 602-622-3036</p>
+      <p style="font-size:19px; margin-top:6px;"><strong>Website:</strong> www.valiantheroes.org</p>
+    </div>
+
+  </div><!-- end content -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <strong>Valiant Heroes Organization &mdash; Laveen, Arizona</strong><br>
+    Sean Robinson &mdash; SK1(SS/SW/AW), United States Navy, Retired<br>
+    Founder &amp; Architect, Veterans and Families Care Accountability Act (VFCAA)<br>
+    <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f48791959ab48295989d959a809c91869b9187da9b8693">[email&#160;protected]</a> &nbsp;|&nbsp; 602-622-3036 &nbsp;|&nbsp; www.valiantheroes.org
+    <div class="lincoln">"To care for him who shall have borne the battle and for his widow and his orphan." &mdash; Abraham Lincoln</div>
+  </div>
+
+</div><!-- end page -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Numbers only in zip field
+  document.getElementById('zipInput').addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+  });
+
+  document.getElementById('zipInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') lookupRep();
+  });
+
+  async function lookupRep() {
+    const zip = document.getElementById('zipInput').value.trim();
+    const btn = document.getElementById('zipBtn');
+    const result = document.getElementById('repResult');
+    const cards = document.getElementById('repCards');
+
+    if (zip.length !== 5) {
+      cards.innerHTML = '<p class="zip-error">&#9888; Please enter a valid 5-digit ZIP code.</p>';
+      result.classList.add('show');
+      return;
+    }
+
+    btn.textContent = 'SEARCHING...';
+    btn.disabled = true;
+    result.classList.remove('show');
+
+    try {
+      const res = await fetch('https://contact-your-rep.sentinel-command-center.workers.dev/reps?zip=' + zip);
+      if (!res.ok) throw new Error('lookup failed');
+      const data = await res.json();
+
+      if (data.error || !data.results || data.results.length === 0) {
+        throw new Error('no results');
+      }
+
+      let html = '';
+      data.results.forEach(function(rep) {
+        const isHouse = rep.district && !rep.name.includes('Sen.');
+        const role = isHouse
+          ? 'U.S. House of Representatives &mdash; District ' + rep.district
+          : 'U.S. Senate &mdash; ' + (rep.state || '');
+        const party = rep.party === 'R' ? 'Republican' : rep.party === 'D' ? 'Democrat' : (rep.party || '');
+        const partyClass = rep.party === 'R' ? 'rep-party-R' : rep.party === 'D' ? 'rep-party-D' : '';
+        const contactBtn = rep.link
+          ? '<a href="' + rep.link + '" target="_blank" class="rep-link-btn primary">&#8594; CONTACT PAGE</a>'
+          : '<a href="https://www.house.gov/representatives/find-your-representative?zip=' + zip + '" target="_blank" class="rep-link-btn primary">&#8594; FIND CONTACT PAGE</a>';
+        const phoneBtn = rep.phone
+          ? '<a href="tel:' + rep.phone + '" class="rep-link-btn secondary">&#128222; ' + rep.phone + '</a>'
+          : '';
+        const office = rep.office
+          ? '<div class="rep-office">&#128205; ' + rep.office + '</div>'
+          : '';
+
+        html += '<div class="rep-card">'
+          + '<h4>' + rep.name + ' &nbsp;<span class="' + partyClass + '">(' + party + ')</span></h4>'
+          + '<div class="rep-role">' + role + '</div>'
+          + '<div class="rep-links">' + contactBtn + phoneBtn + '</div>'
+          + office
+          + '</div>';
+      });
+
+      cards.innerHTML = html;
+      result.classList.add('show');
+
+    } catch(e) {
+      cards.innerHTML = '<p class="zip-error">&#9888; Could not load automatically. '
+        + '<a href="https://www.house.gov/representatives/find-your-representative?zip=' + zip
+        + '" target="_blank" style="color:#1B3A6B;">Click here to look up on House.gov</a></p>';
+      result.classList.add('show');
+    } finally {
+      btn.textContent = 'FIND MY REP';
+      btn.disabled = false;
+    }
+  }
+
+  function copyEmail() {
+    const text = "Dear [Representative's Name],\n\n"
+      + "I am a veteran and a constituent in your congressional district. I am writing to ask for your support of the Veterans and Families Care Accountability Act — the VFCAA.\n\n"
+      + "This bill is currently before Senator Mark Kelly's legislative team. It creates a real, enforceable accountability system for the VA — powered by American AI technology — that protects veterans' claims and appeals from being wrongly denied.\n\n"
+      + "I have attached the full bill and supporting documents for your review. I ask that you read them and stand with Arizona's veterans by supporting the VFCAA.\n\n"
+      + '"To care for him who shall have borne the battle and for his widow and his orp
