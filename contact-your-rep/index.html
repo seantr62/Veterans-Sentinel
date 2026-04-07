@@ -186,8 +186,8 @@
       if (data.error || !data.results || data.results.length === 0) throw new Error('no results');
       let html = '';
       data.results.forEach(function(rep) {
-        const isHouse = rep.district && !rep.name.includes('Sen.');
-        const role = isHouse ? 'U.S. House &mdash; District ' + rep.district : 'U.S. Senate';
+        const isHouse = rep.type === 'House';
+        const role = rep.role || (isHouse ? 'U.S. House' : 'U.S. Senate');
         const party = rep.party === 'R' ? 'Republican' : rep.party === 'D' ? 'Democrat' : (rep.party || '');
         const partyClass = rep.party === 'R' ? 'rep-party-R' : rep.party === 'D' ? 'rep-party-D' : '';
         const phone = rep.phone ? '<div class="rep-info">&#128222; &nbsp;' + rep.phone + '</div>' : '';
