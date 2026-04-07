@@ -563,7 +563,7 @@
     <div class="before-box">
       <h3>Need Help?</h3>
       <p style="font-size:19px; margin-top:10px;">Contact Sean Robinson directly at Valiant Heroes Organization:</p>
-      <p style="font-size:19px; margin-top:10px;"><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d5e484c436d5b4c41444c435945485f42485e03425f4a">[email&#160;protected]</a></p>
+      <p style="font-size:19px; margin-top:10px;"><strong>Email:</strong> sean@valiantheroes.org</p>
       <p style="font-size:19px; margin-top:6px;"><strong>Phone:</strong> 602-622-3036</p>
       <p style="font-size:19px; margin-top:6px;"><strong>Website:</strong> www.valiantheroes.org</p>
     </div>
@@ -575,13 +575,13 @@
     <strong>Valiant Heroes Organization &mdash; Laveen, Arizona</strong><br>
     Sean Robinson &mdash; SK1(SS/SW/AW), United States Navy, Retired<br>
     Founder &amp; Architect, Veterans and Families Care Accountability Act (VFCAA)<br>
-    <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f48791959ab48295989d959a809c91869b9187da9b8693">[email&#160;protected]</a> &nbsp;|&nbsp; 602-622-3036 &nbsp;|&nbsp; www.valiantheroes.org
+    sean@valiantheroes.org &nbsp;|&nbsp; 602-622-3036 &nbsp;|&nbsp; www.valiantheroes.org
     <div class="lincoln">"To care for him who shall have borne the battle and for his widow and his orphan." &mdash; Abraham Lincoln</div>
   </div>
 
 </div><!-- end page -->
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // Numbers only in zip field
   document.getElementById('zipInput').addEventListener('input', function() {
     this.value = this.value.replace(/\D/g, '');
@@ -624,11 +624,8 @@
           : 'U.S. Senate &mdash; ' + (rep.state || '');
         const party = rep.party === 'R' ? 'Republican' : rep.party === 'D' ? 'Democrat' : (rep.party || '');
         const partyClass = rep.party === 'R' ? 'rep-party-R' : rep.party === 'D' ? 'rep-party-D' : '';
-        const contactBtn = rep.link
-          ? '<a href="' + rep.link + '" target="_blank" class="rep-link-btn primary">&#8594; CONTACT PAGE</a>'
-          : '<a href="https://www.house.gov/representatives/find-your-representative?zip=' + zip + '" target="_blank" class="rep-link-btn primary">&#8594; FIND CONTACT PAGE</a>';
-        const phoneBtn = rep.phone
-          ? '<a href="tel:' + rep.phone + '" class="rep-link-btn secondary">&#128222; ' + rep.phone + '</a>'
+        const phone = rep.phone
+          ? '<div class="rep-office">&#128222; Phone: ' + rep.phone + '</div>'
           : '';
         const office = rep.office
           ? '<div class="rep-office">&#128205; ' + rep.office + '</div>'
@@ -637,7 +634,7 @@
         html += '<div class="rep-card">'
           + '<h4>' + rep.name + ' &nbsp;<span class="' + partyClass + '">(' + party + ')</span></h4>'
           + '<div class="rep-role">' + role + '</div>'
-          + '<div class="rep-links">' + contactBtn + phoneBtn + '</div>'
+          + phone
           + office
           + '</div>';
       });
@@ -646,9 +643,7 @@
       result.classList.add('show');
 
     } catch(e) {
-      cards.innerHTML = '<p class="zip-error">&#9888; Could not load automatically. '
-        + '<a href="https://www.house.gov/representatives/find-your-representative?zip=' + zip
-        + '" target="_blank" style="color:#1B3A6B;">Click here to look up on House.gov</a></p>';
+      cards.innerHTML = '<p class="zip-error">&#9888; Could not find your representative. Please check your ZIP code and try again.</p>';
       result.classList.add('show');
     } finally {
       btn.textContent = 'FIND MY REP';
@@ -661,4 +656,13 @@
       + "I am a veteran and a constituent in your congressional district. I am writing to ask for your support of the Veterans and Families Care Accountability Act — the VFCAA.\n\n"
       + "This bill is currently before Senator Mark Kelly's legislative team. It creates a real, enforceable accountability system for the VA — powered by American AI technology — that protects veterans' claims and appeals from being wrongly denied.\n\n"
       + "I have attached the full bill and supporting documents for your review. I ask that you read them and stand with Arizona's veterans by supporting the VFCAA.\n\n"
-      + '"To care for him who shall have borne the battle and for his widow and his orp
+      + '"To care for him who shall have borne the battle and for his widow and his orphan." — Abraham Lincoln\n\n'
+      + "Respectfully,\n"
+      + "[Your Name]\n"
+      + "[Your City, AZ]\n"
+      + "[Your Phone Number or Email]\n"
+      + "Veteran — [Branch of Service] — [Years Served]";
+
+    navigator.clipboard.writeText(text).then(function() {
+      const btn = document.querySelector('.copy-email-btn');
+      btn.textContent = '�
