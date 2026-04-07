@@ -16,6 +16,22 @@ export default {
       });
     }
 
+    if (url.pathname === '/test') {
+      try {
+        const res = await fetch(
+          'https://api.congress.gov/v3/member?congress=119&limit=5&format=json',
+          { headers: { 'X-API-Key': env.CONGRESS_API_KEY } }
+        );
+        const text = await res.text();
+        return new Response(JSON.stringify({
+          status: res.status,
+          ok: res.ok,
+          body_preview: text.substring(0, 500)
+        }), { headers: { 'Content-Type': 'application/json' } });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: err.message }), { headers: { 'Content-Type': 'application/json' } });
+      }
+    }
     if (url.pathname === '/status') {
       const counts = await env.DB.prepare(
         'SELECT status_consensus, COUNT(*) as count FROM members GROUP BY status_consensus'
