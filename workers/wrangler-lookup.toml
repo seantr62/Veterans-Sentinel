@@ -1,0 +1,8 @@
+name = "congressional-lookup"
+main = "congressional-lookup-worker.js"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "congressional-verified"
+database_id = "9d51b85f-5e67-4119-8bf0-595fa5477f1f"
