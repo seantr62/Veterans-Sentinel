@@ -26,6 +26,9 @@ Rules:
 - house_districts is an array of integer district numbers for that ZIP
 - If a ZIP spans multiple House districts, list all of them
 - If the ZIP is not in Arizona, still return the state and correct districts
+- When a ZIP spans multiple districts, you MUST list ALL of them — never guess just one
+- For ZIP 85339 (Laveen AZ) for example, list ALL districts that include any part of that ZIP
+- It is better to show more districts than fewer — the veteran will recognize their own representative
 - Return ONLY the JSON object, nothing else`;
 
 addEventListener("fetch", (event) => {
