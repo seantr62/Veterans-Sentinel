@@ -31,8 +31,11 @@ export default {
         ).bind(zip).all();
 
         if (!zipRows.results || zipRows.results.length === 0) {
-          // ZIP not in our database yet — use GovTrack as fallback
-          return await govtrackFallback(zip, env);
+          return jsonResponse({
+            error: "ZIP code not yet in verified database. Please try again after the next scheduled update.",
+            zip,
+            database_verified: false
+          }, 404);
         }
 
         const results = [];
@@ -129,90 +132,6 @@ function formatResult(member) {
   };
 }
 
-// GovTrack fallback for ZIPs not yet in our database
-async function govtrackFallback(zip, env) {
-  try {
-    // Use Claude to identify the state/district, then GovTrack to verify
-    const claudeRes = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01"
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 256,
-        system: `Return ONLY a JSON object for the given US ZIP code. Format: {"state":"AZ","house_districts":[3],"multi_district":false}. List ALL districts if ZIP spans multiple. No markdown, no explanation.`,
-        messages: [{ role: "user", content: `ZIP: ${zip}` }]
-      })
-    });
-
-    const claudeData = await claudeRes.json();
-    let rawText = claudeData.content[0].text.trim().replace(/```json|```/g, "").trim();
-    const districtInfo = JSON.parse(rawText);
-    const state = districtInfo.state;
-    const districts = districtInfo.house_districts;
-
-    // Store in zip_district for future lookups
-    for (const d of districts) {
-      await env.DB.prepare(
-        'INSERT OR IGNORE INTO zip_district (zip, state, district) VALUES (?, ?, ?)'
-      ).bind(zip, state, String(d)).run();
-    }
-
-    // Verify with GovTrack
-    const govtrackCalls = [
-      fetch(`https://www.govtrack.us/api/v2/role?current=true&state=${state}&role_type=senator`),
-      ...districts.map(d => fetch(`https://www.govtrack.us/api/v2/role?current=true&state=${state}&district=${d}&role_type=representative`))
-    ];
-
-    const responses = await Promise.all(govtrackCalls);
-    const data = await Promise.all(responses.map(r => r.json()));
-
-    const senators = data[0].objects || [];
-    const houseReps = data.slice(1).flatMap(d => d.objects || []);
-    const results = [];
-
-    for (const rep of houseReps) {
-      results.push({
-        name: `${rep.person.firstname} ${rep.person.lastname}`,
-        title: "Representative",
-        party: rep.party,
-        district: String(rep.district),
-        role: `U.S. House — District ${rep.district}`,
-        phone: rep.phone || '',
-        office: rep.extra?.address || '',
-        state, type: "House", verified: true, status: "Verified",
-        note: "Verified via GovTrack (ZIP not yet in main database)"
-      });
-    }
-
-    for (const sen of senators) {
-      results.push({
-        name: `${sen.person.firstname} ${sen.person.lastname}`,
-        title: "Senator",
-        party: sen.party,
-        district: '',
-        role: `U.S. Senator — ${state}`,
-        phone: sen.phone || '',
-        office: sen.extra?.address || '',
-        state, type: "Senate", verified: true, status: "Verified"
-      });
-    }
-
-    return jsonResponse({
-      results, zip, state,
-      multi_district: districts.length > 1,
-      database_verified: false,
-      fallback: true,
-      note: districts.length > 1 ? 'Your ZIP spans multiple districts. Choose the representative you recognize.' : ''
-    });
-
-  } catch (err) {
-    return jsonResponse({ error: "Could not retrieve representative information. Please try again." }, 500);
-  }
-}
 
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
